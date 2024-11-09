@@ -1,0 +1,42 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+*{
+    padding: 0;
+    margin: 0;
+}
+
+html{
+  scroll-behavior: smooth;
+}
+
+@keyframes waveBackground {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+  
+  .welcome {
+    background-size: 200% 200%;
+    animation: waveBackground 6s ease-in-out infinite;
+  }
+  
+  @keyframes slideInLeft {
+    0% { transform: translateX(-100%); opacity: 0; }
+    100% { transform: translateX(0); opacity: 1; }
+  }
+
+  @keyframes slideInRight {
+    0% { transform: translateX(100%); opacity: 0; }
+    100% { transform: translateX(0); opacity: 1; }
+  }
+
+  .main-message {
+    animation: slideInLeft 1.5s ease forwards;
+  }
+
+  .sub-message {
+    animation: slideInRight 2s ease forwards;
+}
+
