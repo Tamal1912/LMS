@@ -1,4 +1,6 @@
 .env
+.env.test
+.env.production
 # Logs
 logs
 *.log
