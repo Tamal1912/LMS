@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import "../../index.css";
 import {Link} from "react-scroll"
 import { Button, Modal } from "flowbite-react";
-import {HiOutlineExclamationCircle} from "react-icons/hi"
+import { useNavigate } from 'react-router-dom';
+
 
 
 
@@ -10,6 +11,7 @@ const Home = () => {
 
   const [openSignUpModal,setOpenSignUpModal]=useState(false)
   const [openLoginModal,setOpenLoginModal]=useState(false)
+  const navigate=useNavigate()
   return (
     <>
       <div name="welcome" className="navbar h-24 w-full flex flex-wrap justify-evenly">
@@ -21,7 +23,7 @@ const Home = () => {
         
         </nav>
         <Button color="dark" onClick={()=>setOpenLoginModal(true)} className="login btn-xs sm:btn-sm md:btn-md lg:btn-md">
-          Login
+          Login/Signup
         </Button>
         <Modal show={openLoginModal} size="3xl" onClose={() => setOpenLoginModal(false)} popup>
         <Modal.Header />
@@ -29,18 +31,23 @@ const Home = () => {
           <div className="text-center">
            
             <div className="flex justify-center gap-4">
+              <Link onClick={()=>navigate("/api/teacherLoginSignup")}>
               <Button color="blue" onClick={() => setOpenLoginModal(false)}>
-                {"Login as Teacher"}
+               As Teacher
               </Button>
+              </Link>
+
+              <Link onClick={()=>navigate("/api/studentLoginSignup")}>
               <Button color="lime" onClick={() => setOpenLoginModal(false)}>
-              Login as Student
+              As Student
               </Button>
+              </Link>
             </div>
           </div>
         </Modal.Body>
         </Modal>
 
-        <Button color="blue" onClick={()=>setOpenSignUpModal(true)} className="signup btn-xs sm:btn-sm md:btn-md lg:btn-md">
+        {/* <Button color="blue" onClick={()=>setOpenSignUpModal(true)} className="signup btn-xs sm:btn-sm md:btn-md lg:btn-md">
           SignUp
         </Button>
         <Modal show={openSignUpModal} size="3xl" onClose={() => setOpenSignUpModal(false)} popup>
@@ -58,7 +65,7 @@ const Home = () => {
             </div>
           </div>
         </Modal.Body>
-        </Modal>
+        </Modal> */}
 
       </div>
 
