@@ -22,7 +22,7 @@ const Home = () => {
             <Link className="hover:underline" to="contact-section"smooth={true} duration={500}>Contact Us</Link>
         
         </nav>
-        <Button color="dark" onClick={()=>setOpenLoginModal(true)} className="login btn-xs sm:btn-sm md:btn-md lg:btn-md">
+        <Button color="blue" onClick={()=>setOpenLoginModal(true)} className="login  btn-xs sm:btn-sm md:btn-md lg:btn-md">
           Login/Signup
         </Button>
         <Modal show={openLoginModal} size="3xl" onClose={() => setOpenLoginModal(false)} popup>
