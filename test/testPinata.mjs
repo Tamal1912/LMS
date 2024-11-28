@@ -3,23 +3,23 @@ import dotenv from 'dotenv';
 import FormData from 'form-data';
 import fs from 'fs';
 
-// Load environment variables from .env file
+
 dotenv.config();
 
 const PINATA_API_KEY = process.env.PINATA_API_KEY;
 const PINATA_API_SECRET = process.env.PINATA_API_SECRET;
 
-// Function to upload a file to Pinata
+
 const uploadToPinata = async (filePath) => {
   const url = 'https://api.pinata.cloud/pinning/pinFileToIPFS';
 
   try {
     const data = new FormData();
-    data.append('file', fs.createReadStream(filePath)); // Attach file to form-data
+    data.append('file', fs.createReadStream(filePath)); 
 
     const response = await axios.post(url, data, {
       headers: {
-        ...data.getHeaders(), // Add multipart form headers
+        ...data.getHeaders(), 
         pinata_api_key: PINATA_API_KEY,
         pinata_secret_api_key: PINATA_API_SECRET,
       },
@@ -32,7 +32,7 @@ const uploadToPinata = async (filePath) => {
   }
 };
 
-// Function to retrieve data from IPFS
+
 const getFromIPFS = async (cid) => {
   try {
     const url = `https://gateway.pinata.cloud/ipfs/${cid}`;
@@ -45,9 +45,8 @@ const getFromIPFS = async (cid) => {
   }
 };
 
-// Test the integration
 const testPinata = async () => {
-  const filePath = './hello.txt'; // Path to your test file
+  const filePath = './hello.txt'; 
   const cid = await uploadToPinata(filePath);
 
   if (cid) {
