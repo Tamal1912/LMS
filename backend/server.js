@@ -1,12 +1,12 @@
-const express = require('express');
+const express=require("express")
 const cors = require('cors');
 require('dotenv').config();
 const connectDB = require('./config/db'); // Import the DB connection file
+let {app}= require("./app.js")
 
-// Initialize the app
-const app = express();
 
 // Connect to MongoDB
+
 connectDB();
 
 // Middleware

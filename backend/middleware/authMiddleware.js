@@ -1,19 +1,28 @@
 const jwt = require('jsonwebtoken');
-require('dotenv').config();
 
-const authMiddleware = (role) => (req, res, next) => {
+const authenticateJWT = (req, res, next) => {
+  const token = req.header('Authorization')?.replace('Bearer ', '');
+
+  if (!token) {
+    throw new ApiError(401, "Not authorized, no token");
+  }
+
   try {
-    const token = req.headers.authorization.split(' ')[1];
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     req.user = decoded;
-
-    if (role && req.user.role !== role) {
-      return res.status(403).json({ message: 'Access denied' });
-    }
     next();
-  } catch (error) {
-    res.status(401).json({ message: 'Unauthorized' });
+  } catch (err) {
+    throw new ApiError(401, "Not authorized, invalid token");
   }
 };
 
-module.exports = authMiddleware;
+const authorizeRole = (role) => {
+  return (req, res, next) => {
+    if (req.user.role !== role) {
+      throw new ApiError(403, "Access Forbidden");
+    }
+    next();
+  };
+};
+
+module.exports = { authenticateJWT, authorizeRole };

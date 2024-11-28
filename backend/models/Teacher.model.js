@@ -1,9 +1,27 @@
-const mongoose = require('mongoose');
+const mongoose=require("mongoose")
+const bcrypt=require("bcrypt")
 
 const teacherSchema = new mongoose.Schema({
-  userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
-  name: String,
-  students: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Student' }]
+  username: { type: String, required: true },
+  email: { type: String, required: true, unique: true },
+  password: { type: String, required: true },
+  role: { type: String, default: 'teacher' },
+  createdAt: { type: Date, default: Date.now }
 });
 
-module.exports = mongoose.model('Teacher', teacherSchema);
+// Hash password before saving
+teacherSchema.pre('save', async function(next) {
+  if (this.isModified('password')) {
+    this.password = await bcrypt.hash(this.password, 10);
+  }
+  next();
+});
+
+// Generate JWT token
+teacherSchema.methods.generateAuthToken = function() {
+  const token = jwt.sign({ _id: this._id, role: this.role }, 'your_jwt_secret_key', { expiresIn: '1h' });
+  return token;
+};
+
+const Teacher = mongoose.model('Teacher', teacherSchema);
+module.exports = Teacher;

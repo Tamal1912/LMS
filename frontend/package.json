@@ -10,8 +10,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "aceternity-ui": "^0.2.2",
     "dotenv": "^16.4.5",
     "flowbite-react": "^0.10.2",
+    "framer-motion": "^11.12.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-icon": "^1.0.0",
