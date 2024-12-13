@@ -44,7 +44,7 @@ const Navbar = () => {
   return (
     <>
       <nav className="w-full flex justify-between items-center px-8 py-4 bg-white shadow-md fixed top-0 z-50">
-        <div className="text-2xl font-bold text-gray-800">EduProX</div>
+        <div className="text-2xl font-bold text-gray-800">Name</div>
         <ul className="flex gap-6 text-gray-600 font-medium">
           <li className="cursor-pointer hover:text-gray-900">Home</li>
           <li className="cursor-pointer hover:text-gray-900">Features</li>
