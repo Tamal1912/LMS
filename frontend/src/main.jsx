@@ -31,21 +31,11 @@ const router=createBrowserRouter([
     element:<StudentLoginSignup/>
   },
   {
-    path:"/api/studentDashboard",
-    element:<StudentDashboard/>
+    path:"/api/studentDashboard/",
+    element:<StudentDashboard/> ,
+   
   },
-  {
-    path:"/api/studentDashboard/grades",
-    element:<Grade/>
-  },
-  {
-    path:"/api/studentDashboard/attendence",
-    element:<Attendance/>
-  },
-  {
-    path:"/api/studentDashboard/studentProfile",
-    element:<StudentProfile/>
-  },
+  
   {
     path:"/api/teacherDashboard",
     element:<TeacherDashboard/>
