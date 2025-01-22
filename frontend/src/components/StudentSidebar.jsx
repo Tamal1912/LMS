@@ -41,14 +41,16 @@ const StudentSidebar = () => {
                 <nav className="flex flex-col space-y-6 text-center w-full">
                     <div className="hover:bg-blue-500 p-4 rounded-lg cursor-pointer transition">
                         <span className="font-semibold">
-                            <button onClick={()=>navigate("/api/studentDashboard")}>
+                            <Link to="/api/studentDashboard">
+                            <button>
                                 Dashboard
                             </button>
+                            </Link>
                         </span>
                     </div>
                     <div className="hover:bg-blue-500 p-4 rounded-lg cursor-pointer transition">
                         <span className="font-semibold">
-                            <Link to="/api/studentDashboard/grades">
+                            <Link to="/grades">
                                 <button>
                                     Grades
                                 </button>
@@ -57,16 +59,20 @@ const StudentSidebar = () => {
                     </div>
                     <div className="hover:bg-blue-500 p-4 rounded-lg cursor-pointer transition">
                         <span className="font-semibold">
-                            <button onClick={()=>navigate("/api/studentDashboard/attendence")}>
+                            <Link to="/attendence">
+                            <button>
                                 Attendance
                             </button>
+                            </Link>
                         </span>
                     </div>
                     <div className="hover:bg-blue-500 p-4 rounded-lg cursor-pointer transition">
                         <span className="font-semibold">
-                            <button onClick={()=>navigate("/api/studentDashboard/studentProfile")}>
+                            <Link to="/studentProfile">
+                            <button >
                                 Profile
                             </button>
+                            </Link>
                         </span>
                     </div>
                 </nav>

@@ -5,24 +5,8 @@ import StudentSidebar from "./StudentSidebar";
 
 const StudentDashboard = () => {
   const [userName, setUserName] = useState(""); 
-  const navigate=useNavigate()
+  
 
-
-  // useEffect(() => {
-  //   const fetchUserName = async () => {
-  //     try {
-  //       // Replace this with your actual API call
-  //       const response = await fetch("http://localhost:4000/api/v1/users/student");
-  //       const data = await response.json();
-  //       setUserName(data.username);
-  //     } catch (error) {
-  //       console.error("Error fetching user name:", error);
-  //       setUserName("John Doe"); // Fallback name
-  //     }
-  //   };
-
-  //   fetchUserName();
-  // }, []);
   return (
     <div className="min-h-screen flex bg-gradient-to-r from-blue-50 to-blue-100">
       

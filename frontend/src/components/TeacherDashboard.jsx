@@ -67,6 +67,13 @@ const TeacherDashboard = () => {
           />
         </div>
       </div>
+
+      <div className="p-4 bg-gray-800 text-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
+        <h2 className="text-xl font-semibold mb-2">Course Manage</h2>
+        <div className="flex justify-center items-center h-40">
+         
+        </div>
+      </div>
     </div>
   </div>
   );

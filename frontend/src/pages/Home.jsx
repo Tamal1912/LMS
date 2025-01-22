@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Features from "../Features";
-import HowItWorks from "../HowItWorks";
-import Testimonials from "../Testimonials";
-import Footer from "../Footer";
+import Features from "../components/Features"
+import HowItWorks from "../components/HowItWorks";
+import Testimonials from "../components/Testimonials";
+import Footer from "../components/Footer";
 import { motion } from "framer-motion";
 
 const Navbar = () => {
