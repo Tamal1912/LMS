@@ -1,6 +1,6 @@
 {
   "name": "backend",
-  "type": "commonjs",
+  "type": "module",
   "version": "1.0.0",
   "main": "server.js",
   "dependencies": {

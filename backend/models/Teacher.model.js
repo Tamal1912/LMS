@@ -1,5 +1,5 @@
-const mongoose=require("mongoose")
-const bcrypt=require("bcrypt")
+import mongoose from "mongoose";
+import bcrypt from "bcrypt";
 
 const teacherSchema = new mongoose.Schema({
   username: { type: String, required: true },
@@ -24,4 +24,4 @@ teacherSchema.methods.generateAuthToken = function() {
 };
 
 const Teacher = mongoose.model('Teacher', teacherSchema);
-module.exports = Teacher;
+export default Teacher;

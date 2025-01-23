@@ -1,6 +1,6 @@
-const mongoose=require('mongoose');
-const bcrypt=require('bcrypt');
-const jwt=require('jsonwebtoken');
+import mongoose from 'mongoose';
+import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 
 
 const studentSchema = new mongoose.Schema({
@@ -26,4 +26,4 @@ studentSchema.methods.generateAuthToken = function() {
 };
 
 const Student = mongoose.model('Student', studentSchema);
-module.exports = Student;
+export default Student;

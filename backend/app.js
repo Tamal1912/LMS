@@ -1,6 +1,6 @@
-const express = require("express");
-const cors = require("cors");
-const cookieParser = require("cookie-parser");
+import express from "express";
+import cors from "cors";
+import cookieParser from "cookie-parser";
 
 const app = express();
 
@@ -16,10 +16,14 @@ app.use(express.static("public"));
 app.use(cookieParser());
 
 // Import routes
-const authRoutes = require("./routes/authRoutes.js");
+import authRoutes from "./routes/authRoutes.js";
+import teacherRoutes from "./routes/teacher.route.js";
 
 // Routes Declaration
 app.use("/api/v1/users", authRoutes);
+// The issue is in how the middleware is chained. The async function is acting as middleware
+// and not passing control to teacherRoutes. Here's the corrected version:
+app.use("/api/v1/teacher", teacherRoutes);
 
 // Export the app object for server setup
-module.exports = { app };
+export default app;

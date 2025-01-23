@@ -1,4 +1,5 @@
-const jwt = require('jsonwebtoken');
+import jwt from 'jsonwebtoken';
+import { ApiError } from '../utils/ApiError.js';
 
 const authenticateJWT = (req, res, next) => {
   const token = req.header('Authorization')?.replace('Bearer ', '');
@@ -25,4 +26,4 @@ const authorizeRole = (role) => {
   };
 };
 
-module.exports = { authenticateJWT, authorizeRole };
+export { authenticateJWT, authorizeRole };

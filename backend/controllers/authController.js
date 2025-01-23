@@ -1,10 +1,10 @@
-const Student = require('../models/Student.model.js');
-const Teacher = require('../models/Teacher.model.js');
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
-const {ApiError}=require("../utils/ApiError.js");
-const {ApiResponse} =require("../utils/ApiResponses.js");
-const {asyncHandler}= require("../utils/asyncHandler.js")
+import Student from '../models/Student.model.js';
+import Teacher from '../models/Teacher.model.js';
+import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
+import {ApiError} from "../utils/ApiError.js";
+import {ApiResponse} from "../utils/ApiResponses.js";
+import {asyncHandler} from "../utils/asyncHandler.js";
 
 // Student Login
 const studentLogin = asyncHandler(async (req, res) => {
@@ -170,4 +170,4 @@ const logout = asyncHandler(async (req, res) => {
   );
 });
 
-module.exports = { studentLogin, studentSignUp, teacherLogin , teacherSignUp, logout};
+export { studentLogin, studentSignUp, teacherLogin , teacherSignUp, logout};
