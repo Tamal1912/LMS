@@ -7,8 +7,8 @@ import {BrowserRouter, createBrowserRouter,Route,RouterProvider, Routes} from "r
 import Home from './pages/Home.jsx'
 import StudentLoginSignup from "./pages/StudentLoginSignup.jsx"
 import TeacherLoginSignup from './pages/TeacherLoginSignup.jsx';
-import StudentDashboard from './components/StudentDashboard.jsx';
-import TeacherDashboard from './components/TeacherDashboard.jsx';
+import StudentDashboard from './pages/StudentDashboard.jsx';
+import TeacherDashboard from './pages/TeacherDashboard.jsx';
 import Grade from './pages/Grade.jsx';
 import Attendance from './pages/Attendence.jsx';
 import StudentProfile from "./pages/StudentProfile.jsx"

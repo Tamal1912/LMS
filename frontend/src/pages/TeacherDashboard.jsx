@@ -1,5 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router';
+import { Button } from '@/components/ui/button';
 
 const TeacherDashboard = () => {
     const navigate=useNavigate()
@@ -32,11 +33,11 @@ const TeacherDashboard = () => {
       <h1 className="text-2xl font-bold text-blue-700">Teacher Dashboard</h1>
       <div className="flex items-center space-x-4">
         <div className="h-10 w-10 bg-gray-300 rounded-full"></div>
-        <button 
+        <Button 
         onClick={handleLogout}
-        className="text-red-500 font-semibold hover:text-red-700">
+        className="bg-red-500 text-white font-semibold hover:bg-red-400">
           Logout
-        </button>
+        </Button>
       </div>
     </div>
 

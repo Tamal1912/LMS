@@ -1,7 +1,7 @@
 import React from "react";
 import { useState,useEffect} from "react";
 import { Outlet, useNavigate } from "react-router";
-import StudentSidebar from "./StudentSidebar";
+import StudentSidebar from "../components/StudentSidebar";
 
 const StudentDashboard = () => {
   const [userName, setUserName] = useState(""); 

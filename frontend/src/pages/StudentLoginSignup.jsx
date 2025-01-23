@@ -1,6 +1,6 @@
 import React from 'react'
 import { useState } from 'react';
-import StudentDashboard from  "../components/StudentDashboard";
+import StudentDashboard from  "./StudentDashboard";
 import { useNavigate } from 'react-router';
 
 const StudentLoginSignup = () => {

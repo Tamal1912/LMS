@@ -10,19 +10,25 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "aceternity-ui": "^0.2.2",
+    "@radix-ui/react-slot": "^1.1.1",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
     "dotenv": "^16.4.5",
     "flowbite-react": "^0.10.2",
     "framer-motion": "^11.12.0",
+    "lucide-react": "^0.474.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-icon": "^1.0.0",
     "react-router": "^6.28.0",
     "react-router-dom": "^6.28.0",
-    "react-scroll": "^1.9.0"
+    "react-scroll": "^1.9.0",
+    "tailwind-merge": "^2.6.0",
+    "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
     "@eslint/js": "^9.13.0",
+    "@types/node": "^22.10.10",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
     "@vitejs/plugin-react": "^4.3.3",
