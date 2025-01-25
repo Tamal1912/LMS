@@ -1,11 +1,14 @@
-import React from 'react'
+import React,{useEffect} from 'react'
 import { Outlet, useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
+import useCourseStore from "../store/useCourseStore.js";
 
 
 
 
 const StudentSidebar = () => {
+    const {courses,getCourses}=useCourseStore();
+ 
     const handleLogout=async(e)=>{
         e.preventDefault();
         try {
@@ -59,9 +62,9 @@ const StudentSidebar = () => {
                     </div>
                     <div className="hover:bg-blue-500 p-4 rounded-lg cursor-pointer transition">
                         <span className="font-semibold">
-                            <Link to="/attendence">
+                            <Link to="/courses" onClick={()=>getCourses()}>
                             <button>
-                                Attendance
+                                Courses
                             </button>
                             </Link>
                         </span>

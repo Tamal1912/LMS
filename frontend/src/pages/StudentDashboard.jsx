@@ -2,10 +2,11 @@ import React from "react";
 import { useState,useEffect} from "react";
 import { Outlet, useNavigate } from "react-router";
 import StudentSidebar from "../components/StudentSidebar";
+import useCourseStore from "../store/useCourseStore.js";
 
 const StudentDashboard = () => {
   const [userName, setUserName] = useState(""); 
-  
+
 
   return (
     <div className="min-h-screen flex bg-gradient-to-r from-blue-50 to-blue-100">

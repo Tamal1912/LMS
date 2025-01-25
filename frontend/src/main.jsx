@@ -10,7 +10,7 @@ import TeacherLoginSignup from './pages/TeacherLoginSignup.jsx';
 import StudentDashboard from './pages/StudentDashboard.jsx';
 import TeacherDashboard from './pages/TeacherDashboard.jsx';
 import Grade from './pages/Grade.jsx';
-import Attendance from './pages/Attendence.jsx';
+import Courses from './pages/Courses.jsx';
 import StudentProfile from "./pages/StudentProfile.jsx"
 import ManageCoursePage from './pages/ManageCoursePage.jsx';
 
@@ -33,7 +33,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
     <Route path="/api/studentDashboard" element={<StudentDashboard />}>
     </Route>
       <Route path="grades" element={<Grade />} />
-      <Route path="attendence" element={<Attendance />} />
+      <Route path="/courses" element={<Courses />} />
       <Route path="studentProfile" element={<StudentProfile />} />
   </Routes>
 </BrowserRouter>

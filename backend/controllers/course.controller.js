@@ -75,12 +75,11 @@ export const updateCourse =asyncHandler(async (req, res) => {
 
 export const getAllCourse =asyncHandler(async (req, res) => {
     try {
-        const courses=await Course.find();
-        res.status(200).json(ApiResponse.success(courses,"Courses fetched successfully"))
-
+        const courses=await Course.find();       
+        res.status(200).json({courses});
     } catch (error) {
         console.log(error);
-        res.status(500).json(asyncHandler(error))
+        throw new ApiError(500,null,"Failed to fetch courses")
     }
 })
 
