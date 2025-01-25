@@ -1,13 +1,23 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import useCourseStore from "../store/useCourseStore.js";
+import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const Courses = () => {
-    const { allCourses, loading, error, getCourses } = useCourseStore();
+   
+    let navigate=useNavigate();
+    const { allCourses,loading, error, getCourses, enrollCourse, getEnrolledCourses } = useCourseStore();
+    const [isEnrolled,setIsEnrolled]=useState(false);
 
     useEffect(() => {
         getCourses();
     }, []);
 
+    const handleCourseClick=async(courseId)=>{
+        await enrollCourse(courseId);
+        navigate(`/course/${courseId}`);
+        setIsEnrolled(true);
+    }
 
 
    
@@ -37,9 +47,11 @@ const Courses = () => {
                                         <div className="bg-green-600 h-2.5 rounded-full" style={{width: '88%'}}></div>
                                     </div>
                                 </div>
-                                <button className="mt-4 w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition duration-200">
-                                    View Details
+                                    <Link to={`/courseDetails/${course._id}`}>
+                                <button onClick={()=>handleCourseClick(course._id)} className={`mt-4 w-full ${isEnrolled ? 'bg-gray-500' : 'bg-blue-600'} text-white py-2 rounded-md hover:bg-blue-700 transition duration-200`}>
+                                    {isEnrolled ? 'Enrolled' : 'Enroll'}
                                 </button>
+                                    </Link>
                             </div>
                         ))}
                     </div>

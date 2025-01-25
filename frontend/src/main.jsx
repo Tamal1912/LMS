@@ -13,7 +13,7 @@ import Grade from './pages/Grade.jsx';
 import Courses from './pages/Courses.jsx';
 import StudentProfile from "./pages/StudentProfile.jsx"
 import ManageCoursePage from './pages/ManageCoursePage.jsx';
-
+import CourseDetails from './components/CourseDetails.jsx';
 const router=createBrowserRouter([
   {
     path:"/",
@@ -30,6 +30,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
     <Route path="/api/teacherLoginSignup" element={<TeacherLoginSignup/>}/>
     <Route path='/api/teacherDashboard' element={<TeacherDashboard/>}/>
     <Route path="/teacherDashboard/manage_course" element={<ManageCoursePage/>}/>
+    <Route path="/course/:courseId" element={<CourseDetails/>}/>
     <Route path="/api/studentDashboard" element={<StudentDashboard />}>
     </Route>
       <Route path="grades" element={<Grade />} />

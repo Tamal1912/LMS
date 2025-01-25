@@ -2,13 +2,12 @@ import { create } from "zustand";
 import { api } from "../lib/utils.js";
 import { toast } from "react-toastify";
 
-const useCourseStore = create()((set,get) => ({
-allCourses: [],
+const useCourseStore = create()((set, get) => ({
+  allCourses: [],
+  enrolledCourses: [],
   loading: false,
   error: null,
-  isUploaded:false,
-
-
+  isUploaded: false,
 
   // Create Course
   createCourse: async (course) => {
@@ -16,9 +15,9 @@ allCourses: [],
     try {
       const response = await api.post("/v1/teacher/create_course", course);
       console.log("Response from create_course:", response.data);
-      
+
       // Assuming response.data is the updated courses list
-      set({ allCourses: response.data,isUploaded:true });
+      set({ allCourses: response.data, isUploaded: true });
       toast.success("Course created successfully");
     } catch (error) {
       console.error("Error creating course:", error);
@@ -29,38 +28,39 @@ allCourses: [],
   // Get Courses
   getCourses: async () => {
     try {
-        set({ loading: true, error: null });
-        const response = await api.get("/v1/teacher/get_all_course");
-        
-        if (response.data && response.data.courses) {
-            set({ 
-                allCourses: response.data.courses,
-                loading: false 
-            });
-        } else {
-            set({ 
-                allCourses: [], 
-                loading: false 
-            });
-        }
-        
-    } catch (error) {
-        console.error("Error fetching courses:", error);
-        set({ 
-            error: error.message, 
-            allCourses: [],
-            loading: false 
+      set({ loading: true, error: null });
+      const response = await api.get("/v1/teacher/get_all_course");
+
+      if (response.data && response.data.courses) {
+        set({
+          allCourses: response.data.courses,
+          loading: false,
         });
-        toast.error("Failed to get courses");
+      } else {
+        set({
+          allCourses: [],
+          loading: false,
+        });
+      }
+    } catch (error) {
+      console.error("Error fetching courses:", error);
+      set({
+        error: error.message,
+        allCourses: [],
+        loading: false,
+      });
+      toast.error("Failed to get courses");
     }
-},
+  },
 
   // Delete Course
   deleteCourse: async (courseId) => {
     try {
       await api.delete(`/v1/teacher/delete_course/${courseId}`);
       const { allCourses } = get();
-      const updatedCourses = allCourses.filter(course => course._id !== courseId);
+      const updatedCourses = allCourses.filter(
+        (course) => course._id !== courseId
+      );
       set({ allCourses: updatedCourses });
       toast.success("Course deleted successfully");
     } catch (error) {
@@ -69,22 +69,50 @@ allCourses: [],
     }
   },
 
-  // Update Course
-  updateCourse: async (courseId, updatedData) => {
-    try {
-      const response = await api.put(`/v1/teacher/update_course/${courseId}`, updatedData);
-      const { allCourses } = get();
-      const updatedCourses = allCourses.map(course => 
-        course._id === courseId ? response.data.course : course
-      );
-      set({ allCourses: updatedCourses });
-      toast.success("Course updated successfully");
-    } catch (error) {
-      console.error("Error updating course:", error);
-      toast.error("Failed to update course");
-    }
-  }
 
+  //TODO: Update Course
+  // Update Course
+  // updateCourse: async (courseId, updatedData) => {
+  //   try {
+  //     const response = await api.put(
+  //       `/v1/teacher/update_course/${courseId}`,
+  //       updatedData
+  //     );
+  //     const { allCourses } = get();
+  //     const updatedCourses = allCourses.map((course) =>
+  //       course._id === courseId ? response.data.course : course
+  //     );
+  //     set({ allCourses: updatedCourses });
+  //     toast.success("Course updated successfully");
+  //   } catch (error) {
+  //     console.error("Error updating course:", error);
+  //     toast.error("Failed to update course");
+  //   }
+  // },
+
+  // Enroll Course
+  enrollCourse: async (courseId) => {
+    try {
+      const response = await api.post(`/v1/course/enroll/${courseId}`);
+      console.log("Response from enroll course:", response.data);
+      set({ enrolledCourses: response.data.enrolledCourses });
+      toast.success("Course enrolled successfully");
+    } catch (error) {
+      console.error("Error enrolling course:", error);
+      toast.error("Failed to enroll course");
+    }
+  },
+
+  // Get Enrolled Courses
+  getEnrolledCourses: async () => {
+    try {
+      const response = await api.get("/v1/course/enrolled_courses");
+      set({ enrolledCourses: response.data.enrolledCourses });
+    } catch (error) {
+      console.error("Error fetching enrolled courses:", error);
+      toast.error("Failed to fetch enrolled courses");
+    }
+  },  
 }));
 
 export default useCourseStore;
