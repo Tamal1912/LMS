@@ -1,10 +1,10 @@
 import express from "express";
-import {router} from "../controllers/course.controller.js";
+import {createCourse,getCourses,deleteCourse} from "../controllers/course.controller.js";
 
 const router=express.Router();
 
-router.post("/createCourse",createCourse);
-router.get("/getCourses",getCourses);
-router.delete("/deleteCourse/:id",deleteCourse);
+router.post("/create_course",createCourse);
+router.get("/get_courses",getCourses);
+router.delete("/delete_course/:id",deleteCourse);
 
 export default router;

@@ -13,15 +13,11 @@ const courseSchema=new mongoose.Schema({
         type:String,
         required:true
     },
-    createdBy:{
-        type:mongoose.Schema.Types.ObjectId,
-        ref:"Teacher",
-        required:true
+  
+    assignments:{
+        type:String,
+        required:true  
     },
-    assignments:[{
-        type:mongoose.Schema.Types.ObjectId,
-        ref:"Assignment"
-    }],
     courseContent:{
         type:String,
         required:true

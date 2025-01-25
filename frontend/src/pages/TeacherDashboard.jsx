@@ -1,31 +1,28 @@
 import React from 'react';
 import { useNavigate } from 'react-router';
 import { Button } from '@/components/ui/button';
+import { Link } from 'react-router-dom';
+import {api} from "../lib/utils.js"
 
 const TeacherDashboard = () => {
     const navigate=useNavigate()
   
-   const handleLogout=async(e)=>{
-    e.preventDefault();
-    try {
-      
-      const response = await fetch(" http://localhost:4000/api/v1/users/logout", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-      });
-      const result = await response.json(); 
-      if (response.ok) {
-        
-         // Redirect to success page
+    const handleLogout = async(e) => {
+      e.preventDefault();
+      try {
+        const response = await api.post("/v1/users/logout", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          credentials: 'include'
+        });
         navigate("/")
-      } else {
-        alert(result.message); // Show error message
+      } catch (error) {
+        console.error("Error logging out:", error);
+        alert("An error occurred. Please try again.");
       }
-    } catch (error) {
-      console.error("Error signing up:", error);a
-      alert("An error occurred. Please try again.");
     }
-   }
+
+
   return (
     <div className="min-h-screen bg-blue-50">
     {/* Header Section */}
@@ -70,7 +67,11 @@ const TeacherDashboard = () => {
       </div>
 
       <div className="p-4 bg-gray-800 text-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
-        <h2 className="text-xl font-semibold mb-2">Course Manage</h2>
+        <Link to="/teacherDashboard/manage_course" >
+        <h2
+        
+        className="text-xl font-semibold mb-2 cursor-pointer">Course Manage</h2>
+        </Link>
         <div className="flex justify-center items-center h-40">
          
         </div>

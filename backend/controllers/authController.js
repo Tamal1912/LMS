@@ -3,7 +3,7 @@ import Teacher from '../models/Teacher.model.js';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import {ApiError} from "../utils/ApiError.js";
-import {ApiResponse} from "../utils/ApiResponses.js";
+import ApiResponse from "../utils/ApiResponses.js";
 import {asyncHandler} from "../utils/asyncHandler.js";
 
 // Student Login
@@ -82,6 +82,7 @@ const studentSignUp =asyncHandler(async (req, res) => {
 
 // Teacher Login
 const teacherLogin =  asyncHandler(async (req, res) => {
+    console.log("teacher login");
   const { email, password } = req.body;
 
   // Validate input
