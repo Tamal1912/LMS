@@ -7,7 +7,7 @@ const Courses = () => {
    
     let navigate=useNavigate();
     const { allCourses,loading, error, getCourses, enrollCourse, getEnrolledCourses } = useCourseStore();
-    const [isEnrolled,setIsEnrolled]=useState(false);
+
 
     useEffect(() => {
         getCourses();
@@ -48,8 +48,8 @@ const Courses = () => {
                                     </div>
                                 </div>
                                     <Link to={`/courseDetails/${course._id}`}>
-                                <button onClick={()=>handleCourseClick(course._id)} className={`mt-4 w-full ${isEnrolled ? 'bg-gray-500' : 'bg-blue-600'} text-white py-2 rounded-md hover:bg-blue-700 transition duration-200`}>
-                                    {isEnrolled ? 'Enrolled' : 'Enroll'}
+                                <button onClick={()=>handleCourseClick(course._id)} className={`mt-4 w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition duration-200`}>
+                                     Watch
                                 </button>
                                     </Link>
                             </div>

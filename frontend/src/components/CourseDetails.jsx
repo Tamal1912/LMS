@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import  useCourseStore  from "../store/useCourseStore";
+import { Link } from "react-router-dom";
 
 const CourseDetails = () => {
   const { courseId } = useParams();
@@ -33,9 +34,11 @@ const CourseDetails = () => {
       <div className="min-h-screen bg-gray-50">
         {/* Navigation Breadcrumb */}
         <div className="container mx-auto px-4 py-3">
-          <nav className="text-sm text-gray-500">
-            <span>My Courses</span> /{" "}
+          <nav className="text-md   text-gray-500">
+            <Link to="/courses">
+            <span>Courses</span> /{" "}
             <span className="text-gray-700">{course?.courseName}</span>
+            </Link>
           </nav>
         </div>
 
@@ -65,9 +68,7 @@ const CourseDetails = () => {
                     <button className="border-b-2 border-blue-500 pb-4 px-1 text-blue-600 font-medium">
                       Overview
                     </button>
-                    <button className="text-gray-500 pb-4 px-1 font-medium hover:text-gray-700">
-                      Resources
-                    </button>
+                    
                   </nav>
                 </div>
 
