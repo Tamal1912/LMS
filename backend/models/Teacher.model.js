@@ -8,6 +8,7 @@ const teacherSchema = new mongoose.Schema({
   password: { type: String, required: true },
   role: { type: String, default: "teacher" },
   courses: [{ type: mongoose.Schema.Types.ObjectId, ref: "Course" }],
+  refreshToken: { type: String}
 }, {timestamps:true});
 
 // Hash password before saving
@@ -18,15 +19,10 @@ teacherSchema.pre("save", async function (next) {
   next();
 });
 
-// Generate JWT token
-teacherSchema.methods.generateAuthToken = function () {
-  const token = jwt.sign(
-    { _id: this._id, role: this.role },
-    "your_jwt_secret_key",
-    { expiresIn: "1h" }
-  );
-  return token;
-};
+//Method to check password
+teacherSchema.methods.checkPassword=async function(password){
+  return await bcrypt.compare(password,this.password);
+}
 
 const Teacher = mongoose.model("Teacher", teacherSchema);
 export default Teacher;

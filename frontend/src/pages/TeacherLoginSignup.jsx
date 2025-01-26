@@ -1,15 +1,18 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router'
+import useAuthStore from '../store/useAuthStore'
 
 const TeacherLoginSignup = () => {
   
-  const[teacherSignup,setTeacherSignup]=useState({
+  const { teacherLogin, teacherSignup, loading } = useAuthStore()
+
+  const[teacherSignupData,setTeacherSignupData]=useState({
     email:'',
     username:'',
     password:'',
   })
 
-  const [teacherLogin,setTeacherLogin]=useState({
+  const [teacherLoginData,setTeacherLoginData]=useState({
     email:'',
     password:'',
   })
@@ -18,44 +21,18 @@ const TeacherLoginSignup = () => {
 
   const handleTeacherLogin=async(e)=>{
     e.preventDefault();
-    try {
-      
-      const response = await fetch("http://localhost:4000/api/v1/users/teacher/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(teacherLogin),
-      });
-      const result = await response.json(); 
-      if (response.ok) {
-        navigate("/api/teacherDashboard")
-      } else {
-        alert(result.message); // Show error message
-      }
-    } catch (error) {
-      console.error("Error signing up:", error);
-      alert("An error occurred. Please try again.");
+    const success = await teacherLogin(teacherLoginData);
+    if (success) {
+      navigate("/api/teacherDashboard");
     }
   }
 
 
   const handleTeacherSignup=async(e)=>{
     e.preventDefault();
-    try {
-      
-      const response = await fetch("http://localhost:4000/api/v1/users/teacher/signup", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(teacherSignup),
-      });
-      const result = await response.json(); 
-      if (response.ok) {
-        navigate("/api/teacherDashboard")
-      } else {
-        alert(result.message); // Show error message
-      }
-    } catch (error) {
-      console.error("Error signing up:", error);
-      alert("An error occurred. Please try again.");
+    const success = await teacherSignup(teacherSignupData);
+    if (success) {
+      navigate("/api/teacherDashboard");
     }
   }
   return (
@@ -76,8 +53,8 @@ const TeacherLoginSignup = () => {
        type="email"
        placeholder="Teacher Email"
        className="w-full outline-none text-gray-700"
-       value={teacherLogin.email}
-       onChange={(e)=>setTeacherLogin({...teacherLogin,email:e.target.value})}
+       value={teacherLoginData.email}
+          onChange={(e)=>setTeacherLoginData({...teacherLoginData,email:e.target.value})}
        />
     </label>
     <label className="flex items-center mb-6 border border-gray-300 p-2 rounded-lg">
@@ -88,8 +65,8 @@ const TeacherLoginSignup = () => {
        type="password"
        placeholder="Teacher Password"
        className="w-full outline-none text-gray-700"
-       value={teacherLogin.password}
-       onChange={(e)=>setTeacherLogin({...teacherLogin,password:e.target.value})}
+       value={teacherLoginData.password}
+       onChange={(e)=>setTeacherLoginData({...teacherLoginData,password:e.target.value})}
        />
     </label>
     <button className="w-full bg-sky-500 text-white py-3 rounded-lg hover:bg-slate-400 transition duration-300 font-semibold" onClick={handleTeacherLogin}>Login</button>

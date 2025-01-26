@@ -5,6 +5,7 @@ import jwt from 'jsonwebtoken';
 import {ApiError} from "../utils/ApiError.js";
 import ApiResponse from "../utils/ApiResponses.js";
 import {asyncHandler} from "../utils/asyncHandler.js";
+import { generateAccessToken, generateRefreshToken } from '../utils/jwt.utils.js';
 
 // Student Login
 const studentLogin = asyncHandler(async (req, res) => {
@@ -30,13 +31,24 @@ const studentLogin = asyncHandler(async (req, res) => {
   }
 
   // Generate JWT token
-  const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
-      expiresIn: "1d", // Token expiration time
-  });
+  const accessToken=generateAccessToken(user._id);
+  const refreshToken=generateRefreshToken(user._id);
+
+  user.refreshToken=refreshToken;
+  await user.save();
+
+  res.cookie("accessToken",accessToken,{
+    httpOnly:true,
+    maxAge:40*60*1000,
+  })
+  res.cookie("refreshToken",refreshToken,{
+    httpOnly:true,
+    maxAge:7*24*60*60*1000,
+  })
 
   // Send response with token
   res.status(200).json(
-      new ApiResponse(200, { token, username: user.username, email: user.email }, "Login successful")
+    new ApiResponse(200, { accessToken, refreshToken, username: user.username, email: user.email }, "Login successful")
   );
 });
 
@@ -65,6 +77,12 @@ const studentSignUp =asyncHandler(async (req, res) => {
       email,
   })
 
+  const accessToken=generateAccessToken(user._id);
+  const refreshToken=generateRefreshToken(user._id);
+
+  user.refreshToken=refreshToken;
+  await user.save();
+
   const createdUser=await Student.findById(user._id).select(
       "-password -refreshToken"
   )
@@ -72,6 +90,15 @@ const studentSignUp =asyncHandler(async (req, res) => {
   if(!createdUser){
       throw new ApiError(500, "internal server error");
   }
+   
+  res.cookie("accessToken",accessToken,{
+    httpOnly:true,
+    maxAge:40*60*1000,
+  })
+  res.cookie("refreshToken",refreshToken,{
+    httpOnly:true,
+    maxAge:7*24*60*60*1000,
+  })    
 
   res.status(200).json(
       new ApiResponse(201,createdUser,"user Succesfully registred")
@@ -105,13 +132,24 @@ const teacherLogin =  asyncHandler(async (req, res) => {
   }
 
   // Generate JWT token
-  const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
-      expiresIn: "1d", // Token expiration time
-  });
+  const accessToken=generateAccessToken(user._id);
+  const refreshToken=generateRefreshToken(user._id);
+
+  user.refreshToken=refreshToken;
+  await user.save();
+
+  res.cookie("accessToken",accessToken,{
+    httpOnly:true,
+    maxAge:40*60*1000,
+  })
+  res.cookie("refreshToken",refreshToken,{
+    httpOnly:true,
+    maxAge:7*24*60*60*1000,
+  })    
 
   // Send response with token
   res.status(200).json(
-      new ApiResponse(200, { token, username: user.username, email: user.email }, "Login successful")
+      new ApiResponse(200, { accessToken, refreshToken, username: user.username, email: user.email }, "Login successful")
   );
 });
 
@@ -139,6 +177,12 @@ const teacherSignUp = async (req, res) => {
       email,
   })
 
+  const accessToken=generateAccessToken(user._id);
+  const refreshToken=generateRefreshToken(user._id);
+
+  user.refreshToken=refreshToken;
+  await user.save();
+
   const createdUser=await Teacher.findById(user._id).select(
       "-password -refreshToken"
   )
@@ -147,28 +191,46 @@ const teacherSignUp = async (req, res) => {
       throw new ApiError(500, "internal server error");
   }
 
+  res.cookie("accessToken",accessToken,{
+    httpOnly:true,
+    maxAge:40*60*1000,
+  })
+  res.cookie("refreshToken",refreshToken,{
+    httpOnly:true,
+    maxAge:7*24*60*60*1000,
+  })    
+
   res.status(200).json(
       new ApiResponse(201,createdUser,"user Succesfully registred")
   )
 };
 
 const logout = asyncHandler(async (req, res) => {
-  // For cookie-based tokens
-  res.cookie("token", "", {
-      httpOnly: true,
-      expires: new Date(0), // Expire the cookie immediately
-  });
+    try {
+        // Find the user type and update
+        let user;
+        if (req.user.role === 'student') {
+            user = await Student.findByIdAndUpdate(
+                req.user._id,
+                { $unset: { refreshToken: 1 } }
+            );
+        } else {
+            user = await Teacher.findByIdAndUpdate(
+                req.user._id,
+                { $unset: { refreshToken: 1 } }
+            );
+        }
 
-  // Additional handling for token invalidation (if needed)
-  const token = req.headers.authorization?.split(" ")[1];
-  if (token) {
-      // Optionally blacklist the token here
-      console.log("Token invalidated:", token);
-  }
+        // Clear cookies
+        res.clearCookie("accessToken");
+        res.clearCookie("refreshToken");
 
-  res.status(200).json(
-    new ApiResponse(200, {},"Logged out")
-  );
+        return res.status(200).json(
+            new ApiResponse(200, {}, "Logged out successfully")
+        );
+    } catch (error) {
+        throw new ApiError(500, "Error during logout");
+    }
 });
 
 export { studentLogin, studentSignUp, teacherLogin , teacherSignUp, logout};

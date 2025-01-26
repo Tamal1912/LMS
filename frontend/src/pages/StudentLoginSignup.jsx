@@ -2,8 +2,10 @@ import React from 'react'
 import { useState } from 'react';
 import StudentDashboard from  "./StudentDashboard";
 import { useNavigate } from 'react-router';
+import useAuthStore from '../store/useAuthStore';
 
 const StudentLoginSignup = () => {
+  const { studentLogin, studentSignup, loading } = useAuthStore();
   const [signupData, setSignupData] = useState({
     email: '',
     username: '',
@@ -19,49 +21,20 @@ const StudentLoginSignup = () => {
 
   const handleSignup = async (e) => {
     e.preventDefault();
-    try {
-      
-      const response = await fetch("http://localhost:4000/api/v1/users/student/signup", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(signupData),
-      });
-      const result = await response.json(); 
-      if (response.ok) {
-        
-         // Redirect to success page
-         navigate("/api/studentDashboard")
-      } else {
-        alert(result.message); // Show error message
-      }
-    } catch (error) {
-      console.error("Error signing up:", error);
-      alert("An error occurred. Please try again.");
+    const success = await studentSignup(signupData);
+    if (success) {
+      navigate("/api/studentDashboard");
     }
   };
 
-  const handleLogin=async(e)=>{
+  const handleLogin = async (e) => {
     e.preventDefault();
-    try {
-      
-      const response = await fetch("http://localhost:4000/api/v1/users/student/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(loginData),
-      });
-      const result = await response.json(); 
-      if (response.ok) {
-        
-         // Redirect to success page
-        navigate("/api/studentDashboard")
-      } else {
-        alert(result.message); // Show error message
-      }
-    } catch (error) {
-      console.error("Error signing up:", error);
-      alert("An error occurred. Please try again.");
+    const success = await studentLogin(loginData);
+    if (success) {
+      navigate("/api/studentDashboard");
     }
-  }
+  };
+
   return (
     <>
 <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-sky-400 via-sky-100 to-emerald-500 ">
