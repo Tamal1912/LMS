@@ -47,18 +47,20 @@ export const createCourse = asyncHandler(async (req, res) => {
     }
 });
 
-export const deleteCourse =asyncHandler(async (req, res) => {
-    try {
-        const {courseId}=req.params;
-        const course=await Course.findByIdAndDelete(courseId);
-        if(!course) return res.status(404).json(ApiResponse.error("Course not found"))
-        await course.save();
-        res.status(200).json(ApiResponse.success(course,"Course deleted successfully"))
-    } catch (error) {
-        console.log(error);
-        res.status(500).json(asyncHandler(error))
+export const deleteCourse = asyncHandler(async (req, res) => {
+    const { courseId } = req.params;
+    
+    const course = await Course.findById(courseId);
+    if (!course) {
+        throw new ApiError(404, "Course not found");
     }
-}) ;
+
+    await Course.findByIdAndDelete(courseId);
+    
+    return res.status(200).json(
+        new ApiResponse(200, null, "Course deleted successfully")
+    );
+});
 
 export const updateCourse =asyncHandler(async (req, res) => {
     try {

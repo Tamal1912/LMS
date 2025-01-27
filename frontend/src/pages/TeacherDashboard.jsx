@@ -2,26 +2,12 @@ import React from 'react';
 import { useNavigate } from 'react-router';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
-import {api} from "../lib/utils.js"
+import useAuthStore from '../store/useAuthStore.js';
 
 
 const TeacherDashboard = () => {
     const navigate=useNavigate()
-  
-    const handleLogout = async(e) => {
-      e.preventDefault();
-      try {
-        const response = await api.post("/v1/users/logout", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          credentials: 'include'
-        });
-        navigate("/")
-      } catch (error) {
-        console.error("Error logging out:", error);
-        alert("An error occurred. Please try again.");
-      }
-    }
+    const {logout}=useAuthStore();
 
 
   return (
@@ -32,7 +18,7 @@ const TeacherDashboard = () => {
       <div className="flex items-center space-x-4">
         <div className="h-10 w-10 bg-gray-300 rounded-full"></div>
         <Button 
-        onClick={handleLogout}
+        onClick={()=>logout()}
         className="bg-red-500 text-white font-semibold hover:bg-red-400">
           Logout
         </Button>
@@ -58,21 +44,22 @@ const TeacherDashboard = () => {
 
       {/* Right Section - Calendar Card */}
       <div className="p-4 bg-gray-800 text-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
-        <h2 className="text-xl font-semibold mb-2">Your Schedule</h2>
+        <Link to="/teacherDashboard/manage_course" > 
+        <h2 className="text-xl font-semibold mb-2 cursor-pointer">Manage Course</h2>
+        </Link>
+        <p>Manage your courses here</p>
         <div className="flex justify-center items-center h-40">
-          <img
-            src="https://img.icons8.com/ios-filled/100/ffffff/calendar.png"
-            alt="Calendar Icon"
-          />
-        </div>
+         
+         </div>
       </div>
 
       <div className="p-4 bg-gray-800 text-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
-        <Link to="/teacherDashboard/manage_course" >
+        <Link to="/teacherDashboard/create_course" >
         <h2
         
-        className="text-xl font-semibold mb-2 cursor-pointer">Course Manage</h2>
+        className="text-xl font-semibold mb-2 cursor-pointer">Create Course</h2>
         </Link>
+        <p>Create your course here</p>
         <div className="flex justify-center items-center h-40">
          
         </div>

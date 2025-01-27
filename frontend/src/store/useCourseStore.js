@@ -56,16 +56,20 @@ const useCourseStore = create()((set, get) => ({
   // Delete Course
   deleteCourse: async (courseId) => {
     try {
-      await api.delete(`/v1/teacher/delete_course/${courseId}`);
-      const { allCourses } = get();
-      const updatedCourses = allCourses.filter(
-        (course) => course._id !== courseId
-      );
-      set({ allCourses: updatedCourses });
-      toast.success("Course deleted successfully");
+      const response = await api.delete(`/v1/teacher/delete_course/${courseId}`);
+      
+      if (response.status === 200) {
+        set((state) => ({
+          allCourses: state.allCourses.filter(course => course._id !== courseId)
+        }));
+        toast.success("Course deleted successfully");
+        return true;
+      }
+      return false;
     } catch (error) {
       console.error("Error deleting course:", error);
-      toast.error("Failed to delete course");
+      toast.error(error.response?.data?.message || "Failed to delete course");
+      return false;
     }
   },
 

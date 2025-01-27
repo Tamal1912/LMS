@@ -2,34 +2,15 @@ import React,{useEffect} from 'react'
 import { Outlet, useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
 import useCourseStore from "../store/useCourseStore.js";
-
+import useAuthStore from "../store/useAuthStore.js";
 
 
 
 const StudentSidebar = () => {
     const {courses,getCourses}=useCourseStore();
+    const {logout}=useAuthStore();
  
-    const handleLogout=async(e)=>{
-        e.preventDefault();
-        try {
-          
-          const response = await fetch(" http://localhost:4000/api/v1/users/logout", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-          });
-          const result = await response.json(); 
-          if (response.ok) {
-            
-             // Redirect to success page
-            navigate("/")
-          } else {
-            alert(result.message); // Show error message
-          }
-        } catch (error) {
-          console.error("Error signing up:", error);a
-          alert("An error occurred. Please try again.");
-        }
-       }
+   
        let navigate=useNavigate()
     
 
@@ -82,7 +63,7 @@ const StudentSidebar = () => {
                 {/* Logout */}
                 <div className="mt-auto">
                     <button
-                        onClick={handleLogout}
+                        onClick={()=>logout()}
                         className="bg-red-500 w-12 h-12 rounded-full flex items-center justify-center cursor-pointer shadow-lg">
                         <svg
                             xmlns="http://www.w3.org/2000/svg"

@@ -31,24 +31,30 @@ const studentLogin = asyncHandler(async (req, res) => {
   }
 
   // Generate JWT token
-  const accessToken=generateAccessToken(user._id);
-  const refreshToken=generateRefreshToken(user._id);
+  const accessToken = generateAccessToken(user._id);
+  const refreshToken = generateRefreshToken(user._id);
 
-  user.refreshToken=refreshToken;
+  user.refreshToken = refreshToken;
   await user.save();
 
-  res.cookie("accessToken",accessToken,{
-    httpOnly:true,
-    maxAge:40*60*1000,
-  })
-  res.cookie("refreshToken",refreshToken,{
-    httpOnly:true,
-    maxAge:7*24*60*60*1000,
-  })
+  // Send both cookie and response with token
+  res.cookie("accessToken", accessToken, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: 'strict',
+    maxAge: 40 * 60 * 1000, // 40 minutes
+  });
 
-  // Send response with token
-  res.status(200).json(
-    new ApiResponse(200, { accessToken, refreshToken, username: user.username, email: user.email }, "Login successful")
+  return res.status(200).json(
+    new ApiResponse(200, {
+      accessToken,
+      user: {
+        _id: user._id,
+        username: user.username,
+        email: user.email,
+        role: 'student'
+      }
+    }, "Login successful")
   );
 });
 
@@ -207,30 +213,16 @@ const teacherSignUp = async (req, res) => {
 
 const logout = asyncHandler(async (req, res) => {
     try {
-        // Find the user type and update
-        let user;
-        if (req.user.role === 'student') {
-            user = await Student.findByIdAndUpdate(
-                req.user._id,
-                { $unset: { refreshToken: 1 } }
-            );
-        } else {
-            user = await Teacher.findByIdAndUpdate(
-                req.user._id,
-                { $unset: { refreshToken: 1 } }
-            );
-        }
-
-        // Clear cookies
-        res.clearCookie("accessToken");
-        res.clearCookie("refreshToken");
-
-        return res.status(200).json(
-            new ApiResponse(200, {}, "Logged out successfully")
-        );
+      // Clear cookies
+      res.clearCookie("accessToken");
+      res.clearCookie("refreshToken");
+  
+      return res.status(200).json(new ApiResponse(200,"Logged out successfully"));
     } catch (error) {
-        throw new ApiError(500, "Error during logout");
+      return res.status(500).json(new ApiError(500,"Failed to log out"));
     }
+  
 });
+
 
 export { studentLogin, studentSignUp, teacherLogin , teacherSignUp, logout};

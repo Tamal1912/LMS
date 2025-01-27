@@ -13,7 +13,9 @@ import Grade from './pages/Grade.jsx';
 import Courses from './pages/Courses.jsx';
 import StudentProfile from "./pages/StudentProfile.jsx"
 import ManageCoursePage from './pages/ManageCoursePage.jsx';
+import CreateCoursePage from './pages/CreateCoursePage.jsx';
 import CourseDetails from './components/CourseDetails.jsx';
+import { Toaster } from 'react-hot-toast';
 const router=createBrowserRouter([
   {
     path:"/",
@@ -29,6 +31,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
     <Route path="/api/studentLoginSignup" element={<StudentLoginSignup/>}/>
     <Route path="/api/teacherLoginSignup" element={<TeacherLoginSignup/>}/>
     <Route path='/api/teacherDashboard' element={<TeacherDashboard/>}/>
+    <Route path="/teacherDashboard/create_course" element={<CreateCoursePage/>}/>
     <Route path="/teacherDashboard/manage_course" element={<ManageCoursePage/>}/>
     <Route path="/courseDetails/:courseId" element={<CourseDetails/>}/>
     <Route path="/api/studentDashboard" element={<StudentDashboard />}>
@@ -37,5 +40,6 @@ ReactDOM.createRoot(document.getElementById('root')).render(
       <Route path="/courses" element={<Courses />} />
       <Route path="studentProfile" element={<StudentProfile />} />
   </Routes>
+<Toaster/>
 </BrowserRouter>
 )

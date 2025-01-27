@@ -4,36 +4,66 @@ import { asyncHandler } from '../utils/asyncHandler.js';
 import { generateAccessToken } from '../utils/jwt.utils.js';
 import Student from '../models/Student.model.js';
 import Teacher from '../models/Teacher.model.js';
+import dotenv from 'dotenv';
+dotenv.config();
 
 export const auth = asyncHandler(async (req, res, next) => {
+  
   try {
-    // Get token from cookies or authorization header
-    const token = req.cookies?.accessToken || 
-      req.header("Authorization")?.replace("Bearer ", "");
+    // Get token from authorization header
+    const token = req.cookies?.accessToken || req.header("Authorization")?.replace("Bearer ", "");
+
+    
 
     if (!token) {
-      throw new ApiError(401, "Unauthorized request");
+      throw new ApiError(401, "Unauthorized request - No token provided");
     }
 
     // Verify token
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
 
-    // Check both Student and Teacher models
-    let user = await Student.findById(decoded._id).select("-password");
+    // Check if user exists in either Student or Teacher model
+    let user = await Student.findById(decodedToken?._id).select("-password -refreshToken");
+    
     if (!user) {
-      user = await Teacher.findById(decoded._id).select("-password");
+      user = await Teacher.findById(decodedToken?._id).select("-password -refreshToken");
     }
 
     if (!user) {
       throw new ApiError(401, "Invalid Access Token");
     }
 
-    // Attach user to request object
+    // Add user and role to request object
     req.user = user;
+    req.userType = user instanceof Student ? 'student' : 'teacher';
+    
     next();
   } catch (error) {
-    throw new ApiError(401, error?.message || "Invalid access token");
+    // Handle specific JWT errors
+    if (error.name === 'JsonWebTokenError') {
+      throw new ApiError(401, "Invalid token");
+    }
+    if (error.name === 'TokenExpiredError') {
+      throw new ApiError(401, "Token has expired");
+    }
+    throw error;
   }
+});
+
+// Optional: Specific middleware for student routes
+export const requireStudent = asyncHandler(async (req, res, next) => {
+  if (req.userType !== 'student') {
+    throw new ApiError(403, "Access denied. Students only.");
+  }
+  next();
+});
+
+// Optional: Specific middleware for teacher routes
+export const requireTeacher = asyncHandler(async (req, res, next) => {
+  if (req.userType !== 'teacher') {
+    throw new ApiError(403, "Access denied. Teachers only.");
+  }
+  next();
 });
 
 const authorizeRole = (roles) => {
