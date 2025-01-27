@@ -1,11 +1,12 @@
 import express from "express";
-import {enrollCourse,getEnrolledCourses} from "../controllers/course.controller.js";
+import { auth } from "../middleware/authMiddleware.js";
+import { watchCourse } from "../controllers/course.controller.js";
+
 
 const router=express.Router();
 
 
 
-router.post("/enroll/:id",enrollCourse);
-router.get("/enrolled_courses",getEnrolledCourses);
+router.post("/watch/:courseId",auth,watchCourse)
 
 export default router;

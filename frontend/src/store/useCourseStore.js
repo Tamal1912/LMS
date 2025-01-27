@@ -90,29 +90,17 @@ const useCourseStore = create()((set, get) => ({
   //   }
   // },
 
-  // Enroll Course
-  enrollCourse: async (courseId) => {
-    try {
-      const response = await api.post(`/v1/course/enroll/${courseId}`);
-      console.log("Response from enroll course:", response.data);
-      set({ enrolledCourses: response.data.enrolledCourses });
-      toast.success("Course enrolled successfully");
-    } catch (error) {
-      console.error("Error enrolling course:", error);
-      toast.error("Failed to enroll course");
+    watchCourse:async(courseId)=>{
+      try {
+        const response=await api.post(`/v1/course/watch/${courseId}`)
+        console.log(response.data)
+        
+      } catch (error) {
+        console.log(error)
+        toast.error("Failed to fetch course")
+        
+      }
     }
-  },
-
-  // Get Enrolled Courses
-  getEnrolledCourses: async () => {
-    try {
-      const response = await api.get("/v1/course/enrolled_courses");
-      set({ enrolledCourses: response.data.enrolledCourses });
-    } catch (error) {
-      console.error("Error fetching enrolled courses:", error);
-      toast.error("Failed to fetch enrolled courses");
-    }
-  },  
 }));
 
 export default useCourseStore;

@@ -1,26 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import useCourseStore from "../store/useCourseStore.js";
-import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 
 const Courses = () => {
-   
-    let navigate=useNavigate();
-    const { allCourses,loading, error, getCourses, enrollCourse, getEnrolledCourses } = useCourseStore();
-
+    const { allCourses, error, getCourses } = useCourseStore();
 
     useEffect(() => {
         getCourses();
-    }, []);
-
-    const handleCourseClick=async(courseId)=>{
-        await enrollCourse(courseId);
-        navigate(`/course/${courseId}`);
-        setIsEnrolled(true);
-    }
-
-
-   
+    }, [getCourses]);
 
     if (error) {
         return <div>Error: {error}</div>;
@@ -31,8 +18,10 @@ const Courses = () => {
             <div className="max-w-7xl mx-auto">
                 <div className="bg-white rounded-lg shadow-md p-6">
                     <div className="flex justify-between items-center mb-6">
+                        <Link to="/api/studentDashboard" className="text-md text-gray-500">
+                            <span className="text-md text-gray-500">Back To Dashboard</span>
+                        </Link>
                         <h1 className="text-3xl font-bold text-gray-800">Courses ({allCourses.length})</h1>
-                       
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -47,11 +36,11 @@ const Courses = () => {
                                         <div className="bg-green-600 h-2.5 rounded-full" style={{width: '88%'}}></div>
                                     </div>
                                 </div>
-                                    <Link to={`/courseDetails/${course._id}`}>
-                                <button onClick={()=>handleCourseClick(course._id)} className={`mt-4 w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition duration-200`}>
-                                     Watch
-                                </button>
-                                    </Link>
+                                <Link to={`/courseDetails/${course._id}`}>
+                                    <button className="mt-4 w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition duration-200">
+                                        Watch
+                                    </button>
+                                </Link>
                             </div>
                         ))}
                     </div>

@@ -30,7 +30,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
     <Route path="/api/teacherLoginSignup" element={<TeacherLoginSignup/>}/>
     <Route path='/api/teacherDashboard' element={<TeacherDashboard/>}/>
     <Route path="/teacherDashboard/manage_course" element={<ManageCoursePage/>}/>
-    <Route path="/course/:courseId" element={<CourseDetails/>}/>
+    <Route path="/courseDetails/:courseId" element={<CourseDetails/>}/>
     <Route path="/api/studentDashboard" element={<StudentDashboard />}>
     </Route>
       <Route path="grades" element={<Grade />} />

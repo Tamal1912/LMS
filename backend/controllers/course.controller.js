@@ -84,47 +84,19 @@ export const getAllCourse =asyncHandler(async (req, res) => {
     }
 })
 
-export const enrollCourse = asyncHandler(async (req, res) => {
-    const { courseId } = req.params;
-    const userId = req.user._id; 
 
+export const watchCourse = asyncHandler(async (req, res) => {
     try {
-        
-        const user = await User.findById(userId);
-        if (user.enrolledCourses.includes(courseId)) {
-            return res.status(400).json({
-                success: false,
-                message: "Already enrolled in this course"
-            });
-        }
-
-        
-        await User.findByIdAndUpdate(userId, {
-            $push: { enrolledCourses: courseId }
-        });
-
-        res.status(200).json({
-            success: true,
-            message: "Successfully enrolled in course"
-        });
+        const { courseId } = req.params;
+        const course = await Course.findById(courseId);
+        res.status(200).json(new ApiResponse(200,course,"Course fetched successfully"))
     } catch (error) {
-        throw new ApiError(500, "Failed to enroll in course");
+        console.log(error);
+        throw new ApiError(500,"Failed to Fetch course")
     }
-});
+})
 
-export const getEnrolledCourses = asyncHandler(async (req, res) => {
-    
-    try {
-        const userId = await req.user._id;
-        const user = await User.findById(userId).populate('enrolledCourses');
-        res.status(200).json({
-            success: true,
-            enrolledCourses: user.enrolledCourses
-        });
-    } catch (error) {
-        throw new ApiError(500, "Failed to fetch enrolled courses");
-    }
-});
+
 
 // export const checkEnrollmentStatus = asyncHandler(async (req, res) => {
 //     const { courseId } = req.params;
