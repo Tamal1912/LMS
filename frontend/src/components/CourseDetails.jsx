@@ -18,10 +18,9 @@ const CourseDetails = () => {
       {/* Navigation Breadcrumb */}
       <div className="container mx-auto px-4 py-3">
         <nav className="text-md text-gray-500">
-          <Link to="/courses" className="hover:text-blue-600 hover:underline text-md transition-colors">
-            <span>Back To Courses</span> /{" "}
+            <span onClick={() => window.history.back()} className="cursor-pointer hover:text-blue-600">Back</span> /{" "}
             <span className="text-gray-700 font-medium">{course?.courseName}</span>
-          </Link>
+          
         </nav>
       </div>
 

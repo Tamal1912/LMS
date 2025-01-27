@@ -106,6 +106,12 @@ const CreateCoursePage = () => {
     <>
       <div className="min-h-screen bg-gray-100 p-8">
         <div className="max-w-4xl mx-auto bg-white rounded-lg shadow-md p-6">
+        <button 
+            onClick={() => navigate("/api/teacherDashboard")} 
+            className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+          >
+            Dashboard
+          </button>
           <h1 className="text-3xl font-bold text-center mb-8">
             Create New Course
           </h1>

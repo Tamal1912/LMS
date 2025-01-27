@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react'
 import useCourseStore from '../store/useCourseStore'
 import { toast } from 'react-toastify'
 import { Link } from 'react-router-dom'
+import Loader from '../components/Loader'
+import { useNavigate } from 'react-router-dom'
 
 const ManageCoursePage = () => {
   const { allCourses, getCourses, deleteCourse, loading } = useCourseStore()
@@ -26,6 +28,7 @@ const ManageCoursePage = () => {
     }
   }
 
+  const navigate = useNavigate()
   // Ensure allCourses is an array
   const courses = Array.isArray(allCourses) ? allCourses : []
 
@@ -35,10 +38,10 @@ const ManageCoursePage = () => {
       <div className="max-w-7xl mx-auto">
         <div className="flex justify-between items-center mb-8">
           <button 
-            onClick={() => window.history.back()} 
+            onClick={() => navigate("/api/teacherDashboard")} 
             className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors"
           >
-            Back
+            Dashboard
           </button>
           <h1 className="text-3xl font-bold text-gray-900">Manage Courses</h1>
           <Link 
@@ -50,9 +53,9 @@ const ManageCoursePage = () => {
         </div>
 
         {loading ? (
-          <div className="text-center py-12">
-            <p>Loading courses...</p>
-          </div>
+          
+            <Loader/>
+          
         ) : courses.length === 0 ? (
           <div className="text-center py-12 bg-white rounded-lg shadow">
             <h3 className="text-xl text-gray-600">No courses found</h3>
@@ -82,7 +85,7 @@ const ManageCoursePage = () => {
                         {isDeleting ? 'Deleting...' : 'Delete'}
                       </button>
                       <Link 
-                        to={`/editCourse/${course._id}`}
+                        to={`/teacherDashboard/update_course/${course._id}`}
                         className="text-green-600 hover:text-green-800 font-medium"
                       >
                         Edit

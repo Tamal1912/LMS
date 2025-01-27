@@ -67,12 +67,12 @@ export const updateCourse =asyncHandler(async (req, res) => {
         const {courseId}=req.params;
         const {courseName,courseDescription,courseOutcome,courseContent,assignments}=req.body;
         const course=await Course.findByIdAndUpdate(courseId,{courseName,courseDescription,courseOutcome,courseContent,assignments});
-        if(!course) return res.status(404).json(ApiResponse.error("Course not found"))
+        if(!course) throw new ApiError(404,"Course not found")
         await course.save();
-        res.status(200).json(ApiResponse.success(course,"Course updated successfully"))
+        res.status(200).json(new ApiResponse(200,course,"Course updated successfully"))
     } catch (error) {
         console.log(error);
-        res.status(500).json(asyncHandler(error))
+        throw new ApiError(500,"Failed to update course")
     }
 })  
 

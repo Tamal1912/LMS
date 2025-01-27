@@ -73,26 +73,27 @@ const useCourseStore = create()((set, get) => ({
     }
   },
 
-
-  //TODO: Update Course
-  // Update Course
-  // updateCourse: async (courseId, updatedData) => {
-  //   try {
-  //     const response = await api.put(
-  //       `/v1/teacher/update_course/${courseId}`,
-  //       updatedData
-  //     );
-  //     const { allCourses } = get();
-  //     const updatedCourses = allCourses.map((course) =>
-  //       course._id === courseId ? response.data.course : course
-  //     );
-  //     set({ allCourses: updatedCourses });
-  //     toast.success("Course updated successfully");
-  //   } catch (error) {
-  //     console.error("Error updating course:", error);
-  //     toast.error("Failed to update course");
-  //   }
-  // },
+  updateCourse: async (courseId, updatedData) => {
+    try {
+      const response = await api.put(
+        `/v1/teacher/update_course/${courseId}`,
+        updatedData
+      );
+      
+      if (response.data && response.data.course) {
+        set((state) => ({
+          allCourses: state.allCourses.map((course) =>
+            course._id === courseId ? response.data.course : course
+          ),
+        }));
+        return true;
+      }
+      return false;
+    } catch (error) {
+      console.error("Error updating course:", error);
+      throw new Error(error.response?.data?.message || "Failed to update course");
+    }
+  },
 
     watchCourse:async(courseId)=>{
       try {
