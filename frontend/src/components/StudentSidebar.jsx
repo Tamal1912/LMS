@@ -52,7 +52,7 @@ const StudentSidebar = () => {
                     </div>
                     <div className="hover:bg-blue-500 p-4 rounded-lg cursor-pointer transition">
                         <span className="font-semibold">
-                            <Link to="/studentProfile">
+                            <Link to="/studentDashboard/studentProfile">
                             <button >
                                 Profile
                             </button>

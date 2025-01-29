@@ -9,7 +9,10 @@ const studentSchema = new mongoose.Schema({
   password: { type: String, required: true },
   role: { type: String, default: 'student' },
   enrolledCourses: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Course' }],
-  refreshToken: { type: String}
+  refreshToken: { type: String},
+  phone: { type: String},
+  yearJoined: { type: String},  
+  program: { type: String},
 },{timestamps:true});
 
 // Hash password before saving

@@ -1,12 +1,9 @@
-const express = require('express');
-const authMiddleware = require('../middleware/authMiddleware');
-const Student = require('../models/Student');
+import express from 'express';
+import { updateStudentProfile } from '../controllers/studentController.js';
+
 
 const router = express.Router();
 
-router.get('/dashboard', authMiddleware('student'), async (req, res) => {
-  const studentData = await Student.findOne({ userId: req.user.id });
-  res.json({ data: studentData });
-});
+router.put('/updateProfile/:id',updateStudentProfile);
 
-module.exports = router;
+export default router;

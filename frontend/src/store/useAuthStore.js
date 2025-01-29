@@ -10,6 +10,29 @@ const useAuthStore = create(
             loading: false,
             error: null,
 
+
+            updateUser: async (id, userData) => {
+                try {
+                    const response = await api.put(`/v1/student/updateProfile/${id}`, userData);
+                    
+                    if (response.data && response.data.data) {
+                        set(state => ({ 
+                            ...state,
+                            user: response.data.data 
+                        }));
+                        return { success: true, message: "Profile updated successfully" };
+                    } else {
+                        throw new Error("Invalid response format");
+                    }
+                } catch (error) {
+                    console.error("Update error:", error);
+                    return {
+                        success: false,
+                        message: error.response?.data?.message || "Failed to update profile"
+                    };
+                }
+            },
+
             studentLogin: async (loginData) => {
                 try {
                     set({ loading: true, error: null });

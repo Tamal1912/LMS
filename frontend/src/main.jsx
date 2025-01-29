@@ -40,7 +40,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
     </Route>
       <Route path="grades" element={<Grade />} />
       <Route path="/courses" element={<Courses />} />
-      <Route path="studentProfile" element={<StudentProfile />} />
+      <Route path="/studentDashboard/studentProfile" element={<StudentProfile />} />
   </Routes>
 <Toaster/>
 </BrowserRouter>
