@@ -4,6 +4,7 @@ import { asyncHandler } from '../utils/asyncHandler.js';
 import { generateAccessToken } from '../utils/jwt.utils.js';
 import Student from '../models/Student.model.js';
 import Teacher from '../models/Teacher.model.js';
+
 import dotenv from 'dotenv';
 dotenv.config();
 

@@ -1,5 +1,5 @@
-import React,{useEffect} from 'react'
-import { Outlet, useNavigate } from 'react-router';
+import React from 'react'
+import { Outlet} from 'react-router';
 import { Link } from 'react-router-dom';
 import useCourseStore from "../store/useCourseStore.js";
 import useAuthStore from "../store/useAuthStore.js";
@@ -8,19 +8,15 @@ import useAuthStore from "../store/useAuthStore.js";
 
 const StudentSidebar = () => {
     const {courses,getCourses}=useCourseStore();
-    const {logout}=useAuthStore();
- 
-   
-       let navigate=useNavigate()
+    const {logout,user}=useAuthStore();
+
+
     
 
    return (
         <div className="flex min-h-screen">
             <aside className="w-64 fixed h-screen bg-gradient-to-b from-gray-800 to-gray-900 text-white flex flex-col items-center py-6">
-                {/* Logo */}
-                <div className="bg-blue-500 w-16 h-16 rounded-full mb-6 flex items-center justify-center text-2xl font-bold shadow-lg">
-                    L
-                </div>
+               
                 {/* Sidebar Items */}
                 <nav className="flex flex-col space-y-6 text-center w-full">
                     <div className="hover:bg-blue-500 p-4 rounded-lg cursor-pointer transition">

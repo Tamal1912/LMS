@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { api } from '../lib/utils';
+import { toast } from "react-hot-toast";
 
 const useAuthStore = create(
     persist(
@@ -10,6 +11,33 @@ const useAuthStore = create(
             loading: false,
             error: null,
 
+
+            getProfile: async (id) => {
+                try {
+                    set({ loading: true, error: null });
+                    const response = await api.get(`/v1/student/profile/${id}`);
+                    
+                    if (response.data?.success && response.data?.data) {
+                        set(state => ({
+                            ...state,
+                            user: response.data.data,
+                            loading: false
+                        }));
+                        return response.data.data;
+                    } else {
+                        throw new Error("Invalid response format");
+                    }
+                } catch (error) {
+                    console.error("Error fetching profile:", error);
+                    set(state => ({
+                        ...state,
+                        error: error.message || "Failed to fetch profile",
+                        loading: false
+                    }));
+                    toast.error(error.message || "Error fetching profile");
+                    return null;
+                }
+            },
 
             updateUser: async (id, userData) => {
                 try {
