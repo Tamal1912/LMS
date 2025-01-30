@@ -45,7 +45,7 @@ export const auth = asyncHandler(async (req, res, next) => {
       throw new ApiError(401, "Invalid token");
     }
     if (error.name === 'TokenExpiredError') {
-      alert("Token has expired");
+      
       window.location.href = "/";
       throw new ApiError(401, "Token has expired");
     }
