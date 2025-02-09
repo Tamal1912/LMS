@@ -1,12 +1,18 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import useCourseStore from "../store/useCourseStore";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
 import Loader from "@/components/Loader";
 import { useNavigate } from "react-router-dom";
+import useAuthStore from "@/store/useAuthStore";
+import useUserStore from "@/store/useUserStore";
+import { use } from "react";
+
+
 
 const CreateCoursePage = () => {
   const navigate = useNavigate();
+  const {teacher,getTeacherProfile} = useUserStore();
   const { createCourse, isUploaded } = useCourseStore();
   const [submitting, setIsSubmitting] = useState(false);
   const [courseDetails, setCourseDetails] = useState({
@@ -16,6 +22,10 @@ const CreateCoursePage = () => {
     courseContent: "",
     assignments: "",
   });
+  
+  useEffect(() => {
+    getTeacherProfile();
+  }, []);
 
   // Add function to convert file to base64
   const convertToBase64 = (file) => {
@@ -127,6 +137,7 @@ const CreateCoursePage = () => {
           ) : (
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="space-y-4">
+                <h3 className="text-lg font-semibold">Course Owner : {teacher?.username}</h3>
                 <div>
                   <label className="block text-sm font-medium text-gray-700">
                     Course Name

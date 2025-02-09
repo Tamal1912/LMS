@@ -3,6 +3,7 @@ import { persist } from "zustand/middleware";
 import { api } from '../lib/utils';
 import { toast } from "react-hot-toast";
 
+
 const useAuthStore = create(
     persist(
         (set) => ({
@@ -10,6 +11,7 @@ const useAuthStore = create(
             isAuthenticated: false,
             loading: false,
             error: null,
+            
 
 
             getProfile: async (id) => {
@@ -215,7 +217,8 @@ const useAuthStore = create(
                         isAuthenticated: false 
                     });
                 }
-            }
+            },
+           
         }),
         {
             name: 'auth-storage',

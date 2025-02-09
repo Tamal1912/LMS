@@ -1,13 +1,14 @@
 import mongoose from "mongoose";
 import bcrypt from "bcrypt";
 import Course from "./Course.model.js";
-
+import Student from "./Student.model.js";
 const teacherSchema = new mongoose.Schema({
   username: { type: String, required: true },
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
   role: { type: String, default: "teacher" },
   courses: [{ type: mongoose.Schema.Types.ObjectId, ref: "Course" }],
+  enrolledStudents: [{ type: mongoose.Schema.Types.ObjectId, ref: "Student" }],
   refreshToken: { type: String}
 }, {timestamps:true});
 

@@ -8,6 +8,7 @@ import User from "../models/User.model.js";
 
 export const createCourse = asyncHandler(async (req, res) => {
     try {
+        const {courseOwner}=req.user;
         const { courseName, courseDescription,courseContent,courseOutcome,assignments } = req.body;
 
        
@@ -30,6 +31,7 @@ export const createCourse = asyncHandler(async (req, res) => {
 
         // Create course
         const course = await Course.create({
+            courseOwner,
             courseName,
             courseDescription,
             courseOutcome,

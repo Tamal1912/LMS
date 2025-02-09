@@ -8,6 +8,7 @@ const useCourseStore = create()((set, get) => ({
   loading: false,
   error: null,
   isUploaded: false,
+  
 
   // Create Course
   createCourse: async (course) => {
@@ -105,7 +106,9 @@ const useCourseStore = create()((set, get) => ({
         toast.error("Failed to fetch course")
         
       }
-    }
+    },
+
+ 
 }));
 
 export default useCourseStore;

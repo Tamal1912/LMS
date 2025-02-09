@@ -16,6 +16,7 @@ import ManageCoursePage from './pages/ManageCoursePage.jsx';
 import CreateCoursePage from './pages/CreateCoursePage.jsx';
 import CourseDetails from './components/CourseDetails.jsx';
 import UpdateCoursePage from './pages/UpdateCoursePage.jsx';
+import TrackAllStudents from './pages/TrackAllStudents';
 import { Toaster } from 'react-hot-toast';
 const router=createBrowserRouter([
   {
@@ -36,6 +37,8 @@ ReactDOM.createRoot(document.getElementById('root')).render(
     <Route path="/teacherDashboard/manage_course" element={<ManageCoursePage/>}/>
     <Route path="/teacherDashboard/update_course/:courseId" element={<UpdateCoursePage/>}/>
     <Route path="/courseDetails/:courseId" element={<CourseDetails/>}/>
+    <Route path="/api/trackAllStudents" element={<TrackAllStudents/>}/>
+    <Route path="/getStudentDetails/:studentId" element={<getStudentProfile/>}/>
     <Route path="/api/studentDashboard" element={<StudentDashboard />}>
     </Route>
       <Route path="grades" element={<Grade />} />

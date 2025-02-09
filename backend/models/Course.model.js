@@ -1,6 +1,12 @@
 import mongoose from "mongoose";
 
 const courseSchema=new mongoose.Schema({
+    
+    courseOwner:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:"Teacher",
+        required:true
+    },
     courseName:{
         type:String,
         required:true

@@ -31,14 +31,17 @@ const TeacherDashboard = () => {
       <div className="col-span-2 grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Manage Students Card */}
         <div className="p-4 bg-gray-800 text-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
-          <h2 className="text-xl font-semibold mb-2">Manage Students</h2>
-          <p>Access and manage student data here.</p>
+          <Link to="/api/trackAllStudents" className='cursor-pointer'>  
+          <h2 className="text-xl font-semibold mb-2">Track Students</h2>
+          <p>Track students as they progress </p>
+          </Link>
         </div>
 
         {/* View Tasks Card */}
         <div className="p-4 bg-gray-800 text-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
           <h2 className="text-xl font-semibold mb-2">View Tasks</h2>
-          <p>Track and assign tasks to students.</p>
+          <p>Track and assign tasks to students. </p>
+          
         </div>
       </div>
 
