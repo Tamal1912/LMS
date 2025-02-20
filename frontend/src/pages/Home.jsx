@@ -37,7 +37,7 @@ const Navbar = () => {
         </ul>
         <div className="auth_buttons">
           <button
-            className="bg-white text-blue-600 px-6 py-2 rounded-lg hover:bg-blue-200 transition"
+            className="bg-white text-blue-600 px-6 py-2 mr-4 rounded-lg hover:bg-blue-200 transition"
             onClick={() => openModal("Login")}
           >
             Login
