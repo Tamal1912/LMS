@@ -2,20 +2,17 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 import Course from "../models/Course.model.js";
 import cloudinary from "../utils/cloudinary.js";
 import ApiResponse from "../utils/ApiResponses.js";
-import Teacher from "../models/Teacher.model.js";
 import { ApiError } from "../utils/ApiError.js";
 import User from "../models/User.model.js";
 
 export const createCourse = asyncHandler(async (req, res) => {
     try {
-        const {courseOwner}=req.user;
-        const { courseName, courseDescription,courseContent,courseOutcome,assignments } = req.body;
+        const { _id: courseOwner } = req.user; // Ensure courseOwner is set from req.user
+        const { courseName, courseDescription, courseContent, courseOutcome, assignments, courseCategory, courseImage } = req.body;
 
-       
         if (!courseContent) {
-            throw new Error("Video file is required");
+            throw new ApiError(400, "Video file is required");
         }
-
 
         // Upload directly to Cloudinary using the base64 string
         const videoUploadResponse = await cloudinary.uploader.upload(courseContent, {
@@ -23,11 +20,22 @@ export const createCourse = asyncHandler(async (req, res) => {
             folder: "course_videos"
         });
 
-
         const assignmentUploadResponse = await cloudinary.uploader.upload(assignments, {
             resource_type: "raw",
             folder: "course_assignments"
         });
+
+        let courseImageUploadResponse;
+        if (courseImage) {
+            courseImageUploadResponse = await cloudinary.uploader.upload(courseImage, {
+                resource_type: "image",
+                folder: "course_images"
+            });
+        } else {
+            throw new ApiError(400, "Course image is required");
+        }
+
+      
 
         // Create course
         const course = await Course.create({
@@ -35,17 +43,18 @@ export const createCourse = asyncHandler(async (req, res) => {
             courseName,
             courseDescription,
             courseOutcome,
-            courseContent:videoUploadResponse.secure_url,
-            assignments:assignmentUploadResponse.secure_url,
-
+            courseContent: videoUploadResponse.secure_url,
+            assignments: assignmentUploadResponse.secure_url,
+            courseCategory,
+            courseImage: courseImageUploadResponse.secure_url,
         });
+
         await course.save();
-        res.status(201).json(new ApiResponse(200,course,"Course created successfully"))
+        res.status(201).json(new ApiResponse(200, course, "Course created successfully"));
 
     } catch (error) {
         console.error("Error creating course:", error);
-        throw new ApiError(500,"Failed to create course")
-
+        throw new ApiError(500, "Failed to create course");
     }
 });
 
@@ -119,5 +128,5 @@ export const watchCourse = asyncHandler(async (req, res) => {
 //     }
 // }
 
-// );      
+// );
 

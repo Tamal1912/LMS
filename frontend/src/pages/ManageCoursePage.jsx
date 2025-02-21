@@ -64,8 +64,9 @@ const ManageCoursePage = () => {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {courses.map((course) => (
-              <div key={course._id} className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
+              <div key={course._id} className="rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
                 <div className="p-6">
+                  <img src={course?.courseImage} alt={course?.courseName} className="w-full h-48 object-cover mb-4" />
                   <h3 className="text-xl font-semibold text-gray-900 mb-2">{course.courseName}</h3>
                   <p className="text-gray-600 mb-4 line-clamp-2">{course.courseDescription}</p>
                   

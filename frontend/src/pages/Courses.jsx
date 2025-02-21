@@ -34,6 +34,22 @@ const Courses = () => {
                                 </span>
                             </div>
                         </div>
+
+                        <div className="flex justify-between items-center mb-8">
+                            <input type="search" placeholder="Search for courses" className="w-full bg-indigo-50 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-opacity-50" />
+                            <button className="bg-indigo-600 text-white px-4 py-2 ml-4 rounded-lg hover:bg-indigo-700 transition-colors duration-300">Search</button>
+                        </div>
+
+                        <div className="flex justify-between items-center mb-8">
+                         {/* //filtering courses */}
+                            <select className="bg-indigo-50 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-opacity-50">
+                                <option value="all">All Courses</option>
+                                <option value="development">Developement Courses</option>
+                                <option value="dsa">DSA</option>
+                                <option value="design">Design</option>
+                                <option value="database">Database</option>
+                            </select>
+                        </div>
     
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
                             {allCourses && allCourses.map((course) => (
