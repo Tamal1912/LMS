@@ -4,10 +4,7 @@ import { auth } from '../middleware/authMiddleware.js';
 
 const router = express.Router();
 
-// Route definitions (don't repeat middleware here)
-router.get("/debugToken",auth,(req,res)=>{
-    res.status(200).json({message:"Token is valid"},{user:req.user});
-});
+
 router.post("/student/signup", studentSignUp);
 router.post("/teacher/signup", teacherSignUp);
 router.post("/student/login", studentLogin);

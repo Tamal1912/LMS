@@ -13,6 +13,8 @@ const CourseDetails = () => {
     watchCourse(courseId);
   }, [watchCourse, courseId]);
 
+
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Navigation Breadcrumb */}

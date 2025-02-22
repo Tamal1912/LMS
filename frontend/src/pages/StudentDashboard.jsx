@@ -1,6 +1,5 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import { Outlet, useNavigate } from "react-router";
 import StudentSidebar from "../components/StudentSidebar";
 import useAuthStore from "../store/useAuthStore.js";
 import Loader from "../components/Loader.jsx";
