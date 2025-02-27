@@ -1,4 +1,4 @@
-import React from 'react'; 
+import React from 'react';
 
 const FeaturesSection = () => {
   return (
@@ -72,4 +72,3 @@ const FeaturesSection = () => {
 };
 
 export default FeaturesSection;
- 
