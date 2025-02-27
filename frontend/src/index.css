@@ -7,6 +7,13 @@
     margin: 0;
 }
 
+html, body {
+  overflow-x: hidden;
+  min-width: 354px;
+  min-height: 911px;
+}
+
+
 html{
   scroll-behavior: smooth;
 }
