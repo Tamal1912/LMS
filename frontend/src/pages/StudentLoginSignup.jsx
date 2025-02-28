@@ -1,23 +1,24 @@
-import React from 'react'
-import { useState } from 'react';
-import StudentDashboard from  "./StudentDashboard";
-import { useNavigate } from 'react-router';
-import useAuthStore from '../store/useAuthStore';
+import React, { useState } from "react";
+import { useNavigate } from "react-router";
+import useAuthStore from "../store/useAuthStore";
+import { motion } from "framer-motion"; // অ্যানিমেশনের জন্য
 
 const StudentLoginSignup = () => {
   const { studentLogin, studentSignup, loading } = useAuthStore();
+  const navigate = useNavigate();
+
+  const [isLogin, setIsLogin] = useState(true); // লগইন & সাইনআপ পরিবর্তনের জন্য
+
   const [signupData, setSignupData] = useState({
-    email: '',
-    username: '',
-    password: '',
+    email: "",
+    username: "",
+    password: "",
   });
 
-  const [loginData,setLoginData]=useState({
-    email:'',
-    password:'',
-  })
-
-  const navigate=useNavigate()
+  const [loginData, setLoginData] = useState({
+    email: "",
+    password: "",
+  });
 
   const handleSignup = async (e) => {
     e.preventDefault();
@@ -37,87 +38,130 @@ const StudentLoginSignup = () => {
 
   return (
     <>
-<div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-sky-400 via-sky-100 to-emerald-500 ">
+      <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-blue-100 via-gray-100 to-teal-200 px-4">
+        <div className="w-full max-w-md md:max-w-lg lg:max-w-xl xl:max-w-2xl p-8 rounded-3xl shadow-2xl bg-white border border-gray-300">
+          {/* টগল বাটন (লগইন & সাইনআপ পরিবর্তনের জন্য) */}
+          <div className="text-center mb-6 flex justify-center">
+            <button
+              className={`px-6 py-2 text-sm sm:text-base md:text-lg rounded-l-lg transition-all ${
+                isLogin ? "bg-blue-600 text-white" : "bg-gray-300 text-gray-700"
+              }`}
+              onClick={() => setIsLogin(true)}
+            >
+              Login
+            </button>
+            <button
+              className={`px-6 py-2 text-sm sm:text-base md:text-lg rounded-r-lg transition-all ${
+                !isLogin
+                  ? "bg-green-600 text-white"
+                  : "bg-gray-300 text-gray-700"
+              }`}
+              onClick={() => setIsLogin(false)}
+            >
+              Signup
+            </button>
+          </div>
 
-  <div className="w-full max-w-5xl p-6 rounded-3xl shadow-xl flex items-center space-x-10 bg-gray-200 ">
-
-    
-    <div className="login-card bg-white w-1/2 p-10 rounded-lg shadow-lg">
-      <h2 className="text-3xl font-bold mb-6 text-gray-800">Student Login</h2>
-      <label className="flex items-center mb-4 border border-gray-300 p-2 rounded-lg">
-        <svg className="w-5 h-5 text-gray-500 mr-3" fill="currentColor" viewBox="0 0 16 16">
-          <path d="M2.5 3A1.5 1.5 0 0 0 1 4.5v.793c.026.009.051.02.076.032L7.674 8.51c.206.1.446.1.652 0l6.598-3.185A.755.755 0 0 1 15 5.293V4.5A1.5 1.5 0 0 0 13.5 3h-11Z" />
-          <path d="M15 6.954 8.978 9.86a2.25 2.25 0 0 1-1.956 0L1 6.954V11.5A1.5 1.5 0 0 0 2.5 13h11a1.5 1.5 0 0 0 1.5-1.5V6.954Z" />
-        </svg>
-        <input
-         type="email"
-         placeholder="Student Email"
-         className="w-full outline-none text-gray-700"
-         value={loginData.email}
-         onChange={(e)=>setLoginData({...loginData,email:e.target.value})}
-         />
-      </label>
-      <label className="flex items-center mb-6 border border-gray-300 p-2 rounded-lg">
-        <svg className="w-5 h-5 text-gray-500 mr-3" fill="currentColor" viewBox="0 0 16 16">
-          <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM12.735 14c.618 0 1.093-.561.872-1.139a6.002 6.002 0 0 0-11.215 0c-.22.578.254 1.139.872 1.139h9.47Z" />
-        </svg>
-        <input
-         type="password"
-         placeholder="Student Password"
-         className="w-full outline-none text-gray-700"
-         value={loginData.password}
-         onChange={(e)=>setLoginData({...loginData,password:e.target.value})}
-         />
-      </label>
-      <button className="w-full bg-blue-500 text-white py-3 rounded-lg hover:bg-blue-600 transition duration-300 font-semibold" onClick={handleLogin}>Login</button>
-    </div>
-    
-    <div className="signup-card bg-white w-1/2 p-10 rounded-lg shadow-lg">
-      <h2 className="text-3xl font-bold mb-6 text-gray-800">Student Signup</h2>
-      <label className="flex items-center mb-4 border border-gray-300 p-2 rounded-lg">
-        <svg className="w-5 h-5 text-gray-500 mr-3" fill="currentColor" viewBox="0 0 16 16">
-          <path d="M2.5 3A1.5 1.5 0 0 0 1 4.5v.793c.026.009.051.02.076.032L7.674 8.51c.206.1.446.1.652 0l6.598-3.185A.755.755 0 0 1 15 5.293V4.5A1.5 1.5 0 0 0 13.5 3h-11Z" />
-          <path d="M15 6.954 8.978 9.86a2.25 2.25 0 0 1-1.956 0L1 6.954V11.5A1.5 1.5 0 0 0 2.5 13h11a1.5 1.5 0 0 0 1.5-1.5V6.954Z" />
-        </svg>
-        <input
-         type="email"
-         placeholder="Student Email"
-         className="w-full outline-none text-gray-700" 
-         value={signupData.email}
-         onChange={(e) => setSignupData({ ...signupData, email: e.target.value })}
-         />
-      </label>
-      <label className="flex items-center mb-4 border border-gray-300 p-2 rounded-lg">
-        <svg className="w-5 h-5 text-gray-500 mr-3" fill="currentColor" viewBox="0 0 16 16">
-          <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM12.735 14c.618 0 1.093-.561.872-1.139a6.002 6.002 0 0 0-11.215 0c-.22.578.254 1.139.872 1.139h9.47Z" />
-        </svg>
-        <input
-         type="text"
-         placeholder="Student Username"
-         className="w-full outline-none text-gray-700"
-         value={signupData.username}
-         onChange={(e) => setSignupData({ ...signupData, username: e.target.value })}
-         />
-      </label>
-      <label className="flex items-center mb-6 border border-gray-300 p-2 rounded-lg">
-        <svg className="w-5 h-5 text-gray-500 mr-3" fill="currentColor" viewBox="0 0 16 16">
-          <path fillRule="evenodd" d="M14 6a4 4 0 0 1-4.899 3.899l-1.955 1.955a.5.5 0 0 1-.353.146H5v1.5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-2.293a.5.5 0 0 1 .146-.353l3.955-3.955A4 4 0 1 1 14 6Zm-4-2a.75.75 0 0 0 0 1.5.5.5 0 0 1 .5.5.75.75 0 0 0 1.5 0 2 2 0 0 0-2-2Z" clipRule="evenodd" />
-        </svg>
-        <input
-        type="password"
-        placeholder="Student Password"
-        className="w-full outline-none text-gray-700"
-        value={signupData.password}
-        onChange={(e) => setSignupData({ ...signupData, password: e.target.value })}
-        />
-      </label>
-      <button className="w-full bg-green-500 text-white py-3 rounded-lg hover:bg-green-600 transition duration-300 font-semibold" type='submit' onClick={handleSignup}>Signup</button>
-    </div>
-  </div>
-</div>
-
+          {/* ফর্ম অ্যানিমেশন */}
+          <motion.div
+            key={isLogin ? "login" : "signup"}
+            initial={{ opacity: 0, x: isLogin ? -100 : 100 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: isLogin ? 100 : -100 }}
+            transition={{ duration: 0.5 }}
+          >
+            {isLogin ? (
+              // Login Form
+              <div className="bg-gray-50 p-6 rounded-lg shadow-md">
+                <h2 className="text-xl sm:text-2xl font-bold mb-4 text-gray-800">
+                  Student Login
+                </h2>
+                <label className="block mb-4">
+                  <span className="text-gray-700">Email</span>
+                  <input
+                    type="email"
+                    placeholder="Enter your email"
+                    className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-400 transition-all"
+                    value={loginData.email}
+                    onChange={(e) =>
+                      setLoginData({ ...loginData, email: e.target.value })
+                    }
+                  />
+                </label>
+                <label className="block mb-6">
+                  <span className="text-gray-700">Password</span>
+                  <input
+                    type="password"
+                    placeholder="Enter your password"
+                    className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-400 transition-all"
+                    value={loginData.password}
+                    onChange={(e) =>
+                      setLoginData({ ...loginData, password: e.target.value })
+                    }
+                  />
+                </label>
+                <button
+                  className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition duration-300 font-semibold"
+                  onClick={handleLogin}
+                >
+                  Login
+                </button>
+              </div>
+            ) : (
+              // Signup Form
+              <div className="bg-gray-50 p-6 rounded-lg shadow-md">
+                <h2 className="text-xl sm:text-2xl font-bold mb-4 text-gray-800">
+                  Student Signup
+                </h2>
+                <label className="block mb-4">
+                  <span className="text-gray-700">Email</span>
+                  <input
+                    type="email"
+                    placeholder="Enter your email"
+                    className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-teal-400 transition-all"
+                    value={signupData.email}
+                    onChange={(e) =>
+                      setSignupData({ ...signupData, email: e.target.value })
+                    }
+                  />
+                </label>
+                <label className="block mb-4">
+                  <span className="text-gray-700">Username</span>
+                  <input
+                    type="text"
+                    placeholder="Choose a username"
+                    className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-teal-400 transition-all"
+                    value={signupData.username}
+                    onChange={(e) =>
+                      setSignupData({ ...signupData, username: e.target.value })
+                    }
+                  />
+                </label>
+                <label className="block mb-6">
+                  <span className="text-gray-700">Password</span>
+                  <input
+                    type="password"
+                    placeholder="Choose a password"
+                    className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-teal-400 transition-all"
+                    value={signupData.password}
+                    onChange={(e) =>
+                      setSignupData({ ...signupData, password: e.target.value })
+                    }
+                  />
+                </label>
+                <button
+                  className="w-full bg-green-600 text-white py-2 rounded-lg hover:bg-green-700 transition duration-300 font-semibold"
+                  onClick={handleSignup}
+                >
+                  Signup
+                </button>
+              </div>
+            )}
+          </motion.div>
+        </div>
+      </div>
     </>
-  )
-}
+  );
+};
 
-export default StudentLoginSignup
+export default StudentLoginSignup;
