@@ -1,166 +1,131 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router";
-import useAuthStore from "../store/useAuthStore";
-import { motion } from "framer-motion"; // অ্যানিমেশনের জন্য
+import React, { useState, useEffect } from "react";
+import { FaGoogle, FaFacebook, FaEnvelope, FaLock, FaUser } from "react-icons/fa";
+import { motion } from "framer-motion";
 
 const StudentLoginSignup = () => {
-  const { studentLogin, studentSignup, loading } = useAuthStore();
-  const navigate = useNavigate();
+  const [isLogin, setIsLogin] = useState(true);
+  const [credentials, setCredentials] = useState({ email: "", password: "", username: "" });
 
-  const [isLogin, setIsLogin] = useState(true); // লগইন & সাইনআপ পরিবর্তনের জন্য
-
-  const [signupData, setSignupData] = useState({
-    email: "",
-    username: "",
-    password: "",
-  });
-
-  const [loginData, setLoginData] = useState({
-    email: "",
-    password: "",
-  });
-
-  const handleSignup = async (e) => {
-    e.preventDefault();
-    const success = await studentSignup(signupData);
-    if (success) {
-      navigate("/api/studentDashboard");
-    }
-  };
-
-  const handleLogin = async (e) => {
-    e.preventDefault();
-    const success = await studentLogin(loginData);
-    if (success) {
-      navigate("/api/studentDashboard");
-    }
-  };
+  useEffect(() => {
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, []);
 
   return (
-    <>
-      <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-blue-100 via-gray-100 to-teal-200 px-4">
-        <div className="w-full max-w-md md:max-w-lg lg:max-w-xl xl:max-w-2xl p-8 rounded-3xl shadow-2xl bg-white border border-gray-300">
-          {/* টগল বাটন (লগইন & সাইনআপ পরিবর্তনের জন্য) */}
-          <div className="text-center mb-6 flex justify-center">
-            <button
-              className={`px-6 py-2 text-sm sm:text-base md:text-lg rounded-l-lg transition-all ${
-                isLogin ? "bg-blue-600 text-white" : "bg-gray-300 text-gray-700"
-              }`}
-              onClick={() => setIsLogin(true)}
-            >
-              Login
-            </button>
-            <button
-              className={`px-6 py-2 text-sm sm:text-base md:text-lg rounded-r-lg transition-all ${
-                !isLogin
-                  ? "bg-green-600 text-white"
-                  : "bg-gray-300 text-gray-700"
-              }`}
-              onClick={() => setIsLogin(false)}
-            >
-              Signup
-            </button>
+    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-pink-200 via-purple-200 to-blue-200 relative overflow-hidden">
+      {/* Floating Pastel Elements - Same as Teacher Page */}
+      <motion.div
+        initial={{ scale: 0, opacity: 0 }}
+        animate={{ scale: 1, opacity: 0.4 }}
+        transition={{ duration: 0.8 }}
+        className="absolute w-80 h-80 bg-pink-300/50 rounded-full blur-3xl top-16 left-24"
+      ></motion.div>
+      <motion.div
+        initial={{ scale: 0, opacity: 0 }}
+        animate={{ scale: 1, opacity: 0.5 }}
+        transition={{ duration: 0.8, delay: 0.2 }}
+        className="absolute w-72 h-72 bg-blue-300/60 rounded-full blur-3xl bottom-14 right-24"
+      ></motion.div>
+
+      {/* Glassmorphic Form Box */}
+      <motion.div
+        initial={{ opacity: 0, scale: 0.9 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.6 }}
+        className="relative bg-white/30 backdrop-blur-2xl p-12 rounded-2xl shadow-xl w-full max-w-md border border-white/40"
+      >
+        <h2 className="text-gray-900 text-3xl font-bold text-center mb-6">
+          {isLogin ? "Student Login" : "Student Sign Up"}
+        </h2>
+
+        {/* Social Login Buttons */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.6, delay: 0.3 }}
+          className="flex justify-center space-x-4 mb-6"
+        >
+          <button className="p-3 bg-white/50 rounded-full text-gray-700 hover:bg-white/70 transition">
+            <FaGoogle size={20} />
+          </button>
+          <button className="p-3 bg-white/50 rounded-full text-blue-600 hover:bg-white/70 transition">
+            <FaFacebook size={20} />
+          </button>
+        </motion.div>
+
+        <p className="text-gray-600 text-center mb-4">or use your email</p>
+
+        {/* Animated Form Fields - Matching Teacher Page */}
+        <motion.div
+          key={isLogin ? "login" : "signup"}
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="space-y-6"
+        >
+          {!isLogin && (
+            <div className="relative">
+              <FaUser className="absolute left-4 top-4 text-gray-600" />
+              <input
+                type="text"
+                className="w-full bg-transparent text-gray-900 pl-12 pr-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-pink-400 placeholder-gray-500"
+                placeholder="Full Name"
+                value={credentials.username}
+                onChange={(e) =>
+                  setCredentials({ ...credentials, username: e.target.value })
+                }
+              />
+            </div>
+          )}
+          <div className="relative">
+            <FaEnvelope className="absolute left-4 top-4 text-gray-600" />
+            <input
+              type="email"
+              className="w-full bg-transparent text-gray-900 pl-12 pr-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-400 placeholder-gray-500"
+              placeholder="Email"
+              value={credentials.email}
+              onChange={(e) =>
+                setCredentials({ ...credentials, email: e.target.value })
+              }
+            />
+          </div>
+          <div className="relative">
+            <FaLock className="absolute left-4 top-4 text-gray-600" />
+            <input
+              type="password"
+              className="w-full bg-transparent text-gray-900 pl-12 pr-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-purple-400 placeholder-gray-500"
+              placeholder="Password"
+              value={credentials.password}
+              onChange={(e) =>
+                setCredentials({ ...credentials, password: e.target.value })
+              }
+            />
           </div>
 
-          {/* ফর্ম অ্যানিমেশন */}
-          <motion.div
-            key={isLogin ? "login" : "signup"}
-            initial={{ opacity: 0, x: isLogin ? -100 : 100 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: isLogin ? 100 : -100 }}
-            transition={{ duration: 0.5 }}
+          {/* Beautiful Pastel Button - Fixed Visibility Issue */}
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="w-full bg-gradient-to-r from-pink-500 to-purple-500 text-white py-3 rounded-lg font-semibold shadow-md hover:opacity-80 transition"
           >
-            {isLogin ? (
-              // Login Form
-              <div className="bg-gray-50 p-6 rounded-lg shadow-md">
-                <h2 className="text-xl sm:text-2xl font-bold mb-4 text-gray-800">
-                  Student Login
-                </h2>
-                <label className="block mb-4">
-                  <span className="text-gray-700">Email</span>
-                  <input
-                    type="email"
-                    placeholder="Enter your email"
-                    className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-400 transition-all"
-                    value={loginData.email}
-                    onChange={(e) =>
-                      setLoginData({ ...loginData, email: e.target.value })
-                    }
-                  />
-                </label>
-                <label className="block mb-6">
-                  <span className="text-gray-700">Password</span>
-                  <input
-                    type="password"
-                    placeholder="Enter your password"
-                    className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-400 transition-all"
-                    value={loginData.password}
-                    onChange={(e) =>
-                      setLoginData({ ...loginData, password: e.target.value })
-                    }
-                  />
-                </label>
-                <button
-                  className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition duration-300 font-semibold"
-                  onClick={handleLogin}
-                >
-                  Login
-                </button>
-              </div>
-            ) : (
-              // Signup Form
-              <div className="bg-gray-50 p-6 rounded-lg shadow-md">
-                <h2 className="text-xl sm:text-2xl font-bold mb-4 text-gray-800">
-                  Student Signup
-                </h2>
-                <label className="block mb-4">
-                  <span className="text-gray-700">Email</span>
-                  <input
-                    type="email"
-                    placeholder="Enter your email"
-                    className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-teal-400 transition-all"
-                    value={signupData.email}
-                    onChange={(e) =>
-                      setSignupData({ ...signupData, email: e.target.value })
-                    }
-                  />
-                </label>
-                <label className="block mb-4">
-                  <span className="text-gray-700">Username</span>
-                  <input
-                    type="text"
-                    placeholder="Choose a username"
-                    className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-teal-400 transition-all"
-                    value={signupData.username}
-                    onChange={(e) =>
-                      setSignupData({ ...signupData, username: e.target.value })
-                    }
-                  />
-                </label>
-                <label className="block mb-6">
-                  <span className="text-gray-700">Password</span>
-                  <input
-                    type="password"
-                    placeholder="Choose a password"
-                    className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-teal-400 transition-all"
-                    value={signupData.password}
-                    onChange={(e) =>
-                      setSignupData({ ...signupData, password: e.target.value })
-                    }
-                  />
-                </label>
-                <button
-                  className="w-full bg-green-600 text-white py-2 rounded-lg hover:bg-green-700 transition duration-300 font-semibold"
-                  onClick={handleSignup}
-                >
-                  Signup
-                </button>
-              </div>
-            )}
-          </motion.div>
-        </div>
-      </div>
-    </>
+            {isLogin ? "Sign In" : "Sign Up"}
+          </motion.button>
+        </motion.div>
+
+        {/* Toggle Between Login & Signup */}
+        <p className="text-center text-gray-700 mt-5">
+          {isLogin ? "Don't have an account? " : "Already have an account? "}
+          <span
+            className="text-purple-600 font-semibold cursor-pointer hover:text-pink-500 transition"
+            onClick={() => setIsLogin(!isLogin)}
+          >
+            {isLogin ? "Sign Up" : "Login"}
+          </span>
+        </p>
+      </motion.div>
+    </div>
   );
 };
 
