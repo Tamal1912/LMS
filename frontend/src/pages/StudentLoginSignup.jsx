@@ -3,7 +3,7 @@ import { FaGoogle, FaFacebook, FaEnvelope, FaLock, FaUser } from "react-icons/fa
 import { motion } from "framer-motion";
 
 const StudentLoginSignup = () => {
-  const [isLogin, setIsLogin] = useState(true);
+  const [isLogin, setIsLogin] = useState(true); 
   const [credentials, setCredentials] = useState({ email: "", password: "", username: "" });
 
   useEffect(() => {
