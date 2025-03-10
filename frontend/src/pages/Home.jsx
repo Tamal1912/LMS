@@ -5,6 +5,10 @@ import HowItWorks from "../components/HowItWorks";
 import Testimonials from "../components/Testimonials";
 import Footer from "../components/Footer";
 import { motion } from "framer-motion";
+import "@fortawesome/fontawesome-free/css/all.min.css";
+
+
+
 
 const Navbar = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -26,44 +30,47 @@ const Navbar = () => {
     closeModal();
   };
 
+  const [showMenu, setShowMenu] = useState(false);
+  const handleButtonToggle = () =>{
+    setShowMenu(!showMenu);
+  }
+
   return (
     <>
-      <nav className="w-full flex justify-between items-center px-8 py-4 bg-gradient-to-r from-blue-500 to-blue-700 text-white shadow-md fixed top-0 z-50">
-        <div className="text-2xl font-bold">EduPlatform</div>
-        <ul className="flex gap-6 font-medium">
-          {/* {["Home", "Features", "How It Works", "Contact"].map((item) => (
-            <li key={item} className="cursor-pointer hover:text-gray-200">{item}</li>
-          ))} */}
+<nav className="w-full flex justify-between items-center px-8 py-4 bg-gradient-to-r from-blue-500 to-blue-700 text-white shadow-md fixed top-0 z-50">
+  <div className="text-2xl font-bold flex-shrink-0">EduPlatform</div>
 
-          <li className="cursor-pointer hover:text-gray-200" onClick={() => navigate("/")}>
-            Home
-          </li>
-          <li className="cursor-pointer hover:text-gray-200" onClick={() => navigate(<Features />)}>
-            Features
-          </li>
-          <li className="cursor-pointer hover:text-gray-200" onClick={() => navigate(<HowItWorks />)}>
-            How It Works
-          </li>
-          <li className="cursor-pointer hover:text-gray-200" onClick={() => navigate(<Footer />)}>
-           
-            Contact
-          </li>
-        </ul>
-        <div className="auth_buttons">
-          <button
-            className="bg-white text-blue-600 px-6 py-2 mr-4 rounded-lg hover:bg-blue-200 transition"
-            onClick={() => openModal("Login")}
-          >
-            Login
-          </button>
-          <button
-            className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition"
-            onClick={() => openModal("Sign Up")}
-          >
-            Sign Up
-          </button>
-        </div>
-      </nav>
+   {/* Hamburger menu only on small screens */}
+   <button className="md:hidden ml-5" onClick={handleButtonToggle}>
+      <i className="fa-solid fa-bars"></i>
+    </button>
+  
+  {/* for big screen */}
+  {/* Login and signup buttons for small screens inside the hamburger menu */}
+
+  <ul className={`md:flex gap-6 font-medium ${showMenu ? "flex flex-col items-center text-center absolute top-16 left-1/2 transform -translate-x-1/2 w-full bg-blue-600 p-4" : "hidden"}`}>
+  {["Home", "Features", "How It Works", "Contact"].map((item) => (
+    <li key={item} className="cursor-pointer hover:text-gray-200">{item}</li>
+  ))}
+  
+  {/* Login and signup buttons on small screens*/}
+  <li className="flex flex-col gap-2 mt-4 md:hidden">
+    <button className="bg-white text-blue-600 px-6 py-2 rounded-lg hover:bg-blue-200 transition" onClick={() => openModal("Login")}>Login</button>
+    <button className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition" onClick={() => openModal("Sign Up")}>Sign Up</button>
+  </li>
+</ul>
+
+
+  <div className="auth_buttons hidden md:flex items-center space-x-4 flex-shrink-0">
+ 
+    <div className="auth_buttons hidden md:flex items-center space-x-4 flex-shrink-0">
+    <button className="bg-white text-blue-600 px-6 py-2 rounded-lg hover:bg-blue-200 transition" onClick={() => openModal("Login")}>Login</button>
+    <button className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition" onClick={() => openModal("Sign Up")}>Sign Up</button>
+  </div>
+
+   
+  </div>
+</nav>
 
       {isModalOpen && (
         <div
@@ -172,3 +179,5 @@ const Navbar = () => {
 };
 
 export default Navbar;
+
+

@@ -1,123 +1,157 @@
-import React, { useState } from 'react'
-import { useNavigate } from 'react-router'
-import useAuthStore from '../store/useAuthStore'
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router";
+import useAuthStore from "../store/useAuthStore";
+import { motion } from "framer-motion";
+import { FaEnvelope, FaLock, FaUser, FaGoogle, FaFacebook } from "react-icons/fa";
 
 const TeacherLoginSignup = () => {
-  
-  const { teacherLogin, teacherSignup, loading } = useAuthStore()
+  const { teacherLogin, teacherSignup } = useAuthStore();
+  const [isLogin, setIsLogin] = useState(true);
+  const navigate = useNavigate();
 
-  const[teacherSignupData,setTeacherSignupData]=useState({
-    email:'',
-    username:'',
-    password:'',
-  })
+  const [teacherSignupData, setTeacherSignupData] = useState({
+    email: "",
+    username: "",
+    password: "",
+  });
 
-  const [teacherLoginData,setTeacherLoginData]=useState({
-    email:'',
-    password:'',
-  })
+  const [teacherLoginData, setTeacherLoginData] = useState({
+    email: "",
+    password: "",
+  });
 
-  const navigate=useNavigate()
-
-  const handleTeacherLogin=async(e)=>{
+  const handleTeacherLogin = async (e) => {
     e.preventDefault();
     const success = await teacherLogin(teacherLoginData);
     if (success) {
       navigate("/api/teacherDashboard");
     }
-  }
+  };
 
-
-  const handleTeacherSignup=async(e)=>{
+  const handleTeacherSignup = async (e) => {
     e.preventDefault();
     const success = await teacherSignup(teacherSignupData);
     if (success) {
       navigate("/api/teacherDashboard");
     }
-  }
+  };
+
+  useEffect(() => {
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, []);
+
   return (
-    <>
-    <div className="flex min-h-screen items-center justify-center bg-gradient-to-tl from-sky-400  to-slate-400 ">
+    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-[#F2F5F9] via-[#B4D4FF] to-[#FFD6A5] relative overflow-hidden">
+      {/* Floating Pastel Elements */}
+      <div className="absolute w-80 h-80 bg-[#E5CFF7]/50 rounded-full blur-3xl top-16 left-24"></div>
+      <div className="absolute w-72 h-72 bg-[#F8FDCB]/60 rounded-full blur-3xl bottom-14 right-24"></div>
 
-<div className="w-full max-w-5xl p-6 rounded-3xl shadow-xl flex items-center space-x-10 bg-gray-200 ">
+      {/* Glassmorphic Form Box */}
+      <motion.div
+        initial={{ opacity: 0, scale: 0.9 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.6 }}
+        className="relative bg-white/30 backdrop-blur-2xl p-12 rounded-2xl shadow-xl w-full max-w-md border border-white/40"
+      >
+        <h2 className="text-gray-900 text-3xl font-bold text-center mb-6">
+          {isLogin ? "Teacher Login" : "Teacher Sign Up"}
+        </h2>
 
+        {/* Social Login Buttons */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.6, delay: 0.3 }}
+          className="flex justify-center space-x-4 mb-6"
+        >
+          <button className="p-3 bg-white/50 rounded-full text-gray-700 hover:bg-white/70 transition">
+            <FaGoogle size={20} />
+          </button>
+          <button className="p-3 bg-white/50 rounded-full text-blue-600 hover:bg-white/70 transition">
+            <FaFacebook size={20} />
+          </button>
+        </motion.div>
 
-  <div className="login-card bg-white w-1/2 p-10 rounded-lg shadow-lg">
-    <h2 className="text-3xl font-bold mb-6 text-gray-800">Teacher Login</h2>
-    <label className="flex items-center mb-4 border border-gray-300 p-2 rounded-lg">
-      <svg className="w-5 h-5 text-gray-500 mr-3" fill="currentColor" viewBox="0 0 16 16">
-        <path d="M2.5 3A1.5 1.5 0 0 0 1 4.5v.793c.026.009.051.02.076.032L7.674 8.51c.206.1.446.1.652 0l6.598-3.185A.755.755 0 0 1 15 5.293V4.5A1.5 1.5 0 0 0 13.5 3h-11Z" />
-        <path d="M15 6.954 8.978 9.86a2.25 2.25 0 0 1-1.956 0L1 6.954V11.5A1.5 1.5 0 0 0 2.5 13h11a1.5 1.5 0 0 0 1.5-1.5V6.954Z" />
-      </svg>
-      <input
-       type="email"
-       placeholder="Teacher Email"
-       className="w-full outline-none text-gray-700"
-       value={teacherLoginData.email}
-          onChange={(e)=>setTeacherLoginData({...teacherLoginData,email:e.target.value})}
-       />
-    </label>
-    <label className="flex items-center mb-6 border border-gray-300 p-2 rounded-lg">
-      <svg className="w-5 h-5 text-gray-500 mr-3" fill="currentColor" viewBox="0 0 16 16">
-        <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM12.735 14c.618 0 1.093-.561.872-1.139a6.002 6.002 0 0 0-11.215 0c-.22.578.254 1.139.872 1.139h9.47Z" />
-      </svg>
-      <input
-       type="password"
-       placeholder="Teacher Password"
-       className="w-full outline-none text-gray-700"
-       value={teacherLoginData.password}
-       onChange={(e)=>setTeacherLoginData({...teacherLoginData,password:e.target.value})}
-       />
-    </label>
-    <button className="w-full bg-sky-500 text-white py-3 rounded-lg hover:bg-slate-400 transition duration-300 font-semibold" onClick={handleTeacherLogin}>Login</button>
-  </div>
+        <p className="text-gray-600 text-center mb-4">or use your email</p>
 
-  <div className="signup-card bg-white w-1/2 p-10 rounded-lg shadow-lg">
-    <h2 className="text-3xl font-bold mb-6 text-gray-800">Teacher Signup</h2>
-    <label className="flex items-center mb-4 border border-gray-300 p-2 rounded-lg">
-      <svg className="w-5 h-5 text-gray-500 mr-3" fill="currentColor" viewBox="0 0 16 16">
-        <path d="M2.5 3A1.5 1.5 0 0 0 1 4.5v.793c.026.009.051.02.076.032L7.674 8.51c.206.1.446.1.652 0l6.598-3.185A.755.755 0 0 1 15 5.293V4.5A1.5 1.5 0 0 0 13.5 3h-11Z" />
-        <path d="M15 6.954 8.978 9.86a2.25 2.25 0 0 1-1.956 0L1 6.954V11.5A1.5 1.5 0 0 0 2.5 13h11a1.5 1.5 0 0 0 1.5-1.5V6.954Z" />
-      </svg>
-      <input
-       type="email"
-       placeholder="Teacher  Email"
-       className="w-full outline-none text-gray-700"
-       value={teacherSignup.email}
-       onChange={(e)=>{setTeacherSignup({...teacherSignup,email:e.target.value})}}
-       />
-    </label>
-    <label className="flex items-center mb-4 border border-gray-300 p-2 rounded-lg">
-      <svg className="w-5 h-5 text-gray-500 mr-3" fill="currentColor" viewBox="0 0 16 16">
-        <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM12.735 14c.618 0 1.093-.561.872-1.139a6.002 6.002 0 0 0-11.215 0c-.22.578.254 1.139.872 1.139h9.47Z" />
-      </svg>
-      <input
-       type="text"
-       placeholder="Teacher  Username"
-       className="w-full outline-none text-gray-700"
-       value={teacherSignup.username}
-       onChange={(e)=>{setTeacherSignup({...teacherSignup,username:e.target.value})}}
-       />
-    </label>
-    <label className="flex items-center mb-6 border border-gray-300 p-2 rounded-lg">
-      <svg className="w-5 h-5 text-gray-500 mr-3" fill="currentColor" viewBox="0 0 16 16">
-        <path fillRule="evenodd" d="M14 6a4 4 0 0 1-4.899 3.899l-1.955 1.955a.5.5 0 0 1-.353.146H5v1.5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-2.293a.5.5 0 0 1 .146-.353l3.955-3.955A4 4 0 1 1 14 6Zm-4-2a.75.75 0 0 0 0 1.5.5.5 0 0 1 .5.5.75.75 0 0 0 1.5 0 2 2 0 0 0-2-2Z" clipRule="evenodd" />
-      </svg>
-      <input 
-      type="password"
-      placeholder="Teacher Password"
-      className="w-full outline-none text-gray-700"
-      value={teacherSignup.password}
-      onChange={(e)=>{setTeacherSignup({...teacherSignup,password:e.target.value})}}
-      />
+        {/* Animated Form Fields */}
+        <motion.div
+          key={isLogin ? "login" : "signup"}
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="space-y-6"
+        >
+          {!isLogin && (
+            <div className="relative">
+              <FaUser className="absolute left-4 top-4 text-gray-600" />
+              <input
+                type="text"
+                className="w-full bg-transparent text-gray-900 pl-12 pr-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#E5CFF7] placeholder-gray-500"
+                placeholder="Full Name"
+                value={teacherSignupData.username}
+                onChange={(e) =>
+                  setTeacherSignupData({ ...teacherSignupData, username: e.target.value })
+                }
+              />
+            </div>
+          )}
+          <div className="relative">
+            <FaEnvelope className="absolute left-4 top-4 text-gray-600" />
+            <input
+              type="email"
+              className="w-full bg-transparent text-gray-900 pl-12 pr-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#B4D4FF] placeholder-gray-500"
+              placeholder="Email"
+              value={isLogin ? teacherLoginData.email : teacherSignupData.email}
+              onChange={(e) =>
+                isLogin
+                  ? setTeacherLoginData({ ...teacherLoginData, email: e.target.value })
+                  : setTeacherSignupData({ ...teacherSignupData, email: e.target.value })
+              }
+            />
+          </div>
+          <div className="relative">
+            <FaLock className="absolute left-4 top-4 text-gray-600" />
+            <input
+              type="password"
+              className="w-full bg-transparent text-gray-900 pl-12 pr-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#FFD6A5] placeholder-gray-500"
+              placeholder="Password"
+              value={isLogin ? teacherLoginData.password : teacherSignupData.password}
+              onChange={(e) =>
+                isLogin
+                  ? setTeacherLoginData({ ...teacherLoginData, password: e.target.value })
+                  : setTeacherSignupData({ ...teacherSignupData, password: e.target.value })
+              }
+            />
+          </div>
 
-    </label>
-    <button className="w-full bg-rose-500 text-white py-3 rounded-lg hover:bg-black transition duration-300 font-semibold"onClick={handleTeacherSignup} >Signup</button>
-  </div>
-</div>
-</div>
-    </>
-  )
-}
+          {/* Beautiful Pastel Button */}
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="w-full bg-gradient-to-r from-[#A084E8] to-[#FF9A8C] text-white py-3 rounded-lg font-semibold shadow-lg hover:opacity-90 transition transform hover:scale-105"
+            onClick={isLogin ? handleTeacherLogin : handleTeacherSignup}
+          >
+            {isLogin ? "Login" : "Create Account"}
+          </motion.button>
+        </motion.div>
 
-export default TeacherLoginSignup
+        {/* Switch Between Login & Signup */}
+        <p className="text-center text-gray-700 mt-6">
+          {isLogin ? "Don't have an account? " : "Already have an account? "}
+          <span
+            className="text-[#A084E8] font-semibold cursor-pointer hover:text-[#FF9A8C] transition"
+            onClick={() => setIsLogin(!isLogin)}
+          >
+            {isLogin ? "Sign up" : "Login"}
+          </span>
+        </p>
+      </motion.div>
+    </div>
+  );
+};
+
+export default TeacherLoginSignup;
