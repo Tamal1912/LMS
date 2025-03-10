@@ -1,10 +1,36 @@
 import React, { useState, useEffect } from "react";
-import { FaGoogle, FaFacebook, FaEnvelope, FaLock, FaUser } from "react-icons/fa";
+import { FaEnvelope, FaLock, FaUser } from "react-icons/fa";
 import { motion } from "framer-motion";
+import useAuthStore from "@/store/useAuthStore";
+import { useNavigate } from "react-router-dom"; // Fixed import
 
 const StudentLoginSignup = () => {
-  const [isLogin, setIsLogin] = useState(true); 
+  const navigate = useNavigate(); // Fixed navigation hook
+  const [isLogin, setIsLogin] = useState(true);
   const [credentials, setCredentials] = useState({ email: "", password: "", username: "" });
+  const { studentLogin, studentSignup } = useAuthStore();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    let success;
+    
+    if (isLogin) {
+      success = await studentLogin({
+        email: credentials.email,
+        password: credentials.password
+      });
+    } else {
+      success = await studentSignup({
+        username: credentials.username,
+        email: credentials.email,
+        password: credentials.password
+      });
+    }
+
+    if (success) {
+      navigate("/api/studentDashboard");
+    }
+  };
 
   useEffect(() => {
     document.body.style.overflow = "hidden";
@@ -40,31 +66,8 @@ const StudentLoginSignup = () => {
           {isLogin ? "Student Login" : "Student Sign Up"}
         </h2>
 
-        {/* Social Login Buttons */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.6, delay: 0.3 }}
-          className="flex justify-center space-x-4 mb-6"
-        >
-          <button className="p-3 bg-white/50 rounded-full text-gray-700 hover:bg-white/70 transition">
-            <FaGoogle size={20} />
-          </button>
-          <button className="p-3 bg-white/50 rounded-full text-blue-600 hover:bg-white/70 transition">
-            <FaFacebook size={20} />
-          </button>
-        </motion.div>
-
-        <p className="text-gray-600 text-center mb-4">or use your email</p>
-
-        {/* Animated Form Fields - Matching Teacher Page */}
-        <motion.div
-          key={isLogin ? "login" : "signup"}
-          initial={{ opacity: 0, y: 15 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="space-y-6"
-        >
+        {/* Animated Form Fields - Matching Student Page */}
+        <form onSubmit={handleSubmit} className="space-y-6">
           {!isLogin && (
             <div className="relative">
               <FaUser className="absolute left-4 top-4 text-gray-600" />
@@ -106,13 +109,14 @@ const StudentLoginSignup = () => {
 
           {/* Beautiful Pastel Button - Fixed Visibility Issue */}
           <motion.button
+            type="submit"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             className="w-full bg-gradient-to-r from-pink-500 to-purple-500 text-white py-3 rounded-lg font-semibold shadow-md hover:opacity-80 transition"
           >
-            {isLogin ? "Sign In" : "Sign Up"}
+            {isLogin ? "Login" : "Sign Up"}
           </motion.button>
-        </motion.div>
+        </form>
 
         {/* Toggle Between Login & Signup */}
         <p className="text-center text-gray-700 mt-5">

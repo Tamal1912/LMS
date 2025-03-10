@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
 import useAuthStore from "../store/useAuthStore";
 import { motion } from "framer-motion";
-import { FaEnvelope, FaLock, FaUser, FaGoogle, FaFacebook } from "react-icons/fa";
+import { FaEnvelope, FaLock, FaUser } from "react-icons/fa";
 
 const TeacherLoginSignup = () => {
   const { teacherLogin, teacherSignup } = useAuthStore();
@@ -60,22 +60,6 @@ const TeacherLoginSignup = () => {
           {isLogin ? "Teacher Login" : "Teacher Sign Up"}
         </h2>
 
-        {/* Social Login Buttons */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.6, delay: 0.3 }}
-          className="flex justify-center space-x-4 mb-6"
-        >
-          <button className="p-3 bg-white/50 rounded-full text-gray-700 hover:bg-white/70 transition">
-            <FaGoogle size={20} />
-          </button>
-          <button className="p-3 bg-white/50 rounded-full text-blue-600 hover:bg-white/70 transition">
-            <FaFacebook size={20} />
-          </button>
-        </motion.div>
-
-        <p className="text-gray-600 text-center mb-4">or use your email</p>
 
         {/* Animated Form Fields */}
         <motion.div
