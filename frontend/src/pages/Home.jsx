@@ -31,9 +31,23 @@ const Navbar = () => {
       <nav className="w-full flex justify-between items-center px-8 py-4 bg-gradient-to-r from-blue-500 to-blue-700 text-white shadow-md fixed top-0 z-50">
         <div className="text-2xl font-bold">EduPlatform</div>
         <ul className="flex gap-6 font-medium">
-          {["Home", "Features", "How It Works", "Contact"].map((item) => (
+          {/* {["Home", "Features", "How It Works", "Contact"].map((item) => (
             <li key={item} className="cursor-pointer hover:text-gray-200">{item}</li>
-          ))}
+          ))} */}
+
+          <li className="cursor-pointer hover:text-gray-200" onClick={() => navigate("/")}>
+            Home
+          </li>
+          <li className="cursor-pointer hover:text-gray-200" onClick={() => navigate(<Features />)}>
+            Features
+          </li>
+          <li className="cursor-pointer hover:text-gray-200" onClick={() => navigate(<HowItWorks />)}>
+            How It Works
+          </li>
+          <li className="cursor-pointer hover:text-gray-200" onClick={() => navigate(<Footer />)}>
+           
+            Contact
+          </li>
         </ul>
         <div className="auth_buttons">
           <button

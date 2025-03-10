@@ -14,6 +14,7 @@ const UpdateCoursePage = () => {
     courseName: "",
     courseDescription: "",
     courseOutcome: "",
+    courseImage: "",
     courseContent: "",
     assignments: ""
   });
@@ -55,32 +56,29 @@ const UpdateCoursePage = () => {
     setIsSubmitting(true);
 
     try {
-      // Only convert files if they are newly uploaded (File objects)
-      const videoBase64 = courseDetails.courseContent instanceof File
-        ? await convertToBase64(courseDetails.courseContent)
-        : courseDetails.courseContent;
-      
-      const assignmentBase64 = courseDetails.assignments instanceof File
-        ? await convertToBase64(courseDetails.assignments)
-        : courseDetails.assignments;
+        const courseData = { ...courseDetails };
 
-      const courseData = {
-        ...courseDetails,
-        courseContent: videoBase64,
-        assignments: assignmentBase64,
-      };
+        // Only convert and include files if they are newly uploaded
+        if (courseDetails.courseContent instanceof File) {
+            courseData.courseContent = await convertToBase64(courseDetails.courseContent);
+        }
+        
+        if (courseDetails.courseImage instanceof File) {
+            courseData.courseImage = await convertToBase64(courseDetails.courseImage);
+        }
+        
+        if (courseDetails.assignments instanceof File) {
+            courseData.assignments = await convertToBase64(courseDetails.assignments);
+        }
 
-      await updateCourse(courseId, courseData);
-
-      
-      toast.success("Course updated successfully");
-      navigate("/teacherDashboard/manage_course");
+        await updateCourse(courseId, courseData);
+        toast.success("Course updated successfully");
+        navigate("/teacherDashboard/manage_course");
     } catch (error) {
-      toast.dismiss(loadingToast);
-      toast.error(error.message || "Failed to update course");
-      console.error("Error updating course:", error);
+        toast.error(error.message || "Failed to update course");
+        console.error("Error updating course:", error);
     } finally {
-      setIsSubmitting(false);
+        setIsSubmitting(false);
     }
   };
 
@@ -103,6 +101,20 @@ const UpdateCoursePage = () => {
         return;
       }
       setCourseDetails({ ...courseDetails, assignments: file });
+    }
+  };
+
+
+  const handleImageChange = async (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      
+      if (file.size > 10 * 1024 * 1024) {
+       
+        alert("Image file is too large. Maximum size is 10MB");
+        return;
+      }
+      setCourseDetails({ ...courseDetails, courseImage: file });
     }
   };
 
@@ -182,6 +194,48 @@ const UpdateCoursePage = () => {
                   required
                 />
               </div>
+
+              <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Course Image
+                  </label>
+                  <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md">
+                    <div className="space-y-1 text-center">
+                      <svg
+                        className="mx-auto h-12 w-12 text-gray-400"
+                        stroke="currentColor"
+                        fill="none"
+                        viewBox="0 0 48 48"
+                      >
+                        <path 
+                          d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
+                      <div className="flex text-sm text-gray-600">
+                        <label
+                          htmlFor="file-upload"
+                          className="relative cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 "
+                        > 
+                          <span>Upload a Course Image</span>
+                          <input
+                            id="file-upload"
+                            name="file-upload"
+                            type="file"
+                            className="sr-only"
+                            onChange={handleImageChange}
+                            accept="image/*"
+                          />
+                        </label>
+                        <p className="pl-1">or drag and drop</p>
+                      </div>
+                      <p className="text-xs text-gray-500">PNG, JPG, GIF up to 10MB</p>
+                    </div>
+                  </div>
+                </div>
+                
 
               <div>
                 <label className="block text-sm font-medium text-gray-700">
