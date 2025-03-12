@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Features from "../components/Features";
 import HowItWorks from "../components/HowItWorks";
-import Testimonials from "../components/Testimonials";
 import Footer from "../components/Footer";
 import { motion } from "framer-motion";
+import { TiThMenu } from "react-icons/ti";
 
 
 
@@ -40,8 +40,9 @@ const Navbar = () => {
   <div className="text-2xl font-bold flex-shrink-0">EduPlatform</div>
 
    {/* Hamburger menu only on small screens */}
-   <button className="md:hidden ml-5" onClick={handleButtonToggle}>
-      <i className="fa-solid fa-bars"></i>
+   <button className="ml-5 lg:hidden" onClick={handleButtonToggle}>
+    
+      <TiThMenu/>
     </button>
   
   {/* for big screen */}

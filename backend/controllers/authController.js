@@ -1,7 +1,7 @@
 import Student from '../models/Student.model.js';
 import Teacher from '../models/Teacher.model.js';
 import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
+
 import {ApiError} from "../utils/ApiError.js";
 import ApiResponse from "../utils/ApiResponses.js";
 import {asyncHandler} from "../utils/asyncHandler.js";
