@@ -328,3 +328,4 @@ const UpdateCoursePage = () => {
 };
 
 export default UpdateCoursePage;
+ 
