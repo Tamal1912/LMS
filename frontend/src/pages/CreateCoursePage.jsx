@@ -341,3 +341,4 @@ const CreateCoursePage = () => {
 };
 
 export default CreateCoursePage;
+ 
