@@ -1,39 +1,56 @@
 import React, { useState, useEffect } from "react";
-import { FaEnvelope, FaLock, FaUser } from "react-icons/fa";
+import { useNavigate } from "react-router"; // ✅ Import navigate function
+import useAuthStore from "../store/useAuthStore"; // ✅ Import Zustand store
+import { FaGoogle, FaFacebook, FaEnvelope, FaLock, FaUser } from "react-icons/fa";
 import { motion } from "framer-motion";
-import useAuthStore from "@/store/useAuthStore";
-import { useNavigate } from "react-router-dom"; // Fixed import
 
 const StudentLoginSignup = () => {
-  const navigate = useNavigate(); // Fixed navigation hook
+  const { studentLogin, studentSignup } = useAuthStore(); // ✅ Get login/signup functions from Zustand store
   const [isLogin, setIsLogin] = useState(true);
-  const [credentials, setCredentials] = useState({ email: "", password: "", username: "" });
-  const { studentLogin, studentSignup } = useAuthStore();
+  const navigate = useNavigate(); // ✅ For page redirection
 
-  const handleSubmit = async (e) => {
+  const [studentSignupData, setStudentSignupData] = useState({
+    email: "",
+    username: "",
+    password: "",
+  });
+
+  const [studentLoginData, setStudentLoginData] = useState({
+    email: "",
+    password: "",
+  });
+
+  // ✅ Fixed: Added debug logs and improved API response handling
+  const handleStudentLogin = async (e) => {
     e.preventDefault();
-    let success;
-    
-    if (isLogin) {
-      success = await studentLogin({
-        email: credentials.email,
-        password: credentials.password
-      });
-    } else {
-      success = await studentSignup({
-        username: credentials.username,
-        email: credentials.email,
-        password: credentials.password
-      });
-    }
+    console.log("🔍 Attempting login with:", studentLoginData);
 
+    try {
+      const success = await studentLogin(studentLoginData);
+      
+      if (success) {
+        console.log("✅ Login successful, redirecting...");
+        navigate("/api/studentDashboard"); // ✅ Redirect to dashboard
+      } else {
+        console.error("❌ Login failed. Invalid credentials.");
+        alert("Incorrect email or password. Please try again.");
+      }
+    } catch (error) {
+      console.error("❌ Error during login:", error);
+      alert("An error occurred. Please check the console for details.");
+    }
+  };
+
+  const handleStudentSignup = async (e) => {
+    e.preventDefault();
+    const success = await studentSignup(studentSignupData);
     if (success) {
-      navigate("/api/studentDashboard");
+      navigate("/api/studentDashboard"); // ✅ Redirect to student dashboard after signup
     }
   };
 
   useEffect(() => {
-    document.body.style.overflow = "hidden";
+    document.body.style.overflow = "hidden"; // Prevent scrolling
     return () => {
       document.body.style.overflow = "auto";
     };
@@ -41,7 +58,7 @@ const StudentLoginSignup = () => {
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-pink-200 via-purple-200 to-blue-200 relative overflow-hidden">
-      {/* Floating Pastel Elements - Same as Teacher Page */}
+      {/* Floating Pastel Elements */}
       <motion.div
         initial={{ scale: 0, opacity: 0 }}
         animate={{ scale: 1, opacity: 0.4 }}
@@ -66,8 +83,31 @@ const StudentLoginSignup = () => {
           {isLogin ? "Student Login" : "Student Sign Up"}
         </h2>
 
-        {/* Animated Form Fields - Matching Student Page */}
-        <form onSubmit={handleSubmit} className="space-y-6">
+        {/* Social Login Buttons */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.6, delay: 0.3 }}
+          className="flex justify-center space-x-4 mb-6"
+        >
+          <button className="p-3 bg-white/50 rounded-full text-gray-700 hover:bg-white/70 transition">
+            <FaGoogle size={20} />
+          </button>
+          <button className="p-3 bg-white/50 rounded-full text-blue-600 hover:bg-white/70 transition">
+            <FaFacebook size={20} />
+          </button>
+        </motion.div>
+
+        <p className="text-gray-600 text-center mb-4">or use your email</p>
+
+        {/* Form Fields */}
+        <motion.div
+          key={isLogin ? "login" : "signup"}
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="space-y-6"
+        >
           {!isLogin && (
             <div className="relative">
               <FaUser className="absolute left-4 top-4 text-gray-600" />
@@ -75,9 +115,9 @@ const StudentLoginSignup = () => {
                 type="text"
                 className="w-full bg-transparent text-gray-900 pl-12 pr-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-pink-400 placeholder-gray-500"
                 placeholder="Full Name"
-                value={credentials.username}
+                value={studentSignupData.username}
                 onChange={(e) =>
-                  setCredentials({ ...credentials, username: e.target.value })
+                  setStudentSignupData({ ...studentSignupData, username: e.target.value })
                 }
               />
             </div>
@@ -88,9 +128,11 @@ const StudentLoginSignup = () => {
               type="email"
               className="w-full bg-transparent text-gray-900 pl-12 pr-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-400 placeholder-gray-500"
               placeholder="Email"
-              value={credentials.email}
+              value={isLogin ? studentLoginData.email : studentSignupData.email}
               onChange={(e) =>
-                setCredentials({ ...credentials, email: e.target.value })
+                isLogin
+                  ? setStudentLoginData({ ...studentLoginData, email: e.target.value })
+                  : setStudentSignupData({ ...studentSignupData, email: e.target.value })
               }
             />
           </div>
@@ -100,23 +142,25 @@ const StudentLoginSignup = () => {
               type="password"
               className="w-full bg-transparent text-gray-900 pl-12 pr-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-purple-400 placeholder-gray-500"
               placeholder="Password"
-              value={credentials.password}
+              value={isLogin ? studentLoginData.password : studentSignupData.password}
               onChange={(e) =>
-                setCredentials({ ...credentials, password: e.target.value })
+                isLogin
+                  ? setStudentLoginData({ ...studentLoginData, password: e.target.value })
+                  : setStudentSignupData({ ...studentSignupData, password: e.target.value })
               }
             />
           </div>
 
-          {/* Beautiful Pastel Button - Fixed Visibility Issue */}
+          {/* Button */}
           <motion.button
-            type="submit"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             className="w-full bg-gradient-to-r from-pink-500 to-purple-500 text-white py-3 rounded-lg font-semibold shadow-md hover:opacity-80 transition"
+            onClick={isLogin ? handleStudentLogin : handleStudentSignup} // ✅ Fixed Click Event
           >
             {isLogin ? "Login" : "Sign Up"}
           </motion.button>
-        </form>
+        </motion.div>
 
         {/* Toggle Between Login & Signup */}
         <p className="text-center text-gray-700 mt-5">
