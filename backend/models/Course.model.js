@@ -32,9 +32,13 @@ const courseSchema=new mongoose.Schema({
         type:String,
         required:true
     },
+    enrolledStudents: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Student'
+    }],
 
 },{timestamps:true})
 
 const Course=mongoose.model("Course",courseSchema)
 export default Course;
-    
+

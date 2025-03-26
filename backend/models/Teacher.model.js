@@ -8,7 +8,16 @@ const teacherSchema = new mongoose.Schema({
   password: { type: String, required: true },
   role: { type: String, default: "teacher" },
   courses: [{ type: mongoose.Schema.Types.ObjectId, ref: "Course" }],
-  enrolledStudents: [{ type: mongoose.Schema.Types.ObjectId, ref: "Student" }],
+  enrolledStudents: [{
+    student: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Student'
+    },
+    course: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Course'
+    }
+  }],
   refreshToken: { type: String}
 }, {timestamps:true});
 

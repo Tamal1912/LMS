@@ -5,7 +5,7 @@ import Loader from "../components/Loader";
 import useCourseStore from "../store/useCourseStore";
 
 const UpdateCoursePage = () => {
-  const { allCourses, updateCourse, getCourses } = useCourseStore();
+  const { allCourses, updateCourse, getTeacherCourses } = useCourseStore();
   const navigate = useNavigate();
   const { courseId } = useParams();
   const [submitting, setIsSubmitting] = useState(false);
@@ -22,25 +22,35 @@ const UpdateCoursePage = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        await getCourses(); // Fetch all courses when component mounts
-        setLoading(false);
+        setLoading(true);
+        await getTeacherCourses(); 
+        
+        
+        const currentCourse = allCourses.find(course => course._id === courseId);
+        
+        if (currentCourse) {
+         
+          setCourseDetails({
+            courseName: currentCourse.courseName || "",
+            courseDescription: currentCourse.courseDescription || "",
+            courseOutcome: currentCourse.courseOutcome || "",
+            courseImage: currentCourse.courseImage || "",
+            courseContent: currentCourse.courseContent || "",
+            assignments: currentCourse.assignments || ""
+          });
+        } else {
+          toast.error("Course not found");
+          navigate("/teacherDashboard/manage_course");
+        }
       } catch (error) {
-        console.error("Error fetching courses:", error);
+        console.error("Error fetching course:", error);
         toast.error("Failed to fetch course details");
+      } finally {
         setLoading(false);
       }
     };
     fetchData();
-  }, [getCourses]);
-
-  useEffect(() => {
-    if (allCourses.length > 0) {
-      const course = allCourses.find((course) => course._id === courseId);
-      if (course) {
-        setCourseDetails(course);
-      }
-    }
-  }, [allCourses, courseId]);
+  }, [courseId, getTeacherCourses]); 
 
   const convertToBase64 = (file) => {
     return new Promise((resolve, reject) => {
@@ -56,29 +66,39 @@ const UpdateCoursePage = () => {
     setIsSubmitting(true);
 
     try {
-        const courseData = { ...courseDetails };
+      const courseData = new FormData();
 
-        // Only convert and include files if they are newly uploaded
-        if (courseDetails.courseContent instanceof File) {
-            courseData.courseContent = await convertToBase64(courseDetails.courseContent);
-        }
-        
-        if (courseDetails.courseImage instanceof File) {
-            courseData.courseImage = await convertToBase64(courseDetails.courseImage);
-        }
-        
-        if (courseDetails.assignments instanceof File) {
-            courseData.assignments = await convertToBase64(courseDetails.assignments);
-        }
+      
+      courseData.append('courseName', courseDetails.courseName);
+      courseData.append('courseDescription', courseDetails.courseDescription);
+      courseData.append('courseOutcome', courseDetails.courseOutcome);
 
-        await updateCourse(courseId, courseData);
+      // Only append files if they are new
+      if (courseDetails.courseContent instanceof File) {
+        const contentBase64 = await convertToBase64(courseDetails.courseContent);
+        courseData.append('courseContent', contentBase64);
+      }
+      
+      if (courseDetails.courseImage instanceof File) {
+        const imageBase64 = await convertToBase64(courseDetails.courseImage);
+        courseData.append('courseImage', imageBase64);
+      }
+      
+      if (courseDetails.assignments instanceof File) {
+        const assignmentBase64 = await convertToBase64(courseDetails.assignments);
+        courseData.append('assignments', assignmentBase64);
+      }
+
+      const success = await updateCourse(courseId, courseData);
+      if (success) {
         toast.success("Course updated successfully");
         navigate("/teacherDashboard/manage_course");
+      }
     } catch (error) {
-        toast.error(error.message || "Failed to update course");
-        console.error("Error updating course:", error);
+      toast.error(error.message || "Failed to update course");
+      console.error("Error updating course:", error);
     } finally {
-        setIsSubmitting(false);
+      setIsSubmitting(false);
     }
   };
 
@@ -328,4 +348,3 @@ const UpdateCoursePage = () => {
 };
 
 export default UpdateCoursePage;
- 

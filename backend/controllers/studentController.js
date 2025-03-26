@@ -1,7 +1,8 @@
 import Student from "../models/Student.model.js";
 import { ApiError } from "../utils/ApiError.js";
-import ApiResponse from "../utils/ApiResponses.js";
 import {asyncHandler} from "../utils/asyncHandler.js";
+import Course from "../models/Course.model.js";
+
 
 
 export const getStudentProfile = asyncHandler(async (req, res) => {
@@ -58,4 +59,15 @@ export const updateStudentProfile = async (req, res) => {
         });
     }
 };
+
+export const getAllCourses =asyncHandler(async (req, res) => {
+    try {
+        const courses=await Course.find(); 
+              
+        res.status(200).json({courses});
+    } catch (error) {
+        console.log(error);
+        throw new ApiError(500,null,"Failed to fetch courses")
+    }
+})
 

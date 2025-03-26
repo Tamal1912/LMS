@@ -3,18 +3,19 @@ import Course from "../models/Course.model.js";
 import cloudinary from "../utils/cloudinary.js";
 import ApiResponse from "../utils/ApiResponses.js";
 import { ApiError } from "../utils/ApiError.js";
-import User from "../models/User.model.js";
+import Student from "../models/Student.model.js";
+import Teacher from "../models/Teacher.model.js";
 
 export const createCourse = asyncHandler(async (req, res) => {
     try {
-        const { _id: courseOwner } = req.user; // Ensure courseOwner is set from req.user
+        const courseOwner = req.user._id; // Get teacher ID
         const { courseName, courseDescription, courseContent, courseOutcome, assignments, courseCategory, courseImage } = req.body;
 
         if (!courseContent) {
             throw new ApiError(400, "Video file is required");
         }
 
-        // Upload directly to Cloudinary using the base64 string
+        // Upload to Cloudinary
         const videoUploadResponse = await cloudinary.uploader.upload(courseContent, {
             resource_type: "video",
             folder: "course_videos"
@@ -31,13 +32,9 @@ export const createCourse = asyncHandler(async (req, res) => {
                 resource_type: "image",
                 folder: "course_images"
             });
-        } else {
-            throw new ApiError(400, "Course image is required");
         }
 
-      
-
-        // Create course
+        // Create the course
         const course = await Course.create({
             courseOwner,
             courseName,
@@ -49,8 +46,28 @@ export const createCourse = asyncHandler(async (req, res) => {
             courseImage: courseImageUploadResponse.secure_url,
         });
 
-        await course.save();
-        res.status(201).json(new ApiResponse(200, course, "Course created successfully"));
+        // Update teacher's courses array
+        const teacher = await Teacher.findById(courseOwner);
+        if (!teacher) {
+            throw new ApiError(404, "Teacher not found");
+        }
+
+        teacher.courses.push(course._id);
+        await teacher.save();
+
+        // Fetch the updated course with populated fields
+        const populatedCourse = await Course.findById(course._id)
+            .populate('courseOwner', 'username email');
+
+        console.log("Course created and linked to teacher:", {
+            courseId: course._id,
+            teacherId: courseOwner,
+            teacherCourses: teacher.courses
+        });
+
+        res.status(201).json(
+            new ApiResponse(200, populatedCourse, "Course created successfully")
+        );
 
     } catch (error) {
         console.error("Error creating course:", error);
@@ -58,7 +75,8 @@ export const createCourse = asyncHandler(async (req, res) => {
     }
 });
 
-export const deleteCourse = asyncHandler(async (req, res) => {
+
+  export const deleteCourse = asyncHandler(async (req, res) => {
     const { courseId } = req.params;
     
     const course = await Course.findById(courseId);
@@ -72,6 +90,7 @@ export const deleteCourse = asyncHandler(async (req, res) => {
         new ApiResponse(200, null, "Course deleted successfully")
     );
 });
+ 
 
 export const updateCourse =asyncHandler(async (req, res) => {
     try {
@@ -87,21 +106,14 @@ export const updateCourse =asyncHandler(async (req, res) => {
     }
 })  
 
-export const getAllCourse =asyncHandler(async (req, res) => {
-    try {
-        const courses=await Course.find();       
-        res.status(200).json({courses});
-    } catch (error) {
-        console.log(error);
-        throw new ApiError(500,null,"Failed to fetch courses")
-    }
-})
 
 
 export const watchCourse = asyncHandler(async (req, res) => {
+    
     try {
         const { courseId } = req.params;
         const course = await Course.findById(courseId);
+        console.log("watching course");
         res.status(200).json(new ApiResponse(200,course,"Course fetched successfully"))
     } catch (error) {
         console.log(error);
@@ -111,22 +123,31 @@ export const watchCourse = asyncHandler(async (req, res) => {
 
 
 
-// export const checkEnrollmentStatus = asyncHandler(async (req, res) => {
-//     const { courseId } = req.params;
-//     const userId = req.user._id;
-
-//     try {
-//         const user = await User.findById(userId);
-//         const isEnrolled = user.enrolledCourses.includes(courseId);
+export const getTeacherCourses = asyncHandler(async (req, res) => {
+    try {
+        const teacherId = req.user._id;
+        console.log("Fetching teacher courses for:", teacherId);
         
-//         res.status(200).json({
-//             success: true,
-//             isEnrolled
-//         });
-//     } catch (error) {
-//         throw new ApiError(500, "Failed to check enrollment status");
-//     }
-// }
+        
+        // Find the teacher and populate their courses
+        const teacher = await Teacher.findById(teacherId)
+            .populate({
+                path: 'courses',
+            });
 
-// );
+        if (!teacher) {
+            throw new ApiError(404, "Teacher not found");
+        }
+
+        console.log("Found teacher courses:", teacher.courses);
+
+        return res.status(200).json(
+            new ApiResponse(200, teacher.courses, "Courses fetched successfully")
+        );
+
+    } catch (error) {
+        console.error("Error fetching teacher courses:", error);
+        throw new ApiError(500, "Failed to fetch teacher courses");
+    }
+});
 

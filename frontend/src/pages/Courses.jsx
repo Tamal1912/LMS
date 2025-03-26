@@ -1,14 +1,30 @@
 import React, { useEffect } from "react";
 import useCourseStore from "../store/useCourseStore.js";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom"; // Add useNavigate import
 import Loader from "../components/Loader.jsx";
+import { toast } from "react-toastify";
 
 const Courses = () => {
-    const { allCourses, error, getCourses, loading } = useCourseStore();
+    const { allCourses, error, getAllCoursesStudents, loading, enrollInCourse } = useCourseStore();
+    const navigate = useNavigate(); // Add this hook
 
     useEffect(() => {
-        getCourses();
-    }, [getCourses]);
+        getAllCoursesStudents();
+    }, [getAllCoursesStudents]);
+
+    const handleEnroll = async (courseId) => {
+        try {
+            await enrollInCourse(courseId);
+            toast.success("Successfully enrolled in course!");
+            // Refresh the courses list to show updated enrollment status
+            await getAllCoursesStudents();
+            // Navigate to watch course page after successful enrollment
+            navigate(`/courseDetails/${courseId}`);
+        } catch (error) {
+            console.error("Failed to enroll:", error);
+            toast.error(error.response?.data?.message || "Failed to enroll in course");
+        }
+    };
 
     if (error) {
         return <div className="text-red-500 text-center mt-10 text-lg">Error: {error}</div>;
@@ -35,11 +51,7 @@ const Courses = () => {
 
                             {/* Search & Filter */}
                             <div className="flex flex-col md:flex-row justify-between items-center gap-6 mb-8">
-                                <input 
-                                    type="search" 
-                                    placeholder="Search for courses..." 
-                                    className="w-full bg-white p-3 rounded-lg shadow-md border border-gray-300 focus:ring-2 focus:ring-[#A8DADC] outline-none"
-                                />
+                               
                                 <select className="bg-white p-3 rounded-lg shadow-md border border-gray-300 focus:ring-2 focus:ring-[#A8DADC]">
                                     <option value="all">All Courses</option>
                                     <option value="development">Development</option>
@@ -52,8 +64,8 @@ const Courses = () => {
                             {/* Course Grid */}
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 overflow-y-auto flex-grow">
                                 {allCourses && allCourses.map((course) => (
-                                    <Link to={`/courseDetails/${course._id}`} key={course._id}>
-                                        <div className="relative bg-white border border-gray-200 p-6 rounded-2xl shadow-lg transition-transform duration-300 hover:scale-105 cursor-pointer">
+                                    <div key={course._id} className="relative border border-gray-200 p-6 rounded-2xl shadow-lg transition-transform duration-300 hover:scale-105 cursor-pointer">
+                                            <img src={course.courseImage} alt={course.courseName} className="w-full h-48 object-cover rounded-lg mb-4" />
                                             <h3 className="text-2xl font-semibold text-gray-900 mb-3">{course.courseName}</h3>
                                             <div className="mb-4">
                                                 <div className="flex justify-between text-sm text-gray-600 mb-1">
@@ -68,11 +80,18 @@ const Courses = () => {
                                                 </div>
                                             </div>
                                             <p className="text-gray-600 mb-4 text-sm h-12 overflow-hidden">{course.courseOutcome}</p>
-                                            <button className="w-full bg-[#FF6B6B] hover:bg-[#E63946] text-white py-3 rounded-lg font-medium transition-all duration-300 shadow-md">
-                                                Watch Now
-                                            </button>
+                                            <div className="mt-4">
+                                                <Link to={`/courseDetails/${course._id}`}>
+                                                    <button 
+                                                        
+                                                        className="w-full bg-[#FF6B6B] hover:bg-[#E63946] text-white py-3 rounded-lg font-medium transition-all duration-300 shadow-md"
+                                                        
+                                                    >
+                                                        Enroll Free
+                                                    </button>
+                                                </Link>
+                                            </div>
                                         </div>
-                                    </Link>
                                 ))}
                             </div>
                         </div>

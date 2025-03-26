@@ -5,12 +5,12 @@ import { Link, useNavigate } from "react-router-dom";
 import Loader from "../components/Loader";
 
 const ManageCoursePage = () => {
-  const { allCourses, getCourses, deleteCourse, loading } = useCourseStore();
+  const { teacherCourses, deleteCourse, loading, getTeacherCourses } = useCourseStore();
   const [isDeleting, setIsDeleting] = useState(false);
 
   useEffect(() => {
-    getCourses();
-  }, [getCourses]);
+    getTeacherCourses();
+  }, [getTeacherCourses]);
 
   const handleDelete = async (courseId) => {
     try {
@@ -28,7 +28,6 @@ const ManageCoursePage = () => {
   };
 
   const navigate = useNavigate();
-  const courses = Array.isArray(allCourses) ? allCourses : [];
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-100 to-teal-200 p-4 sm:p-8">
@@ -55,7 +54,7 @@ const ManageCoursePage = () => {
         {/* Loading & No Course Message */}
         {loading ? (
           <Loader />
-        ) : courses.length === 0 ? (
+        ) : teacherCourses.length === 0 ? (
           <div className="text-center py-12 bg-white/50 backdrop-blur-lg rounded-xl shadow-lg">
             <h3 className="text-lg sm:text-xl text-gray-700 font-semibold">
               No courses found
@@ -64,7 +63,7 @@ const ManageCoursePage = () => {
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 mt-6">
-            {courses.map((course) => (
+            {teacherCourses.map((course) => (
               <div
                 key={course._id}
                 className="rounded-xl overflow-hidden shadow-lg bg-white/80 backdrop-blur-lg transition-all duration-300 hover:scale-105 hover:bg-white/90 hover:shadow-2xl"
@@ -84,12 +83,7 @@ const ManageCoursePage = () => {
 
                   {/* Action Buttons */}
                   <div className="flex justify-between items-center mt-4">
-                    <Link
-                      to={`/courseDetails/${course._id}`}
-                      className="text-teal-600 hover:text-teal-800 font-medium transition-all duration-300"
-                    >
-                      View Details
-                    </Link>
+                   
                     <div className="space-x-2">
                       <button
                         onClick={() => handleDelete(course._id)}
@@ -119,4 +113,4 @@ const ManageCoursePage = () => {
 };
 
 export default ManageCoursePage;
- 
+

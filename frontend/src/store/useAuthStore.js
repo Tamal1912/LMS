@@ -128,6 +128,8 @@ const useAuthStore = create(
             },
 
             studentSignup: async (signupData) => {
+                console.log("signup");
+                
                 try {
                     set({ loading: true, error: null });
                     const response = await api.post('/v1/users/student/signup', signupData);

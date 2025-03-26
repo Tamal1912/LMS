@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import useUserStore from '../store/useUserStore';
+import useCourseStore from '../store/useCourseStore';
 import Loader from '@/components/Loader';
 import useAuthStore from '@/store/useAuthStore';
 import { Link } from 'react-router-dom';
@@ -8,13 +9,27 @@ import { BsFillTelephoneFill } from "react-icons/bs";
 import { FaBook } from "react-icons/fa";
 
 const TrackAllStudents = () => {
-  const { allStudents, teacher, loading, trackAllStudents, getTeacherProfile } = useUserStore();
+  const { allStudents, teacher, trackAllStudents, getTeacherProfile } = useUserStore();
+  const { teacherCourses, getTeacherCourses, loading } = useCourseStore();
   const { user } = useAuthStore();
 
   useEffect(() => {
     getTeacherProfile();
-    trackAllStudents();
+    
   }, [trackAllStudents, user]);
+
+  useEffect(() => {
+    const fetchCourses = async () => {
+      try {
+        await getTeacherCourses();
+        console.log("Fetched courses:", teacherCourses); // Debug log
+      } catch (error) {
+        console.error("Error fetching courses:", error);
+      }
+    };
+    
+    fetchCourses();
+  }, []);
 
   if (loading) {
     return <div className="text-center py-10 text-gray-600"><Loader /></div>;
@@ -43,6 +58,63 @@ const TrackAllStudents = () => {
           Welcome, <span className="font-bold text-purple-600">{teacher?.username}</span>
         </p>
       </div>
+
+      {/* Courses and Students */}
+      <h1 className="text-3xl font-bold text-gray-800 mb-6">My Courses and Students</h1>
+
+      {teacherCourses.length === 0 ? (
+        <div className="bg-white rounded-lg shadow-md p-8 text-center">
+          <h2 className="text-2xl font-semibold text-gray-700 mb-4">No Courses Created Yet</h2>
+          <p className="text-gray-600 mb-6">Start creating your first course to track enrolled students.</p>
+          <Link 
+            to="/teacherDashboard/create_course"
+            className="bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-600 transition-colors"
+          >
+            Create Your First Course
+          </Link>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
+          {teacherCourses.map((course) => (
+            <div key={course._id} 
+              className="bg-white/80 backdrop-blur-md rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300">
+              <h3 className="text-xl font-bold text-purple-700 mb-4">
+                {course.courseName}
+              </h3>
+              <div className="mb-4">
+                <p className="text-gray-600">
+                  Total Enrolled: {course.enrolledStudentsDetails?.length || 0}
+                </p>
+              </div>
+              <div className="space-y-3">
+                {course.enrolledStudentsDetails?.map((student) => (
+                  <div key={student._id} 
+                    className="bg-gray-50 rounded-lg p-3 hover:bg-gray-100 transition-colors">
+                    <p className="font-semibold text-purple-600">
+                      {student.username}
+                    </p>
+                    <p className="text-sm text-gray-600 flex items-center gap-2">
+                      <MdAlternateEmail className="h-4 w-4"/>
+                      {student.email}
+                    </p>
+                    {student.phone && (
+                      <p className="text-sm text-gray-600 flex items-center gap-2">
+                        <BsFillTelephoneFill className="h-4 w-4"/>
+                        {student.phone}
+                      </p>
+                    )}
+                  </div>
+                ))}
+                {!course.enrolledStudentsDetails?.length && (
+                  <p className="text-center text-gray-500 py-4">
+                    No students enrolled yet
+                  </p>
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
 
       {/* Students Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-10">

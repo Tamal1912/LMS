@@ -43,10 +43,19 @@ const StudentLoginSignup = () => {
 
   const handleStudentSignup = async (e) => {
     e.preventDefault();
+    try{
     const success = await studentSignup(studentSignupData);
     if (success) {
-      navigate("/api/studentDashboard"); // ✅ Redirect to student dashboard after signup
+      console.log("✅ signup successful, redirecting...");
+      navigate("/api/studentDashboard"); // ✅ Redirect to dashboard
+    } else {
+      console.error("❌ signup failed. Invalid credentials.");
+      alert("Incorrect email or password. Please try again.");
     }
+  } catch (error) {
+    console.error("❌ Error during signup:", error);
+    alert("An error occurred. Please check the console for details.");
+  }
   };
 
   useEffect(() => {

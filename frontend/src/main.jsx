@@ -18,6 +18,7 @@ import CourseDetails from './components/CourseDetails.jsx';
 import UpdateCoursePage from './pages/UpdateCoursePage.jsx';
 import TrackAllStudents from './pages/TrackAllStudents';
 import { Toaster } from 'react-hot-toast';
+
 const router=createBrowserRouter([
   {
     path:"/",
