@@ -21,7 +21,7 @@ export const getTeacherProfile = asyncHandler(async (req, res) => {
     
     
     const teacher = await Teacher.findById(req.user._id)
-    .populate('courses','courseName');
+    .populate('courses','courseName courseDescription');
     
     
     if (!teacher) {
@@ -40,22 +40,32 @@ export const getStudentDetails = asyncHandler(async (req, res) => {
 });
 
 export const updateTeacherProfile = asyncHandler(async (req, res) => {
- try {
-     const teacher=await Teacher.findById(req.user._id);
-     if(!teacher){
-         throw new ApiError(404,"Teacher not found");
-     }
+    try {
+        const { username, email, phone } = req.body;
+        const teacherId = req.user._id;
 
-     const {name,email,phone,courseCreated}=req.body;
-     teacher.name=name;
-     teacher.email=email;
-     teacher.phone=phone;
-     teacher.courseCreated=courseCreated;
-     await teacher.save();
-     return res.status(200).json({teacher});
- } catch (error) {
-     console.log(error);
-     throw new ApiError(500,"Failed to update teacher profile");
- }
+        const updatedTeacher = await Teacher.findByIdAndUpdate(
+            teacherId,
+            {
+                $set: {
+                    username,
+                    email,
+                    phone
+                }
+            },
+            { new: true }
+        ).populate('courses');
 
-});
+        if (!updatedTeacher) {
+            throw new ApiError(404, "Teacher not found");
+        }
+
+        return res.status(200).json({
+            success: true,
+            teacher: updatedTeacher,
+            message: "Profile updated successfully"
+        });
+    } catch (error) {
+        throw new ApiError(500, error.message || "Failed to update profile");
+    }
+});;

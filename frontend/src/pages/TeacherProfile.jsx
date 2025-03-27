@@ -34,13 +34,21 @@ const TeacherProfile = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await updateTeacherProfile(formData);
-      setIsEditing(false);
-      toast.success('Profile updated successfully');
+        const success = await updateTeacherProfile({
+            username: formData.username,
+            email: formData.email,
+            phone: formData.phone
+        });
+        
+        if (success) {
+            setIsEditing(false);
+            await getTeacherProfile(); // Refresh profile data
+        }
     } catch (error) {
-      toast.error('Failed to update profile');
+        console.error('Profile update error:', error);
+        
     }
-  };
+};
 
   if (loading) {
     return <Loader />;

@@ -8,10 +8,6 @@ const teacherSchema = new mongoose.Schema({
   password: { type: String, required: true },
   role: { type: String, default: "teacher" },
   phone: { type: String },
-  courseCreated:{
-     type: mongoose.Schema.Types.ObjectId,
-     ref: "Course"
-  },
   courses: [{ type: mongoose.Schema.Types.ObjectId, ref: "Course" }],
   enrolledStudents: [{
     student: {

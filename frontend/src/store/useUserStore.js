@@ -60,10 +60,17 @@ const useAuthStore = create((set) => ({
         }
     }, 
     updateTeacherProfile: async (profileData) => {
-        set({loading: true});
         try {
+            set({loading: true});
             const response = await api.put('/v1/teacher/update_teacher_profile', profileData);
-            set({teacher: response.data.teacher});
+            
+            if(response.data?.teacher){
+                set({teacher: response.data.teacher,loading: false});
+                toast.success('profile updated successfully');
+                return true;
+            }
+
+            throw new Error('no teacher data found');
         } catch (error) {
             set({
                 error: error.message,
