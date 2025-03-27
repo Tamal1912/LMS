@@ -1,6 +1,6 @@
 import express from "express";
 import {createCourse,deleteCourse,updateCourse,getTeacherCourses} from "../controllers/course.controller.js";
-import { trackAllStudents,getTeacherProfile,getStudentDetails } from "../controllers/teacherController.js";
+import { trackAllStudents,getTeacherProfile,getStudentDetails,updateTeacherProfile } from "../controllers/teacherController.js";
 import {  checkRole } from '../middleware/protected.middlewar.js';
 import { auth } from '../middleware/authMiddleware.js';
 import {requireTeacher} from "../middleware/authMiddleware.js"
@@ -15,5 +15,6 @@ router.get("/courses", auth,requireTeacher,checkRole(["teacher"]), getTeacherCou
 router.get("/track_all_students/", auth, requireTeacher,checkRole(["teacher"]),trackAllStudents);
 router.get("/get_teacher_profile", auth, requireTeacher,checkRole(["teacher"]),getTeacherProfile);
 router.get("/getStudentDetails/:id", auth,checkRole(["teacher"]), getStudentDetails);
+router.put("/update_teacher_profile", auth,checkRole(["teacher"]),updateTeacherProfile);
 
 export default router;

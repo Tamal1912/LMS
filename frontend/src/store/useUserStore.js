@@ -59,6 +59,21 @@ const useAuthStore = create((set) => ({
             set({loading: false});
         }
     }, 
+    updateTeacherProfile: async (profileData) => {
+        set({loading: true});
+        try {
+            const response = await api.put('/v1/teacher/update_teacher_profile', profileData);
+            set({teacher: response.data.teacher});
+        } catch (error) {
+            set({
+                error: error.message,
+                loading: false
+            });
+            toast.error('Failed to update teacher profile');
+        } finally {
+            set({loading: false});
+        }
+    },
 }));
 
 export default useAuthStore;

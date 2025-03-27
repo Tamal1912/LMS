@@ -51,8 +51,10 @@ const TeacherDashboard = () => {
                 {/* View Tasks */}
                 <div className="p-6 bg-white bg-opacity-90 shadow-lg rounded-xl border border-teal-300 
                 hover:shadow-[0_0_15px_#14b8a6] hover:scale-105 transition duration-300 ease-in-out">
-                    <h2 className="text-xl font-semibold text-teal-800 mb-2">📝 View Tasks</h2>
-                    <p className="text-gray-600">Assign and manage student tasks seamlessly.</p>
+                    <Link to="/teacherDashboard/update_teacher_profile">
+                    <h2 className="text-xl font-semibold text-teal-800 mb-2"> View Profile</h2>
+                    <p className="text-gray-600">View and update your teacher profile.</p>
+                    </Link>
                 </div>
 
                 {/* Manage Course */}
