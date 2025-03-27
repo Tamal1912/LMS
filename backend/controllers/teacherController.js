@@ -3,7 +3,7 @@ import Teacher from "../models/Teacher.model.js"
 import {asyncHandler} from '../utils/asyncHandler.js';
 import { ApiError } from '../utils/ApiError.js';
 import Student from '../models/Student.model.js';
-import e from "express";
+
 
 
 

@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { toast } from 'react-hot-toast';
 import useUserStore from '../store/useUserStore';
 import Loader from '../components/Loader';
 import { MdAlternateEmail, MdEdit } from 'react-icons/md';

@@ -50,13 +50,13 @@ const Navbar = () => {
 
   <ul className={`md:flex gap-6 font-medium ${showMenu ? "flex flex-col items-center text-center absolute top-16 left-1/2 transform -translate-x-1/2 w-full bg-blue-600 p-4" : "hidden"}`}>
   {["Home", "Features", "How It Works", "Contact"].map((item) => (
-    <li key={item} className="cursor-pointer hover:text-gray-200">{item}</li>
+    <li key={item} className="cursor-pointer px-3 py-2 rounded-md  hover:text-blue-900 hover:bg-blue-100 transition duration-300 ">{item}</li>
   ))}
   
   {/* Login and signup buttons on small screens*/}
   <li className="flex flex-col gap-2 mt-4 md:hidden">
     <button className="bg-white text-blue-600 px-6 py-2 rounded-lg hover:bg-blue-200 transition" onClick={() => openModal("Login")}>Login</button>
-    <button className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition" onClick={() => openModal("Sign Up")}>Sign Up</button>
+
   </li>
 </ul>
 
@@ -65,8 +65,7 @@ const Navbar = () => {
  
     <div className="auth_buttons hidden md:flex items-center space-x-4 flex-shrink-0">
     <button className="bg-white text-blue-600 px-6 py-2 rounded-lg hover:bg-blue-200 transition" onClick={() => openModal("Login")}>Login</button>
-    <button className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition" onClick={() => openModal("Sign Up")}>Sign Up</button>
-  </div>
+    </div>
 
    
   </div>

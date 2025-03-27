@@ -128,6 +128,7 @@ const teacherLogin =  asyncHandler(async (req, res) => {
 
   if (!user) {
       throw new ApiError(404, "User not found");
+      process.exit(1);
   }
 
   // Compare passwords

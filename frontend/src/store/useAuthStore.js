@@ -68,7 +68,9 @@ const useAuthStore = create(
                     set({ loading: true, error: null });
                     const response = await api.post('/v1/users/student/login', loginData);
                     
+                    
                     const token = response.data.data.accessToken;
+                    
                     if (!token) {
                         throw new Error('No token received from server');
                     }
@@ -87,6 +89,7 @@ const useAuthStore = create(
                     return true;
                 } catch (error) {
                     console.error('Login error:', error);
+                    toast.error(error.response?.data?.message || 'User not found');
                     set({ 
                         error: error.response?.data?.message || 'Login failed',
                         loading: false 
@@ -119,6 +122,7 @@ const useAuthStore = create(
                     return true;
                 } catch (error) {
                     console.error('Login error:', error);
+                    toast.error(error.response?.data?.message || 'User not found');
                     set({ 
                         error: error.response?.data?.message || 'Login failed',
                         loading: false 

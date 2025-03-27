@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router"; // ✅ Import navigate function
-import useAuthStore from "../store/useAuthStore"; // ✅ Import Zustand store
+import { useNavigate } from "react-router"; //  Import navigate function
+import useAuthStore from "../store/useAuthStore"; //  Import Zustand store
 import { FaGoogle, FaFacebook, FaEnvelope, FaLock, FaUser } from "react-icons/fa";
 import { motion } from "framer-motion";
+import { toast } from "react-toastify";
 
 const StudentLoginSignup = () => {
-  const { studentLogin, studentSignup } = useAuthStore(); // ✅ Get login/signup functions from Zustand store
+  const { studentLogin, studentSignup } = useAuthStore(); //  Get login/signup functions from Zustand store
   const [isLogin, setIsLogin] = useState(true);
-  const navigate = useNavigate(); // ✅ For page redirection
+  const navigate = useNavigate(); //  For page redirection
 
   const [studentSignupData, setStudentSignupData] = useState({
     email: "",
@@ -20,24 +21,24 @@ const StudentLoginSignup = () => {
     password: "",
   });
 
-  // ✅ Fixed: Added debug logs and improved API response handling
   const handleStudentLogin = async (e) => {
     e.preventDefault();
-    console.log("🔍 Attempting login with:", studentLoginData);
+    console.log(" Attempting login with:", studentLoginData);
 
     try {
       const success = await studentLogin(studentLoginData);
       
       if (success) {
-        console.log("✅ Login successful, redirecting...");
-        navigate("/api/studentDashboard"); // ✅ Redirect to dashboard
+        console.log(" Login successful, redirecting...");
+        navigate("/api/studentDashboard"); // Redirect to dashboard
       } else {
-        console.error("❌ Login failed. Invalid credentials.");
-        alert("Incorrect email or password. Please try again.");
+        console.error(" Login failed. Invalid credentials.");
+        toast.error("Incorrect email or password.");
+    
       }
     } catch (error) {
-      console.error("❌ Error during login:", error);
-      alert("An error occurred. Please check the console for details.");
+      console.error(" Error during login:", error);
+      toast.error("An error occurred. Please check the console for details.");
     }
   };
 
@@ -46,15 +47,15 @@ const StudentLoginSignup = () => {
     try{
     const success = await studentSignup(studentSignupData);
     if (success) {
-      console.log("✅ signup successful, redirecting...");
-      navigate("/api/studentDashboard"); // ✅ Redirect to dashboard
+      console.log(" signup successful, redirecting...");
+      navigate("/api/studentDashboard"); //  Redirect to dashboard
     } else {
-      console.error("❌ signup failed. Invalid credentials.");
-      alert("Incorrect email or password. Please try again.");
+      console.error(" signup failed. Invalid credentials.");
+      toast.error("Incorrect email or password. Please try again.");
     }
   } catch (error) {
-    console.error("❌ Error during signup:", error);
-    alert("An error occurred. Please check the console for details.");
+    console.error(" Error during signup:", error);
+    toast.error("An error occurred. Please check the console for details.");
   }
   };
 
