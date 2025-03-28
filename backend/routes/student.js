@@ -5,7 +5,7 @@ import { checkRole } from '../middleware/protected.middlewar.js';
 
 const router = express.Router();
 
-router.get('/profile/:id',auth,checkRole(["student"]),requireStudent,getStudentProfile);
+router.post('/profile/:id',auth,checkRole(["student"]),requireStudent,getStudentProfile);
 router.put('/updateProfile/:id',auth,checkRole(["student"]),requireStudent,updateStudentProfile);
 router.get("/allCourses",auth,checkRole(["student"]),requireStudent,getAllCourses);
 

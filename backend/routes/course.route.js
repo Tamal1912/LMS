@@ -1,5 +1,5 @@
 import express from "express";
-import { auth } from "../middleware/authMiddleware.js";
+import { auth,requireStudent } from "../middleware/authMiddleware.js";
 import { watchCourse } from "../controllers/course.controller.js";
 
 
@@ -7,6 +7,6 @@ const router=express.Router();
 
 
 
-router.post("/watch/:courseId",auth,watchCourse)
+router.post("/watch/:courseId",auth,requireStudent,watchCourse)
 
 export default router;

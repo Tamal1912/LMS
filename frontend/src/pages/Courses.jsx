@@ -43,7 +43,7 @@ const Courses = () => {
                                 <Link to="/api/studentDashboard" className="text-gray-700 hover:text-gray-900 text-lg font-semibold transition-all duration-300">
                                     ← Back to Dashboard
                                 </Link>
-                                <h1 className="text-4xl font-bold text-gray-900 text-center">📚 My Learning Journey</h1>
+                                <h1 className="text-4xl font-bold text-gray-900 text-center">📚 Explore Courses</h1>
                                 <span className="bg-[#A8DADC] text-white px-4 py-1 rounded-full text-sm font-medium shadow-md">
                                     {allCourses.length} Courses
                                 </span>

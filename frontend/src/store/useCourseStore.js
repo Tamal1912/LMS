@@ -125,7 +125,6 @@ const useCourseStore = create((set, get) => ({
       try {
         set({ loading: true, error: null });
           const response = await api.get(`/v1/student/allCourses`);
-          console.log("API Response:", response.data); 
           
           if (response.data && response.data.courses) {
             set({
@@ -139,13 +138,13 @@ const useCourseStore = create((set, get) => ({
             });
           }
         } catch (error) {
+           
           console.error("Error fetching courses:", error);
           set({
             error: error.message,
             allCourses: [],
             loading: false,
           });
-          toast.error("Failed to get courses");
         }
     },
  

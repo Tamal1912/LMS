@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Features from "../components/Features";
 import HowItWorks from "../components/HowItWorks";
 import Footer from "../components/Footer";
@@ -40,20 +40,36 @@ const Navbar = () => {
   <div className="text-2xl font-bold flex-shrink-0">EduPlatform</div>
 
    {/* Hamburger menu only on small screens */}
-   <button className="ml-5 lg:hidden" onClick={handleButtonToggle}>
+   <button className="ml-5 lg:hidden  md:hidden" onClick={handleButtonToggle}>
     
       <TiThMenu/>
     </button>
   
   {/* for big screen */}
-  {/* Login and signup buttons for small screens inside the hamburger menu */}
+ { /* Login and signup buttons for small screens inside the hamburger menu */}
+  <ul className={`md:flex gap-6 font-medium ${
+    showMenu ? "flex flex-col items-center text-center absolute top-16 left-1/2 transform -translate-x-1/2 w-full bg-blue-600 p-4" : "hidden"
+  }`}>
+    <li className="cursor-pointer px-3 py-2 rounded-md hover:text-blue-900 hover:bg-blue-100 transition duration-300">
+      <a href="/">Home</a>
+    </li>
 
-  <ul className={`md:flex gap-6 font-medium ${showMenu ? "flex flex-col items-center text-center absolute top-16 left-1/2 transform -translate-x-1/2 w-full bg-blue-600 p-4" : "hidden"}`}>
-  {["Home", "Features", "How It Works", "Contact"].map((item) => (
-    <li key={item} className="cursor-pointer px-3 py-2 rounded-md  hover:text-blue-900 hover:bg-blue-100 transition duration-300 ">{item}</li>
-  ))}
-  
-  {/* Login and signup buttons on small screens*/}
+    
+    <li onClick={()=> openModal("Login")} className="cursor-pointer px-3 py-2 rounded-md hover:text-blue-900 hover:bg-blue-100 transition duration-300">
+      <a href="/#">Courses</a>
+    </li>
+    
+    <li className="cursor-pointer px-3 py-2 rounded-md hover:text-blue-900 hover:bg-blue-100 transition duration-300">
+      <a href="/features">Features</a>
+    </li>
+    <li className="cursor-pointer px-3 py-2 rounded-md hover:text-blue-900 hover:bg-blue-100 transition duration-300">
+      <a href="/how-it-works">How It Works</a>
+    </li>
+    <li className="cursor-pointer px-3 py-2 rounded-md hover:text-blue-900 hover:bg-blue-100 transition duration-300">
+      <a href="/contact">Contact</a>
+    </li>
+
+    {/* Login and signup buttons on small screens*/}
   <li className="flex flex-col gap-2 mt-4 md:hidden">
     <button className="bg-white text-blue-600 px-6 py-2 rounded-lg hover:bg-blue-200 transition" onClick={() => openModal("Login")}>Login</button>
 

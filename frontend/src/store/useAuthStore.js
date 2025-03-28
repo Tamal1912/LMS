@@ -17,7 +17,7 @@ const useAuthStore = create(
             getProfile: async (id) => {
                 try {
                     set({ loading: true, error: null });
-                    const response = await api.get(`/v1/student/profile/${id}`);
+                    const response = await api.post(`/v1/student/profile/${id}`);
                     
                     if (response.data?.success && response.data?.data) {
                         set(state => ({

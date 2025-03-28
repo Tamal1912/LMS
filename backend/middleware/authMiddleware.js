@@ -13,13 +13,17 @@ export const auth = asyncHandler(async (req, res, next) => {
   try {
     // Get token from authorization header
     const token = req.cookies?.accessToken || req.header("Authorization")?.replace("Bearer ", "");
-
+    console.log("user auth")
     
 
     if (!token) {
-      throw new ApiError(401, "Unauthorized request - No token provided");
+      return res.status(401).json({
+        success: false,
+        message: "Access token not found" 
+      });
     }
 
+    try {
     // Verify token
     const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
 
@@ -31,7 +35,10 @@ export const auth = asyncHandler(async (req, res, next) => {
     }
 
     if (!user) {
-      throw new ApiError(401, "Invalid Access Token");
+      return res.status(401).json({
+        success: false,
+        message: "User not found or session expired" 
+      });
     }
 
     // Add user and role to request object
@@ -39,24 +46,33 @@ export const auth = asyncHandler(async (req, res, next) => {
     req.userType = user instanceof Student ? 'student' : 'teacher';
     
     next();
-  } catch (error) {
-    // Handle specific JWT errors
-    if (error.name === 'JsonWebTokenError') {
-      throw new ApiError(401, "Invalid token");
+    
+  }catch (jwtError) {
+    if (jwtError.name === 'TokenExpiredError') {
+      return res.status(401).json({
+        success: false,
+        message: "Session expired. Please login.",
+        isExpired: true
+      });
     }
-    if (error.name === 'TokenExpiredError') {
-      
-      window.location.href = "/";
-      throw new ApiError(401, "Token has expired");
-    }
-    throw error;
+    throw new ApiError(401, "Invalid authentication token");
   }
+} catch (error) {
+  return res.status(error.statusCode || 401).json({
+    success: false,
+    message: error.message || "Authentication failed"
+  });
+}
 });
 
 // Optional: Specific middleware for student routes
 export const requireStudent = asyncHandler(async (req, res, next) => {
   if (req.userType !== 'student') {
-    throw new ApiError(403, "Access denied. Students only.");
+    toast.error("Access denied. Students only.");
+    return res.status(403).json({
+      success: false,
+      message: "Access denied. Students only."
+    });
   }
   next();
 });
@@ -64,9 +80,12 @@ export const requireStudent = asyncHandler(async (req, res, next) => {
 // Optional: Specific middleware for teacher routes
 export const requireTeacher = asyncHandler(async (req, res, next) => {
   if (req.userType !== 'teacher') {
-    throw new ApiError(403, "Access denied. Teachers only.");
+    return res.status(403).json({
+      success: false,
+      message: "Access denied. Teachers only."
+    });
   }
-  next();
+  next();;
 });
 
 const authorizeRole = (roles) => {
