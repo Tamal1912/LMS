@@ -13,12 +13,12 @@ const usePostStore = create((set) => ({
             set({ loading: true });
             const response = await api.post('/v1/teacher/create_post', {
                 title: postData.title,
-                postBody: postData.postBody,  // Match backend field name
+                postBody: postData.postBody,  
                 links: postData.links,
                 tags: postData.tags
             });
             
-            if (response.data?.statusCode === 200) {  // Match your ApiResponse structure
+            if (response.data?.statusCode === 200) {  
                 set((state) => ({
                     posts: [...state.posts, response.data.data],
                     loading: false
@@ -37,7 +37,7 @@ const usePostStore = create((set) => ({
             set({ loading: true });
             const response = await api.get('/v1/teacher/get_teacher_posts');
             
-            if (response.data?.statusCode === 200) {  // Match your ApiResponse structure
+            if (response.data?.statusCode === 200) {  
                 set({ posts: response.data.data, loading: false });
             } else {
                 throw new Error(response.data?.message || 'Failed to fetch posts');
@@ -45,7 +45,7 @@ const usePostStore = create((set) => ({
         }
         catch (error) {
             set({ loading: false, error: error.message });
-            toast.error(error.message);  // Show error message using toast
+            toast.error(error.message); 
         }
     },
 }));
