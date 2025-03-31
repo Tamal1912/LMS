@@ -16,6 +16,8 @@ import ManageCoursePage from './pages/ManageCoursePage.jsx';
 import CreateCoursePage from './pages/CreateCoursePage.jsx';
 import CourseDetails from './components/CourseDetails.jsx';
 import UpdateCoursePage from './pages/UpdateCoursePage.jsx';
+import CreatePostPage from './pages/CreatePostPage.jsx';
+import ManagePostPage from './pages/ManagePostPage.jsx';
 import TrackAllStudents from './pages/TrackAllStudents';
 import TeacherProfile from './pages/TeacherProfile.jsx';
 import { Toaster } from 'react-hot-toast';
@@ -36,6 +38,8 @@ ReactDOM.createRoot(document.getElementById('root')).render(
     <Route path="/api/teacherLoginSignup" element={<TeacherLoginSignup/>}/>
     <Route path='/api/teacherDashboard' element={<TeacherDashboard/>}/>
     <Route path="/teacherDashboard/create_course" element={<CreateCoursePage/>}/>
+    <Route path="/teacherDashboard/create_post" element={<CreatePostPage/>}/>
+    <Route path="/teacherDashboard/manage_post" element={<ManagePostPage/>}/>
     <Route path="/teacherDashboard/manage_course" element={<ManageCoursePage/>}/>
     <Route path="/teacherDashboard/update_course/:courseId" element={<UpdateCoursePage/>}/>
     <Route path="/courseDetails/:courseId" element={<CourseDetails/>}/>

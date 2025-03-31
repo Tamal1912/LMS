@@ -74,6 +74,23 @@ const TeacherDashboard = () => {
                         <p className="text-gray-600">Build and launch new courses.</p>
                     </Link>
                 </div>
+                {/* create post */}
+                <div className="p-6 bg-white bg-opacity-90 shadow-lg rounded-xl border border-indigo-300 
+                hover:shadow-[0_0_15px_#6366f1] hover:scale-105 transition duration-300 ease-in-out">
+                    <Link to="/teacherDashboard/create_post">
+                        <h2 className="text-xl font-semibold text-indigo-800 mb-2"> 🚀 Create Post</h2>
+                        <p className="text-gray-600">share Your daily thoughts</p>
+                    </Link>
+                </div>
+
+                 {/* manage posts */}
+                 <div className="p-6 bg-white bg-opacity-90 shadow-lg rounded-xl border border-indigo-300 
+                hover:shadow-[0_0_15px_#6366f1] hover:scale-105 transition duration-300 ease-in-out">
+                    <Link to="/teacherDashboard/manage_post">
+                        <h2 className="text-xl font-semibold text-indigo-800 mb-2"> 🚀 Manage Post</h2>
+                        <p className="text-gray-600">Manage Your posts</p>
+                    </Link>
+                </div>
             </div>
         </div>
     );

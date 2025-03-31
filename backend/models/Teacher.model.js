@@ -19,6 +19,7 @@ const teacherSchema = new mongoose.Schema({
       ref: 'Course'
     }
   }],
+  posts: [{ type: mongoose.Schema.Types.ObjectId, ref: "Post" }],
   refreshToken: { type: String}
 }, {timestamps:true});
 
