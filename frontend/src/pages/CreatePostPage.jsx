@@ -3,7 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import usePostStore from '@/store/usePostStore';
 import useAuthStore from '@/store/useAuthStore';
 import { toast } from 'react-hot-toast';
-import Loader from '@/components/Loader';
+import { Audio } from 'react-loader-spinner'
+
+
 
 const CreatePostPage = () => {
     const { user } = useAuthStore();
@@ -24,32 +26,45 @@ const CreatePostPage = () => {
                 ...post,
                 author: user?._id  // Add author ID
             });
-            
+
             if (result) {
                 setSuccess(true);
                 toast.success('Post created successfully! redirecting...');
                 setPost({ title: '', postBody: '', links: [], tags: [] });  // Reset form fields
                 setTimeout(() => {
-                    
+
                     navigate('/teacherDashboard/manage_post');  // Redirect to manage posts page
                 }, 4000);
             }
         } catch (error) {
             console.error('Error creating post:', error);
             toast.error(error.message || 'Failed to create post');
-            setSuccess(false);    
+            setSuccess(false);
         }
     };
+
+
+
 
     return (
         <div className="min-h-screen bg-gray-100 py-12 px-4 sm:px-6 lg:px-8">
             <div className="max-w-2xl mx-auto bg-white rounded-lg shadow-md p-6">
                 <h1 className="text-3xl font-bold text-center text-indigo-600 mb-8">Create New Post</h1>
-                
+
                 {success ? (
-                    <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4">
-                        Post created successfully!
+                    <div className="flex flex-col items-center justify-center h-full">
+
+                        <Audio
+                            height="80"
+                            width="80"
+                            radius="9"
+                            color="green"
+                            ariaLabel="three-dots-loading"
+                            wrapperStyle
+                            wrapperClass
+                        />
                     </div>
+
                 ) : (
                     <form onSubmit={handleSubmit} className="space-y-6">
                         <div>
@@ -64,7 +79,7 @@ const CreatePostPage = () => {
                                 required
                             />
                         </div>
-                        
+
                         <div>
                             <label className="block text-gray-700 text-sm font-bold mb-2">
                                 Content
@@ -77,18 +92,18 @@ const CreatePostPage = () => {
                                 required
                             />
                         </div>
-                        
-                       {/* Add important links or resources */}
+
+                        {/* Add important links or resources */}
                         <div className="text-sm text-gray-500 mb-4">
                             <p>Include any important links or resources related to the post:</p>
                             <input
-                             type="url"
-                             placeholder="e.g., https://www.example.com"
-                             value={post.links.join(', ')}
-                             onChange={(e) => setPost({ ...post, links: e.target.value.split(',').map(link => link.trim()) })}
+                                type="url"
+                                placeholder="e.g., https://www.example.com"
+                                value={post.links.join(', ')}
+                                onChange={(e) => setPost({ ...post, links: e.target.value.split(',').map(link => link.trim()) })}
                                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                                
-                             />
+
+                            />
                         </div>
 
                         {/* Add tags */}
@@ -104,7 +119,7 @@ const CreatePostPage = () => {
                                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
                             />
                         </div>
-                        
+
 
                         <button
                             type="submit"

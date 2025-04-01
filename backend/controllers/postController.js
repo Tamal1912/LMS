@@ -1,27 +1,27 @@
 import Post from "../models/Post.model.js";
 import Teacher from "../models/Teacher.model.js";
 import mongoose from "mongoose";
-import {asyncHandler} from "../utils/asyncHandler.js";
-import {ApiError}  from "../utils/ApiError.js";
+import { asyncHandler } from "../utils/asyncHandler.js";
+import { ApiError } from "../utils/ApiError.js";
 import ApiResponse from "../utils/ApiResponses.js";
 
 export const createPost = asyncHandler(async (req, res) => {
     try {
 
-      const author = req.user._id; 
-      const { title, postBody, links, tags } = req.body;
+        const author = req.user._id;
+        const { title, postBody, links, tags } = req.body;
 
-      if(!title || !postBody) {
-        throw new ApiError(400, "Title and post body are required");
-      }
+        if (!title || !postBody) {
+            throw new ApiError(400, "Title and post body are required");
+        }
 
-      const post = await Post.create({
-        title,
-        postBody,
-        author,
-        links,
-        tags,
-      });
+        const post = await Post.create({
+            title,
+            postBody,
+            author,
+            links,
+            tags,
+        });
 
         const teacher = await Teacher.findById(author);
         if (!teacher) {
@@ -44,23 +44,49 @@ export const createPost = asyncHandler(async (req, res) => {
 });
 
 export const deletePost = asyncHandler(async (req, res) => {
+
     try {
+
         const { postId } = req.params;
+
+        if (!postId || postId === "undefined") {
+            return res.status(400).json({ success: false, message: "Invalid Post ID" });
+        }
+        const teacherId = req.user._id;
+
+
         const post = await Post.findById(postId);
         if (!post) {
             throw new ApiError(404, "Post not found");
         }
 
+    
+        if (post.author.toString() !== teacherId.toString()) {
+            throw new ApiError(403, "You are not authorized to delete this post");
+        }
+
+        
         await Post.findByIdAndDelete(postId);
+
+     
+        const updatedTeacher = await Teacher.findByIdAndUpdate(
+            teacherId,
+            { $pull: { posts: postId } },
+            { new: true }
+        );
+
+        console.log("Post deleted & teacher updated:", updatedTeacher);
 
         return res.status(200).json(
             new ApiResponse(200, null, "Post deleted successfully")
         );
+
     } catch (error) {
         console.error("Error deleting post:", error);
         throw new ApiError(500, "Failed to delete post");
     }
 });
+
 
 export const getTeacherPosts = asyncHandler(async (req, res) => {
     try {

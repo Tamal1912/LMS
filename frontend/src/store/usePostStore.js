@@ -32,6 +32,35 @@ const usePostStore = create((set) => ({
         }
     },
 
+     deletePost : async (postId) => {
+        console.log("Frontend: Trying to delete post with ID:", postId);
+    
+        if (!postId) {
+            console.error("Frontend: postId is missing!");
+            toast.error("Invalid post ID");
+            return;
+        }
+    
+        try {
+            const response = await api.delete(`/v1/teacher/delete_post/${postId}`);
+    
+    
+            if (response.data?.statusCode === 200) {
+                set((state) => ({
+                    posts: state.posts.filter((post) => post._id !== postId),
+                    loading: false
+                }));
+
+            } else {
+                throw new Error(response.data?.message || "Failed to delete post");
+            }
+        } catch (error) {
+            console.error("Delete post error:", error);
+            toast.error("Error deleting post");
+        }
+    },
+    
+
     getPosts: async () => { 
         try {
             set({ loading: true });
