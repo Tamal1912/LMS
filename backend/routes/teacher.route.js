@@ -1,7 +1,7 @@
 import express from "express";
 import { createCourse, deleteCourse, updateCourse, getTeacherCourses } from "../controllers/course.controller.js";
 import { trackAllStudents, getTeacherProfile, getStudentDetails, updateTeacherProfile } from "../controllers/teacherController.js";
-import { createPost, deletePost,getTeacherPosts } from "../controllers/postController.js";
+import { createPost, deletePost,updatePost,getTeacherPosts } from "../controllers/postController.js";
 import { checkRole } from '../middleware/protected.middlewar.js';
 import { auth } from '../middleware/authMiddleware.js';
 import { requireTeacher } from "../middleware/authMiddleware.js"
@@ -22,7 +22,7 @@ router.put("/update_teacher_profile", auth, checkRole(["teacher"]), updateTeache
 router.post("/create_post", auth, requireTeacher, checkRole(["teacher"]), createPost);
 router.get("/get_teacher_posts", auth, requireTeacher, checkRole(["teacher"]), getTeacherPosts);
 router.delete("/delete_post/:postId", auth, checkRole(["teacher"]), deletePost);
-// router.put("/update_post/:postId", auth, requireTeacher, checkRole(["teacher"]), updatePost);
+router.put("/update_post/:postId", auth, requireTeacher, checkRole(["teacher"]), updatePost);
 // router.get("/get_post/:postId", auth, requireTeacher, checkRole(["teacher"]), getPost);
 
 export default router;

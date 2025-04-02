@@ -41,6 +41,24 @@ function App() {
                             </ProtectedRoute>
                         } 
                     />
+
+                    <Route
+                        path='/api/teacherDashboard/update_post'
+                        element={
+                            <ProtectedRoute allowedRoles={['teacher']}>
+                                <UpdatePostPage />
+                            </ProtectedRoute>
+                        }
+                    />
+
+                    <Route 
+                        path="/teacherDashboard/update_post/:postId" 
+                        element={
+                            <ProtectedRoute allowedRoles={['teacher']}>
+                                <UpdatePostPage />
+                            </ProtectedRoute>
+                        } 
+                    />
                 </Routes>
             </Router>
             <ToastContainer position='top-center' />

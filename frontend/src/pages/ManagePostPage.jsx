@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import usePostStore from '../store/usePostStore';
 import useAuthStore from '../store/useAuthStore';
 import { toast } from 'react-hot-toast';
@@ -17,18 +17,20 @@ const ManagePostPage = () => {
 
   const handleDelete = async (postId) => {
     try {
-      console.log("Deleting post with ID:", postId); // Debugging
-        await deletePost(postId);
-        await getPosts(); // Refresh posts after deletion
-        toast.success('Post deleted successfully!');
+      console.log("Deleting post with ID:", postId);
+      await deletePost(postId);
+      await getPosts(); 
+      toast.success('Post deleted successfully!');
     } catch (error) {
-        console.error('Error deleting post:', error);
-        toast.error('Failed to delete post');
+      console.error('Error deleting post:', error);
+      toast.error('Failed to delete post');
     }
-};
+  };
 
 
-  const filteredPosts = posts.filter(post => 
+
+
+  const filteredPosts = posts.filter(post =>
     post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
     post.postBody.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -66,11 +68,11 @@ const ManagePostPage = () => {
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {filteredPosts.map((post) => (
               <div
-                key={post._id}
+                key={post._id}  // Changed from post.id
                 className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow"
               >
-                
-                
+
+
                 <div className="p-6">
                   <h2 className="text-xl font-semibold text-gray-900 mb-2">
                     {post.title}
@@ -89,15 +91,17 @@ const ManagePostPage = () => {
                         </span>
                       ))}
                     </div>
+
                     <div className="flex space-x-2">
-                      <button
-                        onClick={() => navigate(`/edit-post/${post._id}`)}
+                      <Link
+                        to={`/teacherDashboard/update_post/${post._id}`}  // Changed from post.id
                         className="p-2 text-blue-600 hover:bg-blue-50 rounded-full"
                       >
                         <FiEdit className="w-5 h-5" />
-                      </button>
+                      </Link>
+
                       <button
-                        onClick={() => handleDelete(post.id)}
+                        onClick={() => handleDelete(post._id)}  // Changed from post.id
                         className="p-2 text-red-600 hover:bg-red-50 rounded-full"
                       >
                         <FiTrash2 className="w-5 h-5" />

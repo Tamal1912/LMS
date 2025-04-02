@@ -60,23 +60,57 @@ const usePostStore = create((set) => ({
         }
     },
     
+    updatePost: async (postId, postData) => {
+        try {
+            set({ loading: true });
+            const response = await api.put(`/v1/teacher/update_post/${postId}`, {
+                title: postData.title, 
+                postBody: postData.postBody,
+                links: postData.links,
+                tags: postData.tags
+            });
+            
+            if (response.data?.statusCode === 200) {  
+                set((state) => ({
+                    posts: state.posts.map((post) =>
+                        post._id === postId ? { ...post, ...response.data.data } : post
+                    ),
+                    loading: false
+                }));
+                return true;
+            }
+            throw new Error(response.data?.message || 'Failed to update post');
+        } catch (error) {
+            set({ loading: false, error: error.message });
+            throw error;
+        }
+    },
+    
 
-    getPosts: async () => { 
+    getPosts: async () => {
         try {
             set({ loading: true });
             const response = await api.get('/v1/teacher/get_teacher_posts');
             
-            if (response.data?.statusCode === 200) {  
-                set({ posts: response.data.data, loading: false });
+            if (response.data?.statusCode === 200) {
+                set({
+                    posts: response.data.data,
+                    loading: false,
+                    error: null
+                });
             } else {
-                throw new Error(response.data?.message || 'Failed to fetch posts');
+                throw new Error('Failed to fetch posts');
             }
+        } catch (error) {
+            console.error('Error fetching posts:', error);
+            set({ 
+                loading: false, 
+                error: error.message,
+                posts: [] 
+            });
+            toast.error('Failed to fetch posts');
         }
-        catch (error) {
-            set({ loading: false, error: error.message });
-            toast.error(error.message); 
-        }
-    },
+    }
 }));
 
 export default usePostStore;

@@ -3,7 +3,7 @@ import { createRoot } from 'react-dom/client'
 import * as ReactDOM from "react-dom/client";
 import './index.css'
 import App from './App.jsx'
-import {BrowserRouter, createBrowserRouter,Route,RouterProvider, Routes} from "react-router-dom"
+import {BrowserRouter, createBrowserRouter,Route, Routes} from "react-router-dom"
 import Home from './pages/Home.jsx'
 import StudentLoginSignup from "./pages/StudentLoginSignup.jsx"
 import TeacherLoginSignup from './pages/TeacherLoginSignup.jsx';
@@ -15,6 +15,7 @@ import StudentProfile from "./pages/StudentProfile.jsx"
 import ManageCoursePage from './pages/ManageCoursePage.jsx';
 import CreateCoursePage from './pages/CreateCoursePage.jsx';
 import CourseDetails from './components/CourseDetails.jsx';
+import UpdatePostPage from './pages/UpdatePostPage';
 import UpdateCoursePage from './pages/UpdateCoursePage.jsx';
 import CreatePostPage from './pages/CreatePostPage.jsx';
 import ManagePostPage from './pages/ManagePostPage.jsx';
@@ -41,6 +42,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
     <Route path="/teacherDashboard/create_post" element={<CreatePostPage/>}/>
     <Route path="/teacherDashboard/manage_post" element={<ManagePostPage/>}/>
     <Route path="/teacherDashboard/manage_course" element={<ManageCoursePage/>}/>
+    <Route path="/teacherDashboard/update_post/:postId" element={<UpdatePostPage/>}/>
     <Route path="/teacherDashboard/update_course/:courseId" element={<UpdateCoursePage/>}/>
     <Route path="/courseDetails/:courseId" element={<CourseDetails/>}/>
     <Route path="/api/trackAllStudents" element={<TrackAllStudents/>}/>

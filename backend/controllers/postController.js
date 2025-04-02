@@ -60,15 +60,15 @@ export const deletePost = asyncHandler(async (req, res) => {
             throw new ApiError(404, "Post not found");
         }
 
-    
+
         if (post.author.toString() !== teacherId.toString()) {
             throw new ApiError(403, "You are not authorized to delete this post");
         }
 
-        
+
         await Post.findByIdAndDelete(postId);
 
-     
+
         const updatedTeacher = await Teacher.findByIdAndUpdate(
             teacherId,
             { $pull: { posts: postId } },
@@ -87,22 +87,59 @@ export const deletePost = asyncHandler(async (req, res) => {
     }
 });
 
+export const updatePost = asyncHandler(async (req, res) => {
+    try {
+        const { postId } = req.params;
+        const { title, postBody, links, tags } = req.body;
+        const teacherId = req.user._id;
+
+        
+        if (!mongoose.Types.ObjectId.isValid(postId)) {
+            throw new ApiError(400, "Invalid Post ID format");
+        }
+
+        const post = await Post.findById(postId);
+        if (!post) {
+            throw new ApiError(404, "Post not found");
+        }
+        if (post.author.toString() !== teacherId.toString()) {
+            throw new ApiError(403, "You are not authorized to update this post");
+        }
+        const updatedPost = await Post.findByIdAndUpdate(postId, {
+            title,
+            postBody,
+            links,
+            tags,
+        }, { new: true });
+        return res.status(200).json(
+            new ApiResponse(200, updatedPost, "Post updated successfully")
+        );
+
+    } catch (error) {
+        console.error("Error updating post:", error);
+        throw new ApiError(error.statusCode || 500, error.message || "Failed to update post");
+    }
+});
+
 
 export const getTeacherPosts = asyncHandler(async (req, res) => {
     try {
         const teacherId = req.user._id;
         const teacher = await Teacher.findById(teacherId).populate('posts');
+        
         if (!teacher) {
             throw new ApiError(404, "Teacher not found");
         }
+
         const posts = teacher.posts.map(post => ({
-            id: post._id,
+            _id: post._id,  // Changed from id to _id
             title: post.title,
             postBody: post.postBody,
-            links: post.links,
-            tags: post.tags,
+            links: post.links || [],
+            tags: post.tags || [],
             createdAt: post.createdAt,
         }));
+
         return res.status(200).json(
             new ApiResponse(200, posts, "Posts retrieved successfully")
         );
