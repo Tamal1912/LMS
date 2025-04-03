@@ -30,9 +30,9 @@ const StudentSidebar = () => {
                     </div>
                     <div className="hover:bg-blue-500 p-4 rounded-lg cursor-pointer transition">
                         <span className="font-semibold">
-                            <Link to="/grades">
+                            <Link to="/postFeed" >
                                 <button>
-                                    Grades
+                                    Posts
                                 </button>
                             </Link>
                         </span>

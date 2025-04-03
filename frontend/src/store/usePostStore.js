@@ -110,7 +110,32 @@ const usePostStore = create((set) => ({
             });
             toast.error('Failed to fetch posts');
         }
-    }
+    },
+
+    getAllPosts: async () => {
+        try {
+             set({loading:true});
+             const response = await api.get('/v1/student/postfeed');
+                if (response.data?.statusCode === 200) {
+                    set({
+                        posts: response.data.data,
+                        loading: false,
+                        error: null
+                    });
+                } else {
+                    throw new Error('Failed to fetch posts');
+                }
+        } catch (error) {
+            console.error('Error fetching posts:', error);
+            set({ 
+                loading: false, 
+                error: error.message,
+                posts: [] 
+            });
+            toast.error('Failed to fetch posts');
+        }
+    },
+
 }));
 
 export default usePostStore;

@@ -148,3 +148,21 @@ export const getTeacherPosts = asyncHandler(async (req, res) => {
         throw new ApiError(500, "Failed to retrieve posts");
     }
 });
+
+export const getAllPosts = asyncHandler(async (req, res) => {
+
+
+    try {
+         const posts = await Post.find({}).populate('author', 'username email');
+        if (!posts || posts.length === 0) {
+            return res.status(404).json(new ApiResponse(404, null, "No posts found"));
+        }
+        return res.status(200).json(
+            new ApiResponse(200, posts, "Posts retrieved successfully")
+        );
+
+    } catch (error) {
+        console.error("Error retrieving posts:", error);
+        throw new ApiError(500, "Failed to retrieve posts");
+    }
+});
