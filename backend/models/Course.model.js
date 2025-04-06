@@ -19,11 +19,6 @@ const courseSchema=new mongoose.Schema({
         type:String,
         required:true
     },
-  
-    assignments:{
-        type:String,
-        required:true  
-    },
     courseContent:{
         type:String,
         required:true

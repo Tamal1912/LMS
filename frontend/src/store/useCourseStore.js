@@ -147,6 +147,32 @@ const useCourseStore = create((set, get) => ({
           });
         }
     },
+
+    enrollInCourse: async (courseId) => {
+      try {
+        set({ loading: true, error: null });
+        const response = await api.post(`/v1/student/enroll/${courseId}`);
+        console.log(response.data);
+        set((state) => ({
+          enrolledCourses: [...state.enrolledCourses, courseId],
+        }));
+        toast.success("Successfully enrolled in course!");
+      } catch (error) {
+        console.error("Error enrolling in course:", error);
+        toast.error(error.response?.data?.message || "Failed to enroll in course");
+      }
+    },
+
+    showEnrolledStudents: async (courseId) => {
+      try {
+        const response = await api.get(`/v1/course/enrolledStudents/${courseId}`);
+        console.log(response.data);
+        return response.data;
+      } catch (error) {
+        console.error("Error fetching enrolled students:", error);
+        toast.error("Failed to fetch enrolled students");
+      }
+    },
  
 }));
 

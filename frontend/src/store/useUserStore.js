@@ -12,20 +12,26 @@ const useAuthStore = create((set) => ({
     error: null,
    
     trackAllStudents: async () => {
-        set({loading: true});
         try {
+            set({ loading: true });
             const response = await api.get('/v1/teacher/track_all_students');
             
-            set({allStudents: response.data.students});
+            if (response.data?.statusCode === 200) {
+                set({
+                    allStudents: response.data.data,
+                    loading: false,
+                    error: null
+                });
+            } else {
+                throw new Error(response.data?.message || 'Failed to fetch students');
+            }
         } catch (error) {
-            set({
+            console.error('Error fetching students:', error);
+            set({ 
+                loading: false, 
                 error: error.message,
-                allStudents: [],
-                loading: false
+                allStudents: []
             });
-            toast.error('Failed to fetch students');
-        } finally {
-            set({loading: false});
         }
     },
     getTeacherProfile: async () => {

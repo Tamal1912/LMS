@@ -29,8 +29,12 @@ const postSchema = new mongoose.Schema({
         },
     ],
     upvotes:{
-        type:mongoose.Schema.Types.ObjectId,
-        ref:'Student',
+        type:Number,
+        default:0,
+    },
+    downvotes:{
+        type:Number,
+        default:0,
     },
 });
 

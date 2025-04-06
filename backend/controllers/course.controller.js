@@ -9,7 +9,7 @@ import Teacher from "../models/Teacher.model.js";
 export const createCourse = asyncHandler(async (req, res) => {
     try {
         const courseOwner = req.user._id; // Get teacher ID
-        const { courseName, courseDescription, courseContent, courseOutcome, assignments, courseCategory, courseImage } = req.body;
+        const { courseName, courseDescription, courseContent, courseOutcome, courseCategory, courseImage } = req.body;
 
         if (!courseContent) {
             throw new ApiError(400, "Video file is required");
@@ -21,10 +21,6 @@ export const createCourse = asyncHandler(async (req, res) => {
             folder: "course_videos"
         });
 
-        const assignmentUploadResponse = await cloudinary.uploader.upload(assignments, {
-            resource_type: "raw",
-            folder: "course_assignments"
-        });
 
         let courseImageUploadResponse;
         if (courseImage) {
@@ -41,7 +37,6 @@ export const createCourse = asyncHandler(async (req, res) => {
             courseDescription,
             courseOutcome,
             courseContent: videoUploadResponse.secure_url,
-            assignments: assignmentUploadResponse.secure_url,
             courseCategory,
             courseImage: courseImageUploadResponse.secure_url,
         });
@@ -95,7 +90,7 @@ export const createCourse = asyncHandler(async (req, res) => {
 export const updateCourse =asyncHandler(async (req, res) => {
     try {
         const {courseId}=req.params;
-        const {courseName,courseDescription,courseOutcome,courseContent,assignments}=req.body;
+        const {courseName,courseDescription,courseOutcome,courseContent}=req.body;
         const course=await Course.findByIdAndUpdate(courseId,{courseName,courseDescription,courseOutcome,courseContent,assignments});
         if(!course) throw new ApiError(404,"Course not found")
         await course.save();
@@ -149,5 +144,55 @@ export const getTeacherCourses = asyncHandler(async (req, res) => {
         console.error("Error fetching teacher courses:", error);
         throw new ApiError(500, "Failed to fetch teacher courses");
     }
+});
+
+export const enrollInCourse = asyncHandler(async (req, res) => {
+  try {
+    const { courseId } = req.params;
+    const studentId = req.user._id;
+
+    // Find the course by ID
+    const course = await Course.findById(courseId);
+    if (!course) {
+      throw new ApiError(404, "Course not found");
+    }
+
+    // Check if the student is already enrolled
+    if (course.students.includes(studentId)) {
+      return res.status(400).json(
+        new ApiResponse(400, null, "Student is already enrolled in this course")
+      );
+    }
+
+    // Add the student to the course
+    course.students.push(studentId);
+    await course.save();
+
+    // Add the course to the student's enrolledCourses array
+    const student = await Student.findById(studentId);
+    if (!student) {
+      throw new ApiError(404, "Student not found");
+    }
+
+    student.enrolledCourses.push(courseId);
+    await student.save();
+   
+
+    //add the student to Teachers enrolledStudents array
+    const teacher = await Teacher.findById(course.courseOwner);
+    if (!teacher) {
+      throw new ApiError(404, "Teacher not found");
+    }
+    teacher.enrolledStudents.push(studentId);
+    await teacher.save();
+
+
+    return res.status(200).json(
+      new ApiResponse(200, course, "Enrolled in course successfully")
+    );
+  } catch (error) {
+    console.error("Error enrolling in course:", error);
+    throw new ApiError(500, "Failed to enroll in course");
+  }
 });
 

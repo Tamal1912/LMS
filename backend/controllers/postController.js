@@ -166,3 +166,41 @@ export const getAllPosts = asyncHandler(async (req, res) => {
         throw new ApiError(500, "Failed to retrieve posts");
     }
 });
+
+export const downvotePost = asyncHandler(async (req, res) => {
+    
+    try {
+        const post = await Post.findById(req.params.postId);
+        if (!post) {
+            return res.status(404).json({ message: 'Post not found' });
+        }
+        post.downvotes += 1;
+        await post.save();
+        res.status(200).json(
+            new ApiResponse(200, post, "Post downvoted successfully")
+        );
+    } catch (error) {
+        console.log("Error downvoting post:", error);
+        throw new ApiError(500, "Server error", error);
+    }
+});
+
+export const upvotePost = asyncHandler(async (req, res) => {
+       
+    try {
+        const post = await Post.findById(req.params.postId);    
+        if (!post) {
+            return res.status(404).json({ message: 'Post not found' });
+        }
+        post.upvotes += 1;
+        await post.save();
+        res.status(200).json(
+            new ApiResponse(200, post, "Post upvoted successfully")
+        );
+    } catch (error) {
+        console.log("Error upvoting post:", error);
+        // Handle the error appropriately, e.g., return a 500 status code with an error message
+        res.status(500).json({ message: 'Server error', error });
+        throw new ApiError(500, "Server error", error);
+    }
+});

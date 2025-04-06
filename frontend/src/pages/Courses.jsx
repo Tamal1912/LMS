@@ -20,7 +20,10 @@ const Courses = () => {
             // Refresh the courses list to show updated enrollment status
             await getAllCoursesStudents();
             // Navigate to watch course page after successful enrollment
+            setTimeout(() => {
+                toast.success("Redirecting to course details...");
             navigate(`/courseDetails/${courseId}`);
+            },2000);
         } catch (error) {
             console.error("Failed to enroll:", error);
             toast.error(error.response?.data?.message || "Failed to enroll in course");
@@ -90,9 +93,9 @@ const Courses = () => {
                                         <div className="mt-4">
                                             <Link to={`/courseDetails/${course._id}`}>
                                                 <button
-
+                                                    
                                                     className="w-full bg-[#FF6B6B] hover:bg-[#E63946] text-white py-3 rounded-lg font-medium transition-all duration-300 shadow-md"
-
+                                                    onClick={() => handleEnroll(course._id)}
                                                 >
                                                     Enroll Free
                                                 </button>

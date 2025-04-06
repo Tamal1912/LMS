@@ -8,9 +8,9 @@ import useUserStore from '../store/useUserStore.js';
 const TeacherDashboard = () => {
     const navigate = useNavigate();
     const { logout } = useAuthStore();
-    const { getTeacherProfile, teacher } = useUserStore(); // Fetch teacher data
+    const { getTeacherProfile, teacher } = useUserStore(); 
 
-    // Fetch teacher profile on component mount
+
     useEffect(() => {
         getTeacherProfile();
     }, []);
@@ -39,6 +39,9 @@ const TeacherDashboard = () => {
 
             {/* Dashboard Content */}
             <div className="mt-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                
+                
+
                 {/* Track Students */}
                 <div className="p-6 bg-white bg-opacity-90 shadow-lg rounded-xl border border-blue-300 
                 hover:shadow-[0_0_15px_#3b82f6] hover:scale-105 transition duration-300 ease-in-out">

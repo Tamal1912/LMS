@@ -17,6 +17,7 @@ router.get("/track_all_students/", auth, requireTeacher, checkRole(["teacher"]),
 router.get("/get_teacher_profile", auth, requireTeacher, checkRole(["teacher"]), getTeacherProfile);
 router.get("/getStudentDetails/:id", auth, checkRole(["teacher"]), getStudentDetails);
 router.put("/update_teacher_profile", auth, checkRole(["teacher"]), updateTeacherProfile);
+//router.get("/enrolledStudents/:courseId", auth, requireTeacher, checkRole(["teacher"]), getEnrolledStudents);
 
 //Post routes
 router.post("/create_post", auth, requireTeacher, checkRole(["teacher"]), createPost);
