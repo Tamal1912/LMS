@@ -83,7 +83,7 @@ const CreateCoursePage = () => {
   const handleVideoChange = async (e) => {
     const file = e.target.files[0];
     if (file) {
-      // Optional: Add file size validation
+      
       if (file.size > 500 * 1024 * 1024) {
         // 500MB limit
         alert("Video file is too large. Maximum size is 500MB");

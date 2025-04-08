@@ -10,6 +10,7 @@ const useCourseStore = create((set, get) => ({
   error: null,
   isUploaded: false,
   teacherCourses: [],
+  suggestedCourses: [],
 
   // Create Course
   createCourse: async (course) => {
@@ -76,20 +77,22 @@ const useCourseStore = create((set, get) => ({
     }
 },
 
-    watchCourse:async(courseId)=>{
+    watchCourse: async (courseId) => {
       try {
-        const response=await api.post(`/v1/course/watch/${courseId}`)
-        console.log(response.data)
-        
+        const response = await api.post(`/v1/course/watch/${courseId}`);
+        if (response.data?.statusCode === 200) {
+          set((state) => ({
+            allCourses: state.allCourses.map((course) =>
+              course._id === courseId ? response.data.data : course
+            ),
+          }));
+          return response.data.data;
+        }
       } catch (error) {
-        console.log(error)
-        toast.error("Failed to fetch course")
-        
+        console.error('Error watching course:', error);
+        toast.error('Failed to load course details');
       }
     },
-
-   
-
 
     getTeacherCourses: async () => {
       try {
@@ -100,7 +103,7 @@ const useCourseStore = create((set, get) => ({
         if (response.data?.data) {  
           set({
             teacherCourses: response.data.data,
-            allCourses: response.data.data, // Also update allCourses
+            allCourses: response.data.data, 
             loading: false,
           });
         } else {
@@ -148,20 +151,24 @@ const useCourseStore = create((set, get) => ({
         }
     },
 
-    enrollInCourse: async (courseId) => {
-      try {
-        set({ loading: true, error: null });
-        const response = await api.post(`/v1/student/enroll/${courseId}`);
-        console.log(response.data);
-        set((state) => ({
-          enrolledCourses: [...state.enrolledCourses, courseId],
-        }));
+  enrollInCourse: async (courseId) => {
+    try {
+      set({ loading: true });
+      const response = await api.post(`/v1/student/enroll/${courseId}`);
+      
+      if (response.data?.statusCode === 200) {
         toast.success("Successfully enrolled in course!");
-      } catch (error) {
-        console.error("Error enrolling in course:", error);
-        toast.error(error.response?.data?.message || "Failed to enroll in course");
+        return true;
       }
-    },
+      throw new Error(response.data?.message || "Failed to enroll in course");
+    } catch (error) {
+      console.error("Error enrolling in course:", error);
+      toast.error(error.response?.data?.message || "Failed to enroll in course");
+      return false;
+    } finally {
+      set({ loading: false });
+    }
+  },
 
     showEnrolledStudents: async (courseId) => {
       try {
@@ -173,6 +180,24 @@ const useCourseStore = create((set, get) => ({
         toast.error("Failed to fetch enrolled students");
       }
     },
+
+  suggestedCourses: async () => {
+    try {
+      set({ loading: true });
+      const response = await api.get('/v1/course/suggestedCourses');
+      set({ loading: false });
+
+      if (response.data?.statusCode === 200 && response.data?.data) {
+        return response.data.data;
+      }
+      return [];
+    } catch (error) {
+      console.error("Error fetching suggested courses:", error);
+      set({ loading: false });
+      toast.error("Failed to fetch suggested courses");
+      return [];
+    }
+  },
  
 }));
 

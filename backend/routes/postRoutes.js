@@ -7,6 +7,6 @@ const router = express.Router();
 router.get('/upvote/:postId',upvotePost);;
 
 // Downvote a post
-router.get('/:postId/downvote', downvotePost);
+router.get('/downvote/:postId', downvotePost);
 
 export default router;

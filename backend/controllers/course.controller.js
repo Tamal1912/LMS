@@ -104,19 +104,23 @@ export const updateCourse =asyncHandler(async (req, res) => {
 
 
 export const watchCourse = asyncHandler(async (req, res) => {
-    
     try {
         const { courseId } = req.params;
-        const course = await Course.findById(courseId);
-        console.log("watching course");
-        res.status(200).json(new ApiResponse(200,course,"Course fetched successfully"))
+        const course = await Course.findById(courseId)
+            .populate('courseOwner', 'username email')
+            .lean();
+            
+        if (!course) {
+            throw new ApiError(404, "Course not found");
+        }
+
+        console.log("Course with owner details:", course);
+        res.status(200).json(new ApiResponse(200, course, "Course fetched successfully"));
     } catch (error) {
-        console.log(error);
-        throw new ApiError(500,"Failed to Fetch course")
+        console.error("Error fetching course:", error);
+        throw new ApiError(500, "Failed to Fetch course");
     }
-})
-
-
+});
 
 export const getTeacherCourses = asyncHandler(async (req, res) => {
     try {
@@ -194,5 +198,27 @@ export const enrollInCourse = asyncHandler(async (req, res) => {
     console.error("Error enrolling in course:", error);
     throw new ApiError(500, "Failed to enroll in course");
   }
+});
+
+export const suggestedCourses = asyncHandler(async (req, res) => {
+    try {
+        const courses = await Course.find()
+            .limit(5)
+            .populate('courseOwner', 'username email')
+            .lean();
+
+        if (!courses || courses.length === 0) {
+            return res.status(200).json(
+                new ApiResponse(200, [], "No courses found")
+            );
+        }
+
+        return res.status(200).json(
+            new ApiResponse(200, courses, "Suggested courses fetched successfully")
+        );
+    } catch (error) {
+        console.error("Error fetching suggested courses:", error);
+        throw new ApiError(500, "Failed to fetch suggested courses");
+    }
 });
 

@@ -142,39 +142,36 @@ const usePostStore = create((set) => ({
         try {
             const response = await api.get(`/v1/post/upvote/${postId}`);
             if (response.data?.statusCode === 200) {
-                const updatedPost = response.data.data; // Use updated post data from API
+                const updatedPost = response.data.data;
                 set((state) => ({
                     posts: state.posts.map((post) =>
                         post._id === postId ? updatedPost : post
                     )
                 }));
-                toast.success('Post Supported!');
-            } else {
-                throw new Error('Failed to upvote post');
+                // Show different messages based on whether vote was added or removed
+                toast.success(response.data.message || 'Vote updated!');
             }
         } catch (error) {
             console.error('Error upvoting post:', error);
-            toast.error('Failed to upvote post');
+            toast.error('Failed to update vote');
         }
     },
 
     downvotePost: async (postId) => {
         try {
-            const response = await api.get(`/v1/post/${postId}/downvote`);
+            const response = await api.get(`/v1/post/downvote/${postId}`);
             if (response.data?.statusCode === 200) {
-                const updatedPost = response.data.data; // Use updated post data from API
+                const updatedPost = response.data.data;
                 set((state) => ({
                     posts: state.posts.map((post) =>
                         post._id === postId ? updatedPost : post
                     )
                 }));
-                toast.success('Post Disapproved!');
-            } else {
-                throw new Error('Failed to downvote post');
+                toast.success(response.data.message || 'Vote updated!');
             }
         } catch (error) {
             console.error('Error downvoting post:', error);
-            toast.error('Failed to downvote post');
+            toast.error('Failed to update vote');
         }
     },
 
