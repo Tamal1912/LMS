@@ -10,7 +10,7 @@
 html, body {
   overflow-x: hidden;
   min-width: 354px;
-  min-height: 911px;
+  min-height: 100vh;
 }
 
 

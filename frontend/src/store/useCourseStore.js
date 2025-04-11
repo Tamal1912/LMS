@@ -151,35 +151,35 @@ const useCourseStore = create((set, get) => ({
         }
     },
 
-  enrollInCourse: async (courseId) => {
-    try {
-      set({ loading: true });
-      const response = await api.post(`/v1/student/enroll/${courseId}`);
+  // enrollInCourse: async (courseId) => {
+  //   try {
+  //     set({ loading: true });
+  //     const response = await api.post(`/v1/student/enroll/${courseId}`);
       
-      if (response.data?.statusCode === 200) {
-        toast.success("Successfully enrolled in course!");
-        return true;
-      }
-      throw new Error(response.data?.message || "Failed to enroll in course");
-    } catch (error) {
-      console.error("Error enrolling in course:", error);
-      toast.error(error.response?.data?.message || "Failed to enroll in course");
-      return false;
-    } finally {
-      set({ loading: false });
-    }
-  },
+  //     if (response.data?.statusCode === 200) {
+  //       toast.success("Successfully enrolled in course!");
+  //       return true;
+  //     }
+  //     throw new Error(response.data?.message || "Failed to enroll in course");
+  //   } catch (error) {
+  //     console.error("Error enrolling in course:", error);
+  //     toast.error(error.response?.data?.message || "Failed to enroll in course");
+  //     return false;
+  //   } finally {
+  //     set({ loading: false });
+  //   }
+  // },
 
-    showEnrolledStudents: async (courseId) => {
-      try {
-        const response = await api.get(`/v1/course/enrolledStudents/${courseId}`);
-        console.log(response.data);
-        return response.data;
-      } catch (error) {
-        console.error("Error fetching enrolled students:", error);
-        toast.error("Failed to fetch enrolled students");
-      }
-    },
+  //   showEnrolledStudents: async (courseId) => {
+  //     try {
+  //       const response = await api.get(`/v1/course/enrolledStudents/${courseId}`);
+  //       console.log(response.data);
+  //       return response.data;
+  //     } catch (error) {
+  //       console.error("Error fetching enrolled students:", error);
+  //       toast.error("Failed to fetch enrolled students");
+  //     }
+  //   },
 
   suggestedCourses: async () => {
     try {

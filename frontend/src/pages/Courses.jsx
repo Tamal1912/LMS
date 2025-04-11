@@ -98,7 +98,7 @@ const Courses = () => {
                   
                   <div className="mt-4">
                     <button
-                      onClick={() => handleEnroll(course._id)}
+                     onClick={()=>navigate(`/courseDetails/${course._id}`)}
                       className="w-full bg-gradient-to-r from-[#ff6a00] to-[#ee0979] hover:brightness-110 text-white py-3 rounded-full font-medium shadow-lg transition duration-300"
                     >
                       🚀 Enroll for Free

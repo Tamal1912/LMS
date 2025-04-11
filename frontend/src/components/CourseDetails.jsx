@@ -1,117 +1,126 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import useCourseStore from "../store/useCourseStore.js";
-import { Link, useNavigate } from "react-router-dom";
 import Loader from "../components/Loader.jsx";
-import { toast } from "react-toastify";
+import { Link } from "react-router-dom";
 
-const Courses = () => {
-    const { allCourses, error, getAllCoursesStudents, loading, enrollInCourse } = useCourseStore();
+const CourseDetails = () => {
+    const { courseId } = useParams();
     const navigate = useNavigate();
-    const [searchTerm, setSearchTerm] = useState("");
+    const {
+        allCourses,
+        watchCourse,
+        suggestedCourses,
+        loading,
+        error,
+    } = useCourseStore();
+
+    const [suggestedList, setSuggestedList] = useState([]);
 
     useEffect(() => {
-        getAllCoursesStudents();
-    }, [getAllCoursesStudents]);
+        const fetchData = async () => {
+            try {
+                await watchCourse(courseId);
+                const suggested = await suggestedCourses();
+                setSuggestedList(suggested);
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
+        };
+        fetchData();
+    }, [courseId]);
 
-    const handleEnroll = async (courseId) => {
-        try {
-            await enrollInCourse(courseId);
-            toast.success("Successfully enrolled in course!");
-            await getAllCoursesStudents();
-            setTimeout(() => {
-                toast.success("Redirecting to course details...");
-                navigate(`/courseDetails/${courseId}`);
-            }, 2000);
-        } catch (error) {
-            console.error("Failed to enroll:", error);
-            toast.error(error.response?.data?.message || "Failed to enroll in course");
-        }
-    };
+    const course = allCourses.find((c) => c._id === courseId);
 
-    if (error) {
-        return <div className="text-red-500 text-center mt-10 text-lg">Error: {error}</div>;
-    }
-
-    const filteredCourses = allCourses.filter(course =>
-        course.courseName.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    if (loading) return <div className="min-h-screen flex items-center justify-center"><Loader /></div>;
+    if (error) return <div className="text-red-500 text-center mt-10 text-lg">Error: {error}</div>;
+    if (!course) return <div className="text-gray-500 text-center mt-10 text-lg">Course not found.</div>;
 
     return (
-        <div className="min-h-screen bg-gradient-to-tr from-[#f5f9ff] via-[#e0f2ff] to-[#f5f9ff] p-6 overflow-x-hidden">
-            {loading ? (
-                <div className="flex justify-center items-center h-full">
-                    <Loader />
-                </div>
-            ) : (
-                <div className="max-w-7xl mx-auto ">
-                    {/* Header */}
-                    <div className="flex flex-col md:flex-row justify-between items-center gap-4 mb-8">
-                        <Link to="/api/studentDashboard" className="text-blue-600 hover:underline text-lg font-medium">
-                            ← Back to Dashboard
-                        </Link>
-                        <h1 className="text-3xl font-bold text-center text-gray-800">
-                            🚀 Discover Your Next Course
+        <div className="min-h-screen bg-gradient-to-br from-[#1e3c72] via-[#2a5298] to-[#1e3c72] text-white">
+            <Link to="/api/studentDashboard" className="text-[#00fff0] pl-4 text-lg font-semibold transition-all duration-300">
+                ← Back to Dashboard
+            </Link>
+            <div className="flex flex-col md:flex-row max-w-[1600px] mx-auto gap-8 p-8">
+
+                {/* Left Side */}
+                <div className="md:w-[70%] flex flex-col gap-6">
+
+                    {/* Video Player */}
+                    <div className="rounded-3xl overflow-hidden shadow-[0_10px_40px_rgba(0,0,0,0.4)] border border-[#ffffff22] bg-[#0f172a]/70 backdrop-blur-sm">
+                        <video
+                            className="w-full aspect-video rounded-xl"
+                            controls
+                            src={course.courseContent}
+                            poster={course.courseImage}
+                        >
+                            Your browser does not support the video tag.
+                        </video>
+                    </div>
+
+                    {/* Course Info */}
+                    <div className="bg-[#0f172a]/60 backdrop-blur-md border border-[#ffffff22] rounded-3xl shadow-2xl p-8 text-white">
+                        <h1 className="text-4xl font-extrabold bg-gradient-to-r from-[#00fff0] to-[#ff0090] text-transparent bg-clip-text mb-5 leading-tight tracking-wide">
+                            🎓 {course.courseName}
                         </h1>
-                        <span className="bg-blue-100 text-blue-800 px-4 py-1 rounded-full text-sm font-semibold shadow">
-                            {allCourses.length} Courses
-                        </span>
-                    </div>
+                        <p className="text-gray-300 leading-relaxed text-[1.1rem] mb-6">
+                            {course.courseDescription}
+                        </p>
 
-                    {/* Search Bar */}
-                    <div className="flex justify-center mb-10">
-                        <input
-                            type="text"
-                            placeholder="Search Courses..."
-                            value={searchTerm}
-                            onChange={(e) => setSearchTerm(e.target.value)}
-                            className="w-full md:w-1/2 px-4 py-3 border border-gray-300 rounded-xl shadow-sm focus:ring-2 focus:ring-blue-400 focus:outline-none"
-                        />
-                    </div>
-
-                    {/* Course Grid */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                        {filteredCourses.map((course) => (
-                            <div key={course._id} className="bg-white rounded-3xl shadow-xl p-6 hover:shadow-2xl transition-all duration-300 border border-gray-100">
-                                <img
-                                    src={course.courseImage}
-                                    alt={course.courseName}
-                                    className="w-full h-48 object-cover rounded-xl mb-4"
-                                />
-                                <h3 className="text-xl font-semibold text-gray-800 mb-2">{course.courseName}</h3>
-
-                                {/* Progress Bar */}
-                                <div className="mb-3">
-                                    <div className="flex justify-between text-sm text-gray-500 mb-1">
-                                        <span>Progress</span>
-                                        <span>{course.progress || 0}%</span>
-                                    </div>
-                                    <div className="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
-                                        <div
-                                            className="h-full bg-gradient-to-r from-blue-400 to-blue-600 rounded-full transition-all"
-                                            style={{ width: `${course.progress || 0}%` }}
-                                        />
-                                    </div>
+                        {/* Instructor Section */}
+                        <div className="border-t border-[#ffffff33] pt-6 mt-6">
+                            <h2 className="text-2xl font-bold text-white mb-4">👨‍🏫 Instructor</h2>
+                            <div className="flex items-center gap-5">
+                                <div className="w-16 h-16 rounded-full bg-gradient-to-br from-[#00bcd4] to-[#8e24aa] text-white flex items-center justify-center text-2xl font-bold shadow-lg ring-4 ring-white/20">
+                                    {course.courseOwner?.username?.[0]?.toUpperCase() || "?"}
                                 </div>
+                                <div>
+                                    <p className="text-lg font-semibold text-white">
+                                        {course.courseOwner?.username || "Instructor"}
+                                    </p>
+                                    <p className="text-sm text-gray-400">Email : {course.courseOwner?.email}</p>
+                                    <p className="text-sm text-gray-400">{course.courseOwner?.phone}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-                                <p className="text-gray-600 text-sm h-12 overflow-hidden mb-4">
-                                    {course.courseOutcome}
-                                </p>
+                {/* Right Side - Suggested Courses */}
+                <div className="md:w-[30%] h-[calc(100vh-4rem)] sticky top-4 overflow-y-auto bg-[#0f172a]/70 shadow-xl rounded-3xl p-6 border border-[#ffffff22] backdrop-blur-md text-white">
+                    <h2 className="text-2xl font-bold bg-gradient-to-r from-[#80d0c7] to-[#13547a] text-transparent bg-clip-text mb-6">✨ Suggested Courses</h2>
+                    <div className="space-y-6">
+                        {suggestedList.map((suggestedCourse) => (
+                            <div
+                                key={suggestedCourse._id}
+                                className="flex gap-4 p-3 rounded-xl bg-[#1e293b] hover:bg-[#2a3a55] transition-all duration-300 ease-in-out cursor-pointer group shadow-md hover:shadow-xl"
+                                onClick={() => navigate(`/courseDetails/${suggestedCourse._id}`)}
+                            >
+                                <img
+                                    src={suggestedCourse.courseImage}
+                                    alt={suggestedCourse.courseName}
+                                    className="w-28 h-20 object-cover rounded-xl shadow-md group-hover:scale-[1.03] transition-transform duration-200"
+                                />
+                                <div className="flex-1">
+                                    <h3 className="text-[16px] font-semibold text-white leading-snug line-clamp-2">
+                                        {suggestedCourse.courseName}
+                                    </h3>
+                                    <p className="text-xs text-gray-400 mt-1">
+                                        {suggestedCourse.courseOwner?.username}
+                                    </p>
 
-                                <Link to={`/courseDetails/${course._id}`}>
-                                    <button
-                                        onClick={() => handleEnroll(course._id)}
-                                        className="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white py-3 rounded-xl font-semibold shadow-lg hover:from-purple-600 hover:to-pink-600 transition-all duration-300"
-                                    >
-                                        Enroll Free
-                                    </button>
-                                </Link>
+                                    <p className="text-xs text-gray-400 mt-1 line-clamp-2">
+                                        {suggestedCourse.courseDescription}
+                                    </p>
+                                </div>
                             </div>
                         ))}
                     </div>
                 </div>
-            )}
+            </div>
         </div>
+
     );
 };
 
-export default Courses;
+export default CourseDetails;

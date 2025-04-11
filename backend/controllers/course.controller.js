@@ -150,55 +150,55 @@ export const getTeacherCourses = asyncHandler(async (req, res) => {
     }
 });
 
-export const enrollInCourse = asyncHandler(async (req, res) => {
-  try {
-    const { courseId } = req.params;
-    const studentId = req.user._id;
+// export const enrollInCourse = asyncHandler(async (req, res) => {
+//   try {
+//     const { courseId } = req.params;
+//     const studentId = req.user._id;
 
-    // Find the course by ID
-    const course = await Course.findById(courseId);
-    if (!course) {
-      throw new ApiError(404, "Course not found");
-    }
+//     // Find the course by ID
+//     const course = await Course.findById(courseId);
+//     if (!course) {
+//       throw new ApiError(404, "Course not found");
+//     }
 
-    // Check if the student is already enrolled
-    if (course.students.includes(studentId)) {
-      return res.status(400).json(
-        new ApiResponse(400, null, "Student is already enrolled in this course")
-      );
-    }
+//     // Check if the student is already enrolled
+//     if (course.students.includes(studentId)) {
+//       return res.status(400).json(
+//         new ApiResponse(400, null, "Student is already enrolled in this course")
+//       );
+//     }
 
-    // Add the student to the course
-    course.students.push(studentId);
-    await course.save();
+//     // Add the student to the course
+//     course.students.push(studentId);
+//     await course.save();
 
-    // Add the course to the student's enrolledCourses array
-    const student = await Student.findById(studentId);
-    if (!student) {
-      throw new ApiError(404, "Student not found");
-    }
+//     // Add the course to the student's enrolledCourses array
+//     const student = await Student.findById(studentId);
+//     if (!student) {
+//       throw new ApiError(404, "Student not found");
+//     }
 
-    student.enrolledCourses.push(courseId);
-    await student.save();
+//     student.enrolledCourses.push(courseId);
+//     await student.save();
    
 
-    //add the student to Teachers enrolledStudents array
-    const teacher = await Teacher.findById(course.courseOwner);
-    if (!teacher) {
-      throw new ApiError(404, "Teacher not found");
-    }
-    teacher.enrolledStudents.push(studentId);
-    await teacher.save();
+//     //add the student to Teachers enrolledStudents array
+//     const teacher = await Teacher.findById(course.courseOwner);
+//     if (!teacher) {
+//       throw new ApiError(404, "Teacher not found");
+//     }
+//     teacher.enrolledStudents.push(studentId);
+//     await teacher.save();
 
 
-    return res.status(200).json(
-      new ApiResponse(200, course, "Enrolled in course successfully")
-    );
-  } catch (error) {
-    console.error("Error enrolling in course:", error);
-    throw new ApiError(500, "Failed to enroll in course");
-  }
-});
+//     return res.status(200).json(
+//       new ApiResponse(200, course, "Enrolled in course successfully")
+//     );
+//   } catch (error) {
+//     console.error("Error enrolling in course:", error);
+//     throw new ApiError(500, "Failed to enroll in course");
+//   }
+// });
 
 export const suggestedCourses = asyncHandler(async (req, res) => {
     try {

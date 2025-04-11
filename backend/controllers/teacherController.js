@@ -41,7 +41,7 @@ export const getStudentDetails = asyncHandler(async (req, res) => {
 
 export const updateTeacherProfile = asyncHandler(async (req, res) => {
     try {
-        const { username, email, phone } = req.body;
+        const { username, email, phone,education, experience, bio } = req.body;
         const teacherId = req.user._id;
 
         const updatedTeacher = await Teacher.findByIdAndUpdate(
@@ -50,7 +50,10 @@ export const updateTeacherProfile = asyncHandler(async (req, res) => {
                 $set: {
                     username,
                     email,
-                    phone
+                    phone,
+                    education,
+                    experience,
+                    bio,
                 }
             },
             { new: true }

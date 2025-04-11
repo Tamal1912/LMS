@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import useUserStore from '../store/useUserStore';
 import Loader from '../components/Loader';
-import { MdAlternateEmail, MdEdit } from 'react-icons/md';
+import { MdAlternateEmail, MdEdit, MdWork } from 'react-icons/md';
 import { BsFillTelephoneFill } from 'react-icons/bs';
-import { FaUserCircle, FaGraduationCap } from 'react-icons/fa';
+import { FaUserCircle, FaGraduationCap, FaUserGraduate, FaBiohazard, } from 'react-icons/fa';
 
 const TeacherProfile = () => {
   const { teacher, getTeacherProfile, updateTeacherProfile, loading } = useUserStore();
@@ -12,7 +12,10 @@ const TeacherProfile = () => {
     username: '',
     email: '',
     phone: '',
-    courses: []
+    courses: [],
+    education: {},
+    experience: {},
+    bio: '',
   });
 
   useEffect(() => {
@@ -25,7 +28,11 @@ const TeacherProfile = () => {
         username: teacher.username || '',
         email: teacher.email || '',
         phone: teacher.phone || '',
-        courses: teacher.courses || []
+        courses: teacher.courses || [],
+        education: teacher.education || {},
+        experience: teacher.experience || {},
+        bio: teacher.bio || '',
+
       });
     }
   }, [teacher]);
@@ -33,21 +40,24 @@ const TeacherProfile = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-        const success = await updateTeacherProfile({
-            username: formData.username,
-            email: formData.email,
-            phone: formData.phone
-        });
-        
-        if (success) {
-            setIsEditing(false);
-            await getTeacherProfile(); // Refresh profile data
-        }
+      const success = await updateTeacherProfile({
+        username: formData.username,
+        email: formData.email,
+        phone: formData.phone,
+        education: formData.education,
+        experience: formData.experience,
+        bio: formData.bio,
+      });
+
+      if (success) {
+        setIsEditing(false);
+        await getTeacherProfile(); // Refresh profile data
+      }
     } catch (error) {
-        console.error('Profile update error:', error);
-        
+      console.error('Profile update error:', error);
+
     }
-};
+  };
 
   if (loading) {
     return <Loader />;
@@ -58,8 +68,8 @@ const TeacherProfile = () => {
       <div className="max-w-4xl mx-auto">
         {/* Header */}
         <div className="mb-12 flex justify-between items-center">
-          <button 
-            onClick={() => window.history.back()} 
+          <button
+            onClick={() => window.history.back()}
             className="bg-white/40 backdrop-blur-md px-4 py-2 rounded-lg text-gray-800 hover:bg-white/60 transition-all duration-300 flex items-center gap-2"
           >
             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
@@ -93,7 +103,7 @@ const TeacherProfile = () => {
                 <input
                   type="text"
                   value={formData.username}
-                  onChange={(e) => setFormData({...formData, username: e.target.value})}
+                  onChange={(e) => setFormData({ ...formData, username: e.target.value })}
                   className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500"
                   required
                 />
@@ -103,7 +113,7 @@ const TeacherProfile = () => {
                 <input
                   type="email"
                   value={formData.email}
-                  onChange={(e) => setFormData({...formData, email: e.target.value})}
+                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                   className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500"
                   required
                 />
@@ -113,9 +123,73 @@ const TeacherProfile = () => {
                 <input
                   type="tel"
                   value={formData.phone}
-                  onChange={(e) => setFormData({...formData, phone: e.target.value})}
+                  onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                   className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500"
                 />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700">Bio</label>
+                <textarea
+                  value={formData.bio}
+                  onChange={(e) => setFormData({ ...formData, bio: e.target.value })}
+                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500"
+                ></textarea>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">Experience</label>
+                  <input
+                    type="number"
+                    value={formData.experience.duration}
+                    onChange={(e) => setFormData({ ...formData, experience: { ...formData.experience, duration: e.target.value } })}
+                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">Institution</label>
+                  <input
+                    type="text"
+                    value={formData.education.institution}
+                    onChange={(e) => setFormData({ ...formData, education: { ...formData.education, institution: e.target.value } })}
+                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">Year of Passing</label>
+                  <input
+                    type="text"
+                    value={formData.education.yearOfPassing}
+                    onChange={(e) => setFormData({ ...formData, education: { ...formData.education, yearOfPassing: e.target.value } })}
+                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700"> Companies Worked</label>
+                  <input
+                    type="text"
+                    value={formData.experience.company}
+                    onChange={(e) => setFormData({ ...formData, experience: { ...formData.experience, company: e.target.value } })}
+                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">Duration(In Years)</label>
+                  <input
+                    type="number"
+                    value={formData.experience.duration}
+                    onChange={(e) => setFormData({ ...formData, experience: { ...formData.experience, duration: e.target.value } })}
+                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">Last Degree</label>
+                  <input
+                    type="text"
+                    value={formData.education.degree}
+                    onChange={(e) => setFormData({ ...formData, education: { ...formData.education, degree: e.target.value } })}
+                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500"
+                  />
+                </div>
               </div>
               <div className="flex justify-end space-x-4">
                 <button
@@ -151,6 +225,17 @@ const TeacherProfile = () => {
                   <p className="text-gray-800">{teacher?.phone || 'Not provided'}</p>
                 </div>
 
+                <div>
+                  <div className="bg-white/50 rounded-lg p-4 shadow-sm">
+                    <div className="flex items-center text-gray-600 mb-2">
+                      <FaBiohazard className="w-5 h-5 mr-2 text-purple-500" />
+                      <span className="font-medium">Bio</span>
+                    </div>
+                    <p className="text-gray-800">{teacher?.bio || 'Not provided'}</p>
+                  </div>
+                </div>
+                <div />
+
                 <div className="bg-white/50 rounded-lg p-4 shadow-sm">
                   <div className="flex items-center text-gray-600 mb-2">
                     <FaGraduationCap className="w-5 h-5 mr-2 text-purple-500" />
@@ -159,6 +244,26 @@ const TeacherProfile = () => {
                   <p className="text-gray-800">
                     {teacher?.courses?.length || 0} Course{teacher?.courses?.length !== 1 ? 's' : ''}
                   </p>
+                </div>
+                {/* Teacher Education */}
+                <div className="bg-white/50 rounded-lg p-4 shadow-sm">
+                  <div className="flex items-center text-gray-600 mb-2">
+                    <FaUserGraduate className="w-5 h-5 mr-2 text-purple-500" />
+                    <span className="font-medium">Education</span>
+                  </div>
+                  <p className="text-gray-800 mb-2 font-semibold text-lg "> Education : {teacher?.education?.degree || 'Not provided'}</p>
+                  <p className="text-gray-800 mb-2 font-semibold text-lg "> Institution : {teacher?.education?.institution || 'Not provided'}</p>
+                  <p className="text-gray-800 mb-2 font-semibold text-lg "> Year of Passing : {teacher?.education?.yearOfPassing || 'Not provided'}</p>
+                </div>
+
+                {/* Teacher Experience */}
+                <div className="bg-white/50 rounded-lg p-4 shadow-sm">
+                  <div className="flex items-center text-gray-600 mb-2">
+                    <MdWork className="w-5 h-5 mr-2 text-purple-500" />
+                    <span className="font-medium">Experience</span>
+                  </div>
+                  <p className="text-gray-800 mb-2 font-semibold text-lg "> Companies : {teacher?.experience?.company || 'Not provided'}</p>
+                  <p className="text-gray-800 mb-2 font-semibold text-lg ">Work Experiance : {teacher?.experience?.duration || 'Not provided'}</p>
                 </div>
               </div>
               <div className="flex justify-center mt-8">

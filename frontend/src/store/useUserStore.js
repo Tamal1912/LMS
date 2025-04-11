@@ -2,8 +2,6 @@ import {create} from 'zustand';
 import {api} from '../lib/utils';
 import {toast} from 'react-hot-toast';
 
-
-
 const useAuthStore = create((set) => ({
     allStudents: [],
     teacher: null,
@@ -35,19 +33,13 @@ const useAuthStore = create((set) => ({
         }
     },
     getTeacherProfile: async () => {
-        set({loading: true});
         try {
             const response = await api.get('/v1/teacher/get_teacher_profile');
-            set({teacher: response.data.teacher});
+            set({ teacher: response.data.teacher, loading: false });
+            return response.data.teacher;
         } catch (error) {
-            set({
-                error: error.message,
-                teacher: null,
-                loading: false
-            });
-            toast.error('Failed to fetch teacher profile');
-        } finally {
-            set({loading: false});
+            set({ error: error.message, loading: false });
+            throw error;
         }
     },
     getStudentDetails: async (studentId) => {

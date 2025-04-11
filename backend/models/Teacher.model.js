@@ -17,6 +17,21 @@ const teacherSchema = new mongoose.Schema({
       ref: 'Course'
     }
   }],
+  education: {
+    degree: { type: String },
+    institution: { type: String },
+    yearOfPassing: { type: String }
+  },
+  experience: {
+    company: { type: String },
+    role: { type: String },
+    duration: { type: String }
+  },
+  bio: { 
+    type: String,
+    required: false, // Change to false or remove required
+    default: "No bio provided" // Add a default value
+  },
   posts: [{ type: mongoose.Schema.Types.ObjectId, ref: "Post" }],
   refreshToken: { type: String}
 }, {timestamps:true});
