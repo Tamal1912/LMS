@@ -1,6 +1,8 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 const Footer = () => {
+  const navigate = useNavigate();
   return (
     <footer className="bg-gradient-to-b from-sky-100 to-sky-200 text-gray-800 py-10">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
@@ -77,6 +79,16 @@ const Footer = () => {
               <i className="fab fa-linkedin-in"></i>
             </a>
           </div>
+        </div>
+
+        {/* Admin Login Button */}
+        <div className="mt-4 text-center">
+          <button
+            className="px-4 py-2 bg-sky-500 hover:bg-sky-400 text-white rounded-lg transition"
+            onClick={() => navigate("/api/adminLogin")}
+          >
+            Admin Login
+          </button>
         </div>
       </div>
     </footer>

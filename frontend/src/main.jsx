@@ -22,6 +22,8 @@ import ManagePostPage from './pages/ManagePostPage.jsx';
 import TrackAllStudents from './pages/TrackAllStudents';
 import TeacherProfile from './pages/TeacherProfile.jsx';
 import { Toaster } from 'react-hot-toast';
+import AdminLogin from './pages/AdminLogin';
+import AdminDashboard from './pages/AdminDashboard';
 
 const router=createBrowserRouter([
   {
@@ -35,6 +37,8 @@ ReactDOM.createRoot(document.getElementById('root')).render(
   <BrowserRouter>
   <Routes>
     <Route path="/" element={<Home />} />
+    <Route path="/api/adminLogin" element={<AdminLogin />} />
+    <Route path="/admin/dashboard" element={<AdminDashboard />} />    
     <Route path="/api/studentLoginSignup" element={<StudentLoginSignup/>}/>
     <Route path="/api/teacherLoginSignup" element={<TeacherLoginSignup/>}/>
     <Route path='/api/teacherDashboard' element={<TeacherDashboard/>}/>

@@ -8,30 +8,9 @@ const useAuthStore = create((set) => ({
     isAuthenticated: false,
     loading: false,
     error: null,
+    enrolledStudents: [],
    
-    trackAllStudents: async () => {
-        try {
-            set({ loading: true });
-            const response = await api.get('/v1/teacher/track_all_students');
-            
-            if (response.data?.statusCode === 200) {
-                set({
-                    allStudents: response.data.data,
-                    loading: false,
-                    error: null
-                });
-            } else {
-                throw new Error(response.data?.message || 'Failed to fetch students');
-            }
-        } catch (error) {
-            console.error('Error fetching students:', error);
-            set({ 
-                loading: false, 
-                error: error.message,
-                allStudents: []
-            });
-        }
-    },
+   
     getTeacherProfile: async () => {
         try {
             const response = await api.get('/v1/teacher/get_teacher_profile');
@@ -77,6 +56,24 @@ const useAuthStore = create((set) => ({
             toast.error('Failed to update teacher profile');
         } finally {
             set({loading: false});
+        }
+    },
+    enrolled: async (studentId) => {
+        try {
+             set({loading: true});
+            const response = await api.get(`/v1/student/enroll/${studentId}`);
+            if(response.data?.statusCode === 200){
+                set({enrolledStudents: response.data.enrolledStudents, loading: false});
+                return true;
+            }
+            throw new Error('Failed to fetch enrolled students');
+        } catch (error) {
+            set({
+                error: error.message,
+                loading: false
+            });
+            toast.error('Failed to fetch enrolled students');
+            
         }
     },
 }));
