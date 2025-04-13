@@ -1,5 +1,5 @@
 import { clsx } from "clsx";
-import { twMerge } from "tailwind-merge"
+import { twMerge } from "tailwind-merge";
 import axios from "axios";
 
 export function cn(...inputs) {
@@ -7,48 +7,90 @@ export function cn(...inputs) {
 }
 
 export const api = axios.create({
-    baseURL: "http://localhost:4000/api",
-    withCredentials: true,
-    headers: {
-        "Content-Type": "application/json"
-    }
+  baseURL: "http://localhost:4000/api",
+  withCredentials: true,
+  headers: {
+    "Content-Type": "application/json"
+  }
 });
 
-// Add request interceptor to add token
+// Request Interceptor
 api.interceptors.request.use(
-    (config) => {
-        const token = localStorage.getItem('accessToken');
-        if (token) {
-            // Make sure to include the "Bearer " prefix
-            config.headers['Authorization'] = `Bearer ${token}`;
-        }
-        return config;
-    },
-    (error) => {
-        return Promise.reject(error);
+  (config) => {
+    const token = localStorage.getItem('accessToken');
+    if (token) {
+      config.headers['Authorization'] = `Bearer ${token}`;
     }
+    return config;
+  },
+  (error) => Promise.reject(error)
 );
 
-// Debug interceptor to check what's being sent
-api.interceptors.request.use(
-    (config) => {
-        console.log('Request Headers:', config.headers);
-        return config;
-    }
-);
 
-// Simplified response interceptor
+
+// ========== 🔁 Auto Refresh Token Interceptor ==========
+
+let isRefreshing = false;
+let failedQueue = [];
+
+const processQueue = (error, token = null) => {
+  failedQueue.forEach(prom => {
+    if (error) {
+      prom.reject(error);
+    } else {
+      prom.resolve(token);
+    }
+  });
+  failedQueue = [];
+};
+
 api.interceptors.response.use(
-    (response) => response,
-    (error) => {
-        if (error.response?.status === 401 && error.response?.data?.isExpired) {
-            // Clear auth data
-            localStorage.removeItem('accessToken');
-            localStorage.removeItem('userType');
-            
-            // Redirect to login
-            window.location.href = '/';
+  (response) => response,
+  async (error) => {
+    const originalRequest = error.config;
+
+    // If token expired and request is not already retried
+    if (
+      error.response?.status === 401 &&
+      error.response?.data?.isExpired &&
+      !originalRequest._retry
+    ) {
+      originalRequest._retry = true;
+
+      if (isRefreshing) {
+        return new Promise((resolve, reject) => {
+          failedQueue.push({ resolve, reject });
+        })
+          .then((token) => {
+            originalRequest.headers['Authorization'] = 'Bearer ' + token;
+            return api(originalRequest);
+          })
+          .catch((err) => Promise.reject(err));
+      }
+
+      isRefreshing = true;
+
+      try {
+        const res = await api.post("/auth/refresh-token");
+        const newAccessToken = res.data?.data?.accessToken;
+
+        if (newAccessToken) {
+          localStorage.setItem("accessToken", newAccessToken);
+          api.defaults.headers.common['Authorization'] = 'Bearer ' + newAccessToken;
+          processQueue(null, newAccessToken);
+          return api(originalRequest);
         }
-        return Promise.reject(error);
+      } catch (err) {
+        processQueue(err, null);
+        localStorage.removeItem("accessToken");
+        localStorage.removeItem("userType");
+        window.location.href = "/";
+        return Promise.reject(err);
+      } finally {
+        isRefreshing = false;
+      }
     }
+
+    return Promise.reject(error);
+  }
 );
