@@ -1,28 +1,14 @@
-const express = require('express');
-const Credential = require('../models/Credential');
-const { uploadToIPFS, storeHashOnBlockchain } = require('../blockchain/blockchain');
-const authMiddleware = require('../middleware/authMiddleware');
+import express from 'express';
+import { upload, verify } from '../controllers/credentialController.js';  // Correct import for functions
+
+import { auth } from '../middleware/authMiddleware.js';  // Auth middleware
 
 const router = express.Router();
 
-router.post('/upload', authMiddleware('teacher'), async (req, res) => {
-  const { studentId, fileBuffer } = req.body;
+// POST /api/v1/credentials/upload - Upload a credential
+router.post('/upload', auth, upload);  // Apply auth middleware and then call upload function
 
-  const ipfsHash = await uploadToIPFS(fileBuffer);
-  const blockchainHash = await storeHashOnBlockchain(studentId, ipfsHash);
+// GET /api/v1/credentials/verify/:studentId - Verify a credential
+router.get('/verify/:studentId', auth, verify);  // Apply auth middleware and then call verify function
 
-  const credential = new Credential({ studentId, ipfsHash, blockchainHash });
-  await credential.save();
-
-  res.status(201).json({ message: 'Credential uploaded and stored on blockchain' });
-});
-
-router.get('/verify/:studentId', authMiddleware(), async (req, res) => {
-  const { studentId } = req.params;
-  const credential = await Credential.findOne({ studentId, status: 'valid' });
-
-  if (!credential) return res.status(404).json({ message: 'Credential not found or revoked' });
-  res.json({ valid: true, credential });
-});
-
-module.exports = router;
+export default router;
