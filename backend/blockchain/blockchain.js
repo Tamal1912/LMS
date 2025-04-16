@@ -2,7 +2,7 @@ import Web3 from 'web3';
 import dotenv from 'dotenv';
 import axios from 'axios';
 import FormData from 'form-data';
-import fs from 'fs';
+import { Readable } from 'stream';
 
 import { createRequire } from 'module';
 dotenv.config();
@@ -14,13 +14,18 @@ const web3 = new Web3(new Web3.providers.HttpProvider(process.env.SEPOLIA_RPC));
 const contractAddress = process.env.CONTRACT_ADDRESS;
 const contract = new web3.eth.Contract(contractABI, contractAddress);
 
-// ✅ Upload file to IPFS using Pinata
-export const uploadToIPFS = async (filePath) => {
+// ✅ Upload file to IPFS using Pinata from base64 input
+export const uploadToIPFS = async (base64Data) => {
   const url = 'https://api.pinata.cloud/pinning/pinFileToIPFS';
 
   try {
+    const buffer = Buffer.from(base64Data, 'base64');
+    const stream = Readable.from(buffer);
+
     const data = new FormData();
-    data.append('file', fs.createReadStream(filePath));
+    data.append('file', stream, {
+      filename: `credential-${Date.now()}.pdf`, // Arbitrary filename for Pinata
+    });
 
     const response = await axios.post(url, data, {
       headers: {

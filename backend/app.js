@@ -1,7 +1,6 @@
 import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
-import credentialRoutes from "./routes/credential.js"; // Import credential routes
 
 const app = express();
 
@@ -17,6 +16,9 @@ app.use(express.static("public"));
 app.use(cookieParser());
 
 // Import routes
+console.log("Credential routes loaded ✅");
+
+import credentialRoutes from "./routes/credential.js"; // Import credential routes
 import authRoutes from "./routes/authRoutes.js";
 import teacherRoutes from "./routes/teacher.route.js";
 import courseRoutes from "./routes/course.route.js";
@@ -32,8 +34,8 @@ app.use("/api/v1/student", studentRoutes);
 app.use("/api/v1/post", postRoutes);
 app.use("/api/v1/admin", adminRoutes);
 
-// Add credential routes
-app.use("/api/v1/credentials", credentialRoutes);  // Add the new routes
+
+app.use("/api/v1/credentials", credentialRoutes);  
 
 // Export the app object for server setup
 export default app;
