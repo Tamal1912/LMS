@@ -1,6 +1,7 @@
 // pages/AdminDashboard.jsx
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import {useAdminStore} from '../store/useAdminStore.js';
 
 function AdminDashboard() {
@@ -9,7 +10,6 @@ function AdminDashboard() {
   const {trackAllStudents, allStudents} = useAdminStore();
 
   useEffect(() => {
-    // Check for admin credentials
     const adminData = localStorage.getItem('adminUser');
     
    
@@ -65,6 +65,21 @@ function AdminDashboard() {
         {/* Add your admin dashboard content here */}
         
         {/* Student Lists */}
+        <div className='flex gap-4 items-center mb-4'>
+          
+          <Link to="/adminDashboard/allTeachers">
+          <button className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+            All Teachers
+          </button>
+          </Link>
+          
+          <Link to="/adminDashboard/allCourses">
+          <button className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+          All Courses
+          </button>
+          </Link>
+
+        </div>
         <h2 className="text-xl font-semibold mb-4">All Students</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {allStudents.map((student) => (
@@ -76,7 +91,7 @@ function AdminDashboard() {
           
 
             {/* if the student is verified then show verified else show get verified */}
-            <h3 className="text-lg font-semibold mb-2">Get Verified</h3>
+            <h3 className="text-lg font-semibold mb-2 text-blue-500 font-[Poppins] font-bold">Get Verified</h3>
             <button className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
               Get Verified
             </button>
