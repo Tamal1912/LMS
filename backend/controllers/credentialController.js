@@ -38,7 +38,13 @@ export const upload = async (req, res) => {
 // GET /api/credential/verify/:studentId
 export const verify = async (req, res) => {
   try {
-    const { studentId } = req.params;
+    // Ensure studentId is treated as a number
+    const studentId = Number(req.params.studentId);
+
+    // If the studentId is not a valid number, return an error
+    if (isNaN(studentId)) {
+      return res.status(400).json({ message: 'Invalid studentId' });
+    }
 
     const credential = await Credential.findOne({ studentId, status: 'valid' });
 
@@ -51,7 +57,7 @@ export const verify = async (req, res) => {
     if (isValidOnBlockchain) {
       res.json({ valid: true, credential });
     } else {
-      res.status(404).json({ message: 'Credential is not valid on blockchain' });
+      res.status(200).json({ message: 'Credential is not valid on blockchain' });
     }
   } catch (error) {
     console.error('Error in /verify route:', error);
