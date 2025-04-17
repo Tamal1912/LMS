@@ -1,8 +1,11 @@
 import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
+import fileUpload from 'express-fileupload';
+
 
 const app = express();
+app.use(fileUpload());
 
 // Middleware setup
 app.use(cors({

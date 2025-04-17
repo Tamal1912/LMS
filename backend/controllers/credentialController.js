@@ -4,14 +4,15 @@ import { uploadToIPFS, storeHashOnBlockchain, verifyCredentialOnBlockchain } fro
 // POST /api/credential/upload
 export const upload = async (req, res) => {
   try {
-    const { studentId, fileBuffer } = req.body;
+    const { studentId } = req.body;
+    const file = req.files?.file; // Use 'file' as the key in form-data
 
-    if (!studentId || !fileBuffer) {
-      return res.status(400).json({ message: 'studentId and fileBuffer are required' });
+    if (!studentId || !file) {
+      return res.status(400).json({ message: 'studentId and file are required' });
     }
 
-    // Upload to IPFS
-    const ipfsHash = await uploadToIPFS(fileBuffer); // This should return the CID
+    // Upload to IPFS using the file buffer (from form-data)
+    const ipfsHash = await uploadToIPFS(file.data); // This sends the file buffer to IPFS
 
     // Store the hash on the blockchain
     const blockchainHash = await storeHashOnBlockchain(studentId, ipfsHash);

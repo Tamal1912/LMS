@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 
 const credentialSchema = new mongoose.Schema({
-  studentId: { type: mongoose.Schema.Types.ObjectId, ref: 'Student', required: true },
+  studentId: { type: Number, required: true, unique: true }, // switched from ObjectId to Number
   ipfsHash: String,
   blockchainHash: String,
   issueDate: { type: Date, default: Date.now },
