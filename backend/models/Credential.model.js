@@ -1,11 +1,13 @@
-// const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
-// const credentialSchema = new mongoose.Schema({
-//   studentId: { type: mongoose.Schema.Types.ObjectId, ref: 'Student', required: true },
-//   ipfsHash: String,
-//   blockchainHash: String,
-//   issueDate: { type: Date, default: Date.now },
-//   status: { type: String, enum: ['valid', 'revoked'], default: 'valid' }
-// });
+const credentialSchema = new mongoose.Schema({
+  studentId: { type: Number, required: true, unique: true }, // switched from ObjectId to Number
+  ipfsHash: String,
+  blockchainHash: String,
+  issueDate: { type: Date, default: Date.now },
+  status: { type: String, enum: ['valid', 'revoked'], default: 'valid' }
+});
 
-// module.exports = mongoose.model('Credential', credentialSchema);
+const Credential = mongoose.model('Credential', credentialSchema);
+
+export default Credential;

@@ -1,5 +1,5 @@
 import React from "react";
-import { Button } from "acertinity-ui"; // Adjust the import path based on the library structure
+import { Button } from "acertinity-ui"; 
 
 function App() {
   return (
