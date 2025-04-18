@@ -13,6 +13,8 @@ const studentSchema = new mongoose.Schema({
   phone: { type: String},
   yearJoined: { type: String},  
   program: { type: String},
+  isVerified: { type: Boolean, default: false }
+
 },{timestamps:true});
 
 // Hash password before saving

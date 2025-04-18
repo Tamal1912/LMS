@@ -199,7 +199,7 @@ export const upvotePost = asyncHandler(async (req, res) => {
         );
     } catch (error) {
         console.log("Error upvoting post:", error);
-        // Handle the error appropriately, e.g., return a 500 status code with an error message
+       
         res.status(500).json({ message: 'Server error', error });
         throw new ApiError(500, "Server error", error);
     }

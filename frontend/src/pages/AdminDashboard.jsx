@@ -1,4 +1,4 @@
-// pages/AdminDashboard.jsx
+
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
@@ -62,7 +62,7 @@ function AdminDashboard() {
           <p><strong>Role:</strong> {admin.role || 'Administrator'}</p>
         </div>
         
-        {/* Add your admin dashboard content here */}
+        
         
         {/* Student Lists */}
         <div className='flex gap-4 items-center mb-4'>
@@ -96,7 +96,7 @@ function AdminDashboard() {
               Get Verified
             </button>
           
-              {/* <p><strong>Course:</strong> {student.enrolledCourses.courseName}</p>               */}
+             
             </div>            
           ))}
 

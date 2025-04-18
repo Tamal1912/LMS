@@ -148,7 +148,7 @@ const usePostStore = create((set) => ({
                         post._id === postId ? updatedPost : post
                     )
                 }));
-                // Show different messages based on whether vote was added or removed
+                
                 toast.success(response.data.message || 'Vote updated!');
             }
         } catch (error) {

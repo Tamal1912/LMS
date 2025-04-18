@@ -80,7 +80,7 @@ const ManagePostPage = () => {
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {filteredPosts.map((post) => (
               <div
-                key={post._id}  // Changed from post.id
+                key={post._id}  
                 className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow"
               >
 
