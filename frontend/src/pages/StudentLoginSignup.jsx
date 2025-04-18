@@ -30,7 +30,7 @@ const StudentLoginSignup = () => {
       
       if (success) {
         console.log(" Login successful, redirecting...");
-        navigate("/api/studentDashboard"); // Redirect to dashboard
+        navigate("/api/studentDashboard"); 
       } else {
         console.error(" Login failed. Invalid credentials.");
         toast.error("Incorrect email or password.");
@@ -48,7 +48,7 @@ const StudentLoginSignup = () => {
     const success = await studentSignup(studentSignupData);
     if (success) {
       console.log(" signup successful, redirecting...");
-      navigate("/api/studentDashboard"); //  Redirect to dashboard
+      navigate("/api/studentDashboard");
     } else {
       console.error(" signup failed. Invalid credentials.");
       toast.error("Incorrect email or password. Please try again.");
@@ -60,7 +60,7 @@ const StudentLoginSignup = () => {
   };
 
   useEffect(() => {
-    document.body.style.overflow = "hidden"; // Prevent scrolling
+    document.body.style.overflow = "hidden"; 
     return () => {
       document.body.style.overflow = "auto";
     };

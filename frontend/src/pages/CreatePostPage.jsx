@@ -13,7 +13,7 @@ const CreatePostPage = () => {
     const [success, setSuccess] = useState(false);
     const [post, setPost] = useState({
         title: '',
-        postBody: '',  // Changed from 'content' to 'postBody' to match backend
+        postBody: '',
         links: [],
         tags: [],
     });

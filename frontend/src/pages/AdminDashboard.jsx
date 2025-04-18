@@ -1,4 +1,4 @@
-// pages/AdminDashboard.jsx
+
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAdminStore } from '../store/useAdminStore.js';

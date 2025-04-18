@@ -30,7 +30,7 @@ const teacherSchema = new mongoose.Schema({
   bio: { 
     type: String,
     required: false, // Change to false or remove required
-    default: "No bio provided" // Add a default value
+    default: "No bio provided" 
   },
   posts: [{ type: mongoose.Schema.Types.ObjectId, ref: "Post" }],
   refreshToken: { type: String}

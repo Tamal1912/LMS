@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 
 const AdminSchema = new mongoose.Schema({
   email: String,
-  password: String, // For now, keep plain text if no hashing
+  password: String, 
   name: String,
 });
 

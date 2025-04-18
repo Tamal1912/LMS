@@ -79,7 +79,7 @@ const CreateCoursePage = () => {
     }
   };
 
-  // Modified file input handlers
+
   const handleVideoChange = async (e) => {
     const file = e.target.files[0];
     if (file) {

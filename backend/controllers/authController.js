@@ -7,6 +7,8 @@ import ApiResponse from "../utils/ApiResponses.js";
 import {asyncHandler} from "../utils/asyncHandler.js";
 import { generateAccessToken, generateRefreshToken } from '../utils/jwt.utils.js';
 
+import jwt from 'jsonwebtoken';
+
 // Student Login
 const studentLogin = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
@@ -226,4 +228,43 @@ const logout = asyncHandler(async (req, res) => {
 });
 
 
-export { studentLogin, studentSignUp, teacherLogin , teacherSignUp, logout};
+const refreshAccessToken = asyncHandler(async (req, res) => {
+  const token = req.cookies.refreshToken;
+   console.log("refresh token generated",token);
+  if (!token) {
+    throw new ApiError(401, "Refresh token missing");
+  }
+
+  try {
+    const decoded = jwt.verify(token, process.env.REFRESH_TOKEN_SECRET);
+
+    const student = await Student.findById(decoded._id);
+    const teacher = await Teacher.findById(decoded._id);
+
+    const user = student || teacher;
+
+    if (!user || user.refreshToken !== token) {
+      throw new ApiError(403, "Invalid refresh token");
+    }
+
+    const newAccessToken = generateAccessToken(user._id);
+
+    res.cookie("accessToken", newAccessToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: 'strict',
+      maxAge: 10 * 60 * 1000, 
+    });
+
+    return res.status(200).json(
+      new ApiResponse(200, { accessToken: newAccessToken }, "Access token refreshed")
+    );
+
+  } catch (error) {
+    throw new ApiError(403, "Refresh token invalid or expired");
+  }
+});
+
+
+
+export { studentLogin, studentSignUp, teacherLogin , teacherSignUp, logout, refreshAccessToken };

@@ -198,6 +198,27 @@ const useCourseStore = create((set, get) => ({
       return [];
     }
   },
+
+  getAllCourses: async () => {
+    try {
+        set({ loading: true, error: null });
+        const response = await axios.get('/api/courses/all');
+        set({ 
+            allCourses: response.data.data, 
+            loading: false 
+        });
+        return response.data.data;
+    } catch (error) {
+        set({ 
+            error: error.response?.data?.message || "Failed to fetch courses", 
+            loading: false 
+        });
+        console.error("Error fetching courses:", error);
+        throw error;
+    }
+},
+
+  
  
 }));
 
