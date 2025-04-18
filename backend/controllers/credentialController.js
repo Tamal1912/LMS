@@ -1,4 +1,5 @@
 import Credential from '../models/Credential.model.js';
+import Student from '../models/Student.model.js'; // 👈 This is new
 import { uploadToIPFS, storeHashOnBlockchain, verifyCredentialOnBlockchain } from '../blockchain/blockchain.js';
 
 // POST /api/credential/upload
@@ -55,9 +56,23 @@ export const verify = async (req, res) => {
     const isValidOnBlockchain = await verifyCredentialOnBlockchain(studentId, credential.ipfsHash);
 
     if (isValidOnBlockchain) {
-      res.json({ valid: true, credential });
+      // 🧠 Update student.isVerified = true
+      await Student.findOneAndUpdate(
+        { studentId },
+        { isVerified: true },
+        { new: true }
+      );
+
+      return res.json({ valid: true, credential });
     } else {
-      res.status(200).json({ message: 'Credential is not valid on blockchain' });
+     
+      await Student.findOneAndUpdate(
+        { studentId },
+        { isVerified: false },
+        { new: true }
+      );
+
+      return res.status(200).json({ valid: false, message: 'Credential is not valid on blockchain' });
     }
   } catch (error) {
     console.error('Error in /verify route:', error);

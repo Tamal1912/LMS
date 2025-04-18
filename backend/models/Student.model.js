@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 import bcrypt from 'bcrypt';
 import mongooseSequence from 'mongoose-sequence';
 
-// Pass mongoose explicitly to the mongoose-sequence plugin
+
 const autoIncrement = mongooseSequence(mongoose);
 
 const studentSchema = new mongoose.Schema({
@@ -16,12 +16,14 @@ const studentSchema = new mongoose.Schema({
   phone: { type: String },
   yearJoined: { type: String },
   program: { type: String },
+  isVerified: { type: Boolean, default: false }, 
 }, { timestamps: true });
 
-// Apply mongoose-sequence to the student schema
+
+
 studentSchema.plugin(autoIncrement, { inc_field: 'studentId' });
 
-// Hash password before saving
+
 studentSchema.pre('save', async function (next) {
   if (this.isModified('password')) {
     this.password = await bcrypt.hash(this.password, 10);
@@ -29,7 +31,7 @@ studentSchema.pre('save', async function (next) {
   next();
 });
 
-// Method to check password
+
 studentSchema.methods.checkPassword = async function (password) {
   return await bcrypt.compare(password, this.password);
 };
