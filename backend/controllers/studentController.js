@@ -62,7 +62,7 @@ export const updateStudentProfile = async (req, res) => {
 
 export const getAllCourses =asyncHandler(async (req, res) => {
     try {
-        const courses=await Course.find(); 
+        const courses=await Course.find().sort({createdAt:-1}).populate('courseOwner', 'username email phoneNumber profileImage').lean(); 
               
         res.status(200).json({courses});
     } catch (error) {

@@ -13,6 +13,7 @@ const PostFeed = () => {
   const handleUpvote = async (postId) => {
     try {
       await upvotePost(postId);
+      await getAllPosts(); 
     } catch (error) {
       console.error("Error upvoting post:", error);
       toast.error("Failed to upvote post");
@@ -22,6 +23,7 @@ const PostFeed = () => {
   const handleDownvote = async (postId) => {
     try {
       await downvotePost(postId);
+      await getAllPosts(); 
     } catch (error) {
       console.error("Error downvoting post:", error);
       toast.error("Failed to downvote post");

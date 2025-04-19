@@ -4,7 +4,7 @@ import Student from '../models/Student.model.js';
 
 export const trackAllStudents = asyncHandler(async (req, res) => {
     try {
-        const students = await Student.find({});
+        const students = await Student.find().sort({createdAt: -1})
         return res.status(200).json({students});
     } catch (error) {
         console.log(error);

@@ -132,6 +132,20 @@ const StudentDashboard = () => {
               </div>
             </div>
           </div>
+
+          
+
+          <div className="bg-white bg-opacity-80 rounded-3xl shadow-md p-6 md:p-8 border border-gray-200">
+            <h2 className="text-xl md:text-2xl font-bold text-gray-800 mb-6 flex items-center gap-3">
+              <span className="p-2 bg-indigo-100 rounded-lg">👤</span>
+              Student Verification
+            </h2>
+            <div className="space-y-8 md:space-y-6 ">
+              <div className="flex items-center justify-between p-5 w-full md:p-4 bg-gradient-to-r from-indigo-50 to-pink-50 rounded-xl">
+                <span className="font-semibold text-pink-600 ">{user?.isVerified ? "Verified, Able To Access The Premium Courses" : "Oops, Not Verified. Go to Profile to Verify"} </span>
+              </div>
+            </div>
+          </div>
         </div>
       </main>
     </div>

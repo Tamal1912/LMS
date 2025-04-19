@@ -15,7 +15,9 @@ const studentSchema = new mongoose.Schema({
   refreshToken: { type: String },
   phone: { type: String },
   yearJoined: { type: String },
-  program: { type: String },
+  program: { type: String,
+    
+   },
   isVerified: { type: Boolean, default: false }, 
 }, { timestamps: true });
 

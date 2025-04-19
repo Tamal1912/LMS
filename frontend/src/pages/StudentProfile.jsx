@@ -1,12 +1,17 @@
 ///api/studentDashboard/studentProfile
 import React, { useState, useEffect } from "react";
-import { FiUser, FiMail, FiPhone, FiBook, FiCalendar,FiArrowLeft } from "react-icons/fi";
+import { FiUser, FiMail, FiPhone, FiBook, FiCalendar,FiArrowLeft,FiThumbsUp } from "react-icons/fi";
 import useAuthStore from "../store/useAuthStore.js";
 import { toast } from "react-hot-toast";
 import Loader from "../components/Loader.jsx";
 
+
 const Profile = () => {
   const [isEditing, setIsEditing] = useState(false);
+  const [isVerified, setIsVerified] = useState(true);
+
+  
+
 
   const { user, updateUser,loading ,getProfile} = useAuthStore();
   const [profileData, setProfileData] = useState({
@@ -53,6 +58,32 @@ const Profile = () => {
     }
   };
 
+  const handleVerifyAccount = () => {
+    const adminEmail = "admin@example.com"; 
+    const subject = encodeURIComponent("Request for Account Verification");
+    const body = encodeURIComponent(
+      `Hi Admin,
+  
+  I would like to verify my student account. Below are my details:
+  
+  Name: ${profileData.username}
+  Email: ${profileData.email}
+  Phone: ${profileData.phone}
+  Program: ${profileData.program}
+  Student ID: ${user._id}
+  
+  Thank you!`
+    );
+  
+   //opens Gmail directly
+    const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${adminEmail}&su=${subject}&body=${body}`;
+  
+    window.open(gmailUrl, "_blank"); 
+  };
+  
+  
+  
+
   return (
     loading ? <div className="flex justify-center items-center h-screen"><Loader/></div> :
     <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-blue-50 to-purple-50 p-6 md:p-10">
@@ -67,6 +98,7 @@ const Profile = () => {
               <FiArrowLeft />
               <span className="text-lg">Back to Dashboard</span>
           </button>
+
           
           <div className="flex items-center gap-4">
             {!isEditing ? (
@@ -108,6 +140,23 @@ const Profile = () => {
               </div>
             )}
           </div>
+
+          <div className="flex items-center gap-3">
+  {user?.isVerified ? (
+    <span className="text-green-600 font-semibold flex items-center gap-2">
+      <FiThumbsUp /> Account already verified
+    </span>
+  ) : (
+    <button
+      onClick={handleVerifyAccount}
+      className="px-6 py-2 rounded-lg bg-yellow-500 text-white font-medium hover:bg-yellow-600"
+    >
+      Click to Verify
+      <h5>wait for 24 hours to verify</h5>
+    </button>
+  )}
+</div>
+
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
