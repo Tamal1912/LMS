@@ -1,7 +1,8 @@
 // routes/admin.js
 import express from 'express';
 import {Admin} from '../models/Admin.model.js';
-import { trackAllStudents } from '../controllers/adminController.js';
+import { trackAllStudents,getAllTeachers,getAllCourses,getAllPosts,deletePost, viewPost } from '../controllers/adminController.js';
+
 
 
 
@@ -34,5 +35,10 @@ router.post('/AdminLogin', async (req, res) => {
 });
 
 router.get('/trackAllStudents',trackAllStudents );
+router.get('/getAllTeachers',getAllTeachers );
+router.get('/getAllPosts',getAllPosts );
+router.get('/getAllCourses',getAllCourses );
+router.delete('/deletePost/:postId', deletePost);
+router.get('/viewPost/:postId',viewPost );
 
 export default router;

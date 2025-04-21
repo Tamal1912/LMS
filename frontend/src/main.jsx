@@ -26,6 +26,7 @@ import AdminLogin from './pages/AdminLogin';
 import AdminDashboard from './pages/AdminDashboard';
 import AdminAllCourses from './pages/AdminAllCourses';
 import AdminAllTeachers from './pages/AdminAllTeachers';
+import AdminAllPostsPage from './pages/AdminAllPostsPage';
 
 const router=createBrowserRouter([
   {
@@ -41,8 +42,10 @@ ReactDOM.createRoot(document.getElementById('root')).render(
     <Route path="/" element={<Home />} />
     <Route path="/api/adminLogin" element={<AdminLogin />} />
     <Route path="/admin/dashboard" element={<AdminDashboard />} /> 
-    <Route path="//adminDashboard/allCourses" element={<AdminAllCourses />} />
+    <Route path="/adminDashboard/allCourses" element={<AdminAllCourses />} />
     <Route path="/adminDashboard/allTeachers" element={<AdminAllTeachers/>} />   
+    <Route path="/adminDashboard/allCourses" element={<AdminAllCourses/>} />   
+    <Route path="/adminDashboard/allPosts" element={<AdminAllPostsPage/>} />   
     <Route path="/api/studentLoginSignup" element={<StudentLoginSignup/>}/>
     <Route path="/api/teacherLoginSignup" element={<TeacherLoginSignup/>}/>
     <Route path='/api/teacherDashboard' element={<TeacherDashboard/>}/>

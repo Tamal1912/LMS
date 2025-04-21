@@ -4,6 +4,7 @@ import { useAdminStore } from '../store/useAdminStore.js';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import Loader from '@/components/Loader.jsx';
+import { Link } from 'react-router-dom';
 
 function AdminDashboard() {
   const navigate = useNavigate();
@@ -99,7 +100,32 @@ function AdminDashboard() {
       <div className=" max-w-7xl mx-auto py-10">
         <div className="bg-white/10 backdrop-blur-md shadow-xl p-6 flex justify-between items-center rounded-xl  mb-8 mt-3 py-4 border border-white/20">
           <h1 className="text-4xl font-bold text-white tracking-wide">Admin Dashboard</h1>
-          <button
+        
+
+          <Link to="/adminDashboard/allCourses"
+           className="text-gray-200 hover:text-white transition duration-300">
+            <button className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg shadow-md transition">
+              All Courses
+            </button>
+          </Link>
+
+          <Link to="/adminDashboard/allTeachers"
+            className="text-gray-200 hover:text-white transition duration-300">
+           <button 
+            className="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-lg shadow-md transition">
+              All Teachers
+           </button>
+           </Link>
+
+           <Link to="/adminDashboard/allPosts"
+            className='text-gray-200 hover:text-white transition duration-300'>
+           <button
+            className="bg-yellow-600 hover:bg-yellow-700 text-white px-6 py-2 rounded-lg shadow-md transition">  
+             All Posts
+           </button>
+           </Link>
+
+           <button
             onClick={handleLogout}
             className="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-lg shadow-md transition"
           >
