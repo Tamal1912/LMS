@@ -9,6 +9,12 @@ import TeacherLoginSignup from "./pages/TeacherLoginSignup"
 import StudentDashboard from "./pages/StudentDashboard"
 import TeacherDashboard from "./pages/TeacherDashboard"
 
+const token = localStorage.getItem('accessToken');
+if (token) {
+    api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+}
+
+
 function App() {
     const { checkAuth } = useAuthStore();
 

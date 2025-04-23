@@ -17,6 +17,13 @@ const useAuthStore = create(
             getProfile: async (id) => {
                 try {
                     set({ loading: true, error: null });
+            
+                    
+                    const token = localStorage.getItem('accessToken');
+                    if (token) {
+                        api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+                    }
+            
                     const response = await api.post(`/v1/student/profile/${id}`);
                     
                     if (response.data?.success && response.data?.data) {
@@ -40,6 +47,7 @@ const useAuthStore = create(
                     return null;
                 }
             },
+            
 
             updateUser: async (id, userData) => {
                 try {
