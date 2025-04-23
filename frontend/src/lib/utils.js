@@ -9,7 +9,7 @@ export function cn(...inputs) {
 }
 
 export const api = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL,
+  baseURL: "https://lms-backend-r8mx.onrender.com/api/v1",
   withCredentials: true,
   headers: {
     "Content-Type": "application/json"
