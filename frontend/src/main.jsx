@@ -27,6 +27,12 @@ import AdminDashboard from './pages/AdminDashboard';
 import AdminAllCourses from './pages/AdminAllCourses';
 import AdminAllTeachers from './pages/AdminAllTeachers';
 import AdminAllPostsPage from './pages/AdminAllPostsPage';
+import { api } from './lib/utils';
+
+const token = localStorage.getItem('accessToken');
+if (token) {
+    api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+}
 
 const router=createBrowserRouter([
   {

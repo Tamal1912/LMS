@@ -29,7 +29,7 @@ const StudentLoginSignup = () => {
       const success = await studentLogin(studentLoginData);
       
       if (success) {
-        console.log(" Login successful, redirecting...");
+        console.log(" login successful, redirecting...");
         navigate("/api/studentDashboard"); 
       } else {
         console.error(" Login failed. Invalid credentials.");

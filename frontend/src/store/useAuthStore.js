@@ -146,14 +146,16 @@ const useAuthStore = create(
                     set({ loading: true, error: null });
                     const response = await api.post('/v1/users/student/signup', signupData);
                     
-                    localStorage.setItem('accessToken', response.data.data.accessToken);
-                    localStorage.setItem('userType', 'student');
+                    
                     
                     set({ 
                         user: response.data.data,
                         isAuthenticated: true,
                         loading: false 
                     });
+
+                    localStorage.setItem('accessToken', response.data.data.accessToken);
+                    localStorage.setItem('userType', 'student');
                     
                     return true;
                 } catch (error) {
