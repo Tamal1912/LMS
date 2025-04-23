@@ -9,7 +9,7 @@ export function cn(...inputs) {
 }
 
 export const api = axios.create({
-  baseURL: "https://lms-backend-r8mx.onrender.com/api/v1",
+  baseURL: "https://lms-backend-r8mx.onrender.com/api",
   withCredentials: true,
   headers: {
     "Content-Type": "application/json"
