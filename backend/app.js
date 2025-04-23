@@ -9,9 +9,13 @@ app.use(fileUpload());
 
 // Middleware setup
 app.use(cors({
-  origin: "http://localhost:5173",  // You can update this if you have different frontend URLs
+  origin: [
+    "http://localhost:5173", 
+    "https://lms-frontend-io3l.onrender.com"
+  ],
   credentials: true,
 }));
+
 
 app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ limit: "50mb", extended: true }));
