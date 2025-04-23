@@ -54,7 +54,7 @@ function AdminDashboard() {
     setUploadProgress(0);
 
     try {
-      const response = await api.post('https://lms-backend-r8mx.onrender.com/credentials/upload', formData, {
+      const response = await api.post('/credentials/upload', formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
         onUploadProgress: (progressEvent) => {
           const percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
@@ -75,7 +75,7 @@ function AdminDashboard() {
   const handleVerify = async (studentId) => {
     try {
       setVerifyingStudentId(studentId);
-      const response = await api.get(`https://lms-backend-r8mx.onrender.com/credentials/verify/${studentId}`);
+      const response = await api.get(`/credentials/verify/${studentId}`);
       setVerifyingStudentId(null);
       if (response.data.valid) {
        toast.success('Credential is valid!');
