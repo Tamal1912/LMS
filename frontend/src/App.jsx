@@ -8,6 +8,7 @@ import StudentLoginSignup from "./pages/StudentLoginSignup"
 import TeacherLoginSignup from "./pages/TeacherLoginSignup"
 import StudentDashboard from "./pages/StudentDashboard"
 import TeacherDashboard from "./pages/TeacherDashboard"
+import { api } from './lib/utils';
 
 const token = localStorage.getItem('accessToken');
 if (token) {
