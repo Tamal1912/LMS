@@ -65,7 +65,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
     <Route path="/api/trackAllStudents" element={<TrackAllStudents/>}/>
     <Route path="/teacherDashboard/update_teacher_profile" element={<TeacherProfile/>}/>
     <Route path="/getStudentDetails/:studentId" element={<getStudentProfile/>}/>
-    <Route path="/api/studentDashboard" element={<StudentDashboard />}>
+    <Route path="/studentDashboard" element={<StudentDashboard />}>
     </Route>
       <Route path="/postFeed" element={<PostFeed />} />
       <Route path="/courses" element={<Courses />} />

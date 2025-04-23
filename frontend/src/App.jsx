@@ -27,7 +27,7 @@ function App() {
                     <Route path="/api/teacherLoginSignup" element={<TeacherLoginSignup />} />
                     
                     <Route 
-                        path="/api/studentDashboard" 
+                        path="/studentDashboard" 
                         element={
                             <ProtectedRoute allowedRoles={['student']}>
                                 <StudentDashboard />
