@@ -30,7 +30,7 @@ const StudentLoginSignup = () => {
       
       if (success) {
         console.log(" Login successful, redirecting...");
-        navigate("/api/studentDashboard"); 
+        window.location.href = "/api/studentDashboard";
       } else {
         console.error(" Login failed. Invalid credentials.");
         toast.error("Incorrect email or password.");
