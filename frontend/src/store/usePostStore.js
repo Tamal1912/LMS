@@ -140,7 +140,7 @@ const usePostStore = create((set) => ({
 
     upvotePost: async (postId) => {
         try {
-            const response = await api.get(`/v1/post/upvote/${postId}`);
+            const response = await api.post(`/v1/post/vote/${postId}`, { voteType: 'upvote' });
             if (response.data?.statusCode === 200) {
                 const updatedPost = response.data.data;
                 set((state) => ({
@@ -152,14 +152,14 @@ const usePostStore = create((set) => ({
                 toast.success(response.data.message || 'Vote updated!');
             }
         } catch (error) {
-            console.error('Error upvoting post:', error);
+            console.error('Error voting post:', error);
             toast.error('Failed to update vote');
         }
     },
 
     downvotePost: async (postId) => {
         try {
-            const response = await api.get(`/v1/post/downvote/${postId}`);
+            const response = await api.post(`/v1/post/vote/${postId}`, { voteType: 'downvote' });
             if (response.data?.statusCode === 200) {
                 const updatedPost = response.data.data;
                 set((state) => ({
@@ -170,7 +170,7 @@ const usePostStore = create((set) => ({
                 toast.success(response.data.message || 'Vote updated!');
             }
         } catch (error) {
-            console.error('Error downvoting post:', error);
+            console.error('Error voting post:', error);
             toast.error('Failed to update vote');
         }
     },

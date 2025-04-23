@@ -13,7 +13,6 @@ const PostFeed = () => {
   const handleUpvote = async (postId) => {
     try {
       await upvotePost(postId);
-      await getAllPosts(); 
     } catch (error) {
       console.error("Error upvoting post:", error);
       toast.error("Failed to upvote post");
@@ -23,7 +22,6 @@ const PostFeed = () => {
   const handleDownvote = async (postId) => {
     try {
       await downvotePost(postId);
-      await getAllPosts(); 
     } catch (error) {
       console.error("Error downvoting post:", error);
       toast.error("Failed to downvote post");
@@ -153,23 +151,23 @@ const PostFeed = () => {
                       <BiSolidUpvote
                         onClick={() => handleUpvote(post._id)}
                         className={`cursor-pointer transition-colors ${
-                          post.hasUserUpvoted
-                            ? "text-green-600"
+                          post.userVote === 'upvote'
+                            ? "text-green-600" 
                             : "text-gray-400 hover:text-green-500"
                         }`}
                         size={22}
                       />
-                      <span className="text-sm">{post.upvotes}</span>
+                      <span className="text-sm">{post.upvotes || 0}</span>
                       <BiSolidDownvote
                         onClick={() => handleDownvote(post._id)}
                         className={`cursor-pointer transition-colors ${
-                          post.hasUserDownvoted
-                            ? "text-red-600"
+                          post.userVote === 'downvote'
+                            ? "text-red-600" 
                             : "text-gray-400 hover:text-red-500"
                         }`}
                         size={22}
                       />
-                      <span className="text-sm">{post.downvotes}</span>
+                      <span className="text-sm">{post.downvotes || 0}</span>
                     </div>
                   </div>
                 </div>

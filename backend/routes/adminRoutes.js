@@ -1,13 +1,9 @@
 // routes/admin.js
 import express from 'express';
 import {Admin} from '../models/Admin.model.js';
-import { trackAllStudents,getAllTeachers,getAllCourses,getAllPosts,deletePost, viewPost } from '../controllers/adminController.js';
-
-
-
+import { trackAllStudents, getAllTeachers, getAllCourses, getAllPosts, deletePost, viewPost, deleteTeacher, deleteCourse } from '../controllers/adminController.js';
 
 const router = express.Router();
-
 
 router.post('/AdminLogin', async (req, res) => {
   const { email, password } = req.body;
@@ -34,11 +30,13 @@ router.post('/AdminLogin', async (req, res) => {
   );
 });
 
-router.get('/trackAllStudents',trackAllStudents );
-router.get('/getAllTeachers',getAllTeachers );
-router.get('/getAllPosts',getAllPosts );
-router.get('/getAllCourses',getAllCourses );
+router.get('/trackAllStudents', trackAllStudents);
+router.get('/getAllTeachers', getAllTeachers);
+router.get('/getAllPosts', getAllPosts);
+router.get('/getAllCourses', getAllCourses);
 router.delete('/deletePost/:postId', deletePost);
-router.get('/viewPost/:postId',viewPost );
+router.get('/viewPost/:postId', viewPost);
+router.delete('/deleteTeacher/:teacherId', deleteTeacher);
+router.delete('/deleteCourse/:courseId', deleteCourse);
 
 export default router;

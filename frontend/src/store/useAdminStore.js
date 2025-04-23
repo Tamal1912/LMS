@@ -99,4 +99,27 @@ export const useAdminStore = create((set) => ({
             return null;
         }
     },
+    deleteTeacher: async (teacherId) => {
+        set({ loading: true });
+        try {
+            const response = await api.delete(`/v1/admin/deleteTeacher/${teacherId}`);
+            set({ loading: false });
+            return response.data;
+        } catch (error) {
+            set({ error: error.message, loading: false });
+            throw error;
+        }
+    },
+    
+    deleteCourse: async (courseId) => {
+        set({ loading: true });
+        try {
+            const response = await api.delete(`/v1/admin/deleteCourse/${courseId}`);
+            set({ loading: false });
+            return response.data;
+        } catch (error) {
+            set({ error: error.message, loading: false });
+            throw error;
+        }
+    },
 }));

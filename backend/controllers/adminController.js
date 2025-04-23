@@ -74,3 +74,59 @@ export const viewPost = asyncHandler(async (req, res) => {
         throw new ApiError(500, "Failed to fetch post");
     }
 });
+
+export const deleteTeacher = asyncHandler(async (req, res) => {
+    try {
+        const { teacherId } = req.params;
+        const teacher = await Teacher.findById(teacherId);
+        
+        if (!teacher) {
+            throw new ApiError(404, "Teacher not found");
+        }
+        
+        // Delete all courses created by this teacher
+        await Course.deleteMany({ courseOwner: teacherId });
+        
+        // Delete all posts created by this teacher
+        await Post.deleteMany({ author: teacherId });
+        
+        // Delete the teacher
+        await Teacher.findByIdAndDelete(teacherId);
+        
+        return res.status(200).json({ message: "Teacher and all associated content deleted successfully" });
+    } catch (error) {
+        console.log(error);
+        throw new ApiError(500, "Failed to delete teacher");
+    }
+});
+
+export const deleteCourse = asyncHandler(async (req, res) => {
+    try {
+        const { courseId } = req.params;
+        const course = await Course.findById(courseId);
+        
+        if (!course) {
+            throw new ApiError(404, "Course not found");
+        }
+        
+        // Remove course from teacher's courses array
+        await Teacher.updateOne(
+            { _id: course.courseOwner },
+            { $pull: { courses: courseId } }
+        );
+        
+        // Remove course from students' enrolledCourses array
+        await Student.updateMany(
+            { enrolledCourses: courseId },
+            { $pull: { enrolledCourses: courseId } }
+        );
+        
+        // Delete the course
+        await Course.findByIdAndDelete(courseId);
+        
+        return res.status(200).json({ message: "Course deleted successfully" });
+    } catch (error) {
+        console.log(error);
+        throw new ApiError(500, "Failed to delete course");
+    }
+});

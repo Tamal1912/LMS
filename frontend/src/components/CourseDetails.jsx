@@ -30,6 +30,18 @@ const CourseDetails = () => {
         fetchData();
     }, [courseId]);
 
+    const handleEmailInstructor = () => {
+        const instructorEmail = course.courseOwner?.email;
+        const emailBody=`Hello ${course.courseOwner?.username},\n\nI have a question regarding the course "${course.courseName}".\n\nBest regards,\n[Your Name]`;
+        const emailSubject=`Question about "${course.courseName}"`;
+        const emailBodyEncoded = encodeURIComponent(emailBody);
+        const emailSubjectEncoded = encodeURIComponent(emailSubject);
+
+         const gmailURL=`https://mail.google.com/mail/?view=cm&fs=1&to=${instructorEmail} &su=${emailSubjectEncoded}&body=${emailBodyEncoded}`;
+        // Open the Gmail compose window in a new tab
+        window.open(gmailURL, "_blank");
+    };
+
     const course = allCourses.find((c) => c._id === courseId);
 
     if (loading) return <div className="min-h-screen flex items-center justify-center"><Loader /></div>;
@@ -38,9 +50,19 @@ const CourseDetails = () => {
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-[#1e3c72] via-[#2a5298] to-[#1e3c72] text-white">
-            <Link to="/api/studentDashboard" className="text-[#00fff0] pl-4 text-lg font-semibold transition-all duration-300">
+          
+            <div className=" items-center p-6 bg-[#0f172a]/70 backdrop-blur-md border border-[#ffffff22] rounded-3xl shadow-2xl mb-8">
+              
+            <Link to="/api/studentDashboard" className="text-[#00fff0] pl-4 text-lg font-bold transition-all duration-300">
                 ← Back to Dashboard
             </Link>
+
+            <Link to="/courses" className="text-[#00fff0] pl-4 text-lg font-semibold transition-all duration-300">
+            ← Courses Page
+                
+            </Link>
+            </div>
+          
             <div className="flex flex-col md:flex-row max-w-[1600px] mx-auto gap-8 p-8">
 
                 {/* Left Side */}
@@ -81,7 +103,16 @@ const CourseDetails = () => {
                                     <p className="text-sm text-gray-400">Email : {course.courseOwner?.email}</p>
                                     <p className="text-sm text-gray-400">{course.courseOwner?.phone}</p>
                                 </div>
-                            </div>
+
+                            {/* gmail to instructor */}
+                           
+                            <button
+                                className="mt-4 px-4 py-2 bg-gradient-to-r from-[#00bcd4] to-[#8e24aa] text-white rounded-lg shadow-md hover:shadow-lg transition-all duration-300"
+                                onClick={handleEmailInstructor}
+                                >
+                                Connect To Instructor
+                            </button>
+                                </div>
                         </div>
                     </div>
                 </div>
