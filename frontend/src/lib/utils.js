@@ -1,6 +1,8 @@
 import { clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 import axios from "axios";
+import dotenv from "dotenv";
+dotenv.config();
 
 export function cn(...inputs) {
   return twMerge(clsx(inputs));
