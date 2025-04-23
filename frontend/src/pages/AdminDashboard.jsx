@@ -79,6 +79,7 @@ function AdminDashboard() {
       setVerifyingStudentId(null);
       if (response.data.valid) {
        toast.success('Credential is valid!');
+       await trackAllStudents(); // Refresh the student list after verification
       } else {
         alert('⚠️ Credential is tampered with!');
       }
