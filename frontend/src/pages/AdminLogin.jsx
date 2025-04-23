@@ -17,7 +17,7 @@ function AdminLogin() {
     setLoading(true);
 
     try {
-      const res = await api.post('/admin/AdminLogin', { email, password });
+      const res = await api.post('/v1/admin/AdminLogin', { email, password });
 
       
       

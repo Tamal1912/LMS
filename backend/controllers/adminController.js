@@ -5,6 +5,10 @@ import Teacher from '../models/Teacher.model.js';
 import Post from '../models/Post.model.js';
 import Course from '../models/Course.model.js';
 
+// export const adminLogin = asyncHandler(async (req, res) => {
+
+// });
+
 export const trackAllStudents = asyncHandler(async (req, res) => {
     try {
         const students = await Student.find().sort({createdAt: -1})
