@@ -75,7 +75,7 @@ const TeacherDashboard = () => {
                         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-6 mb-8">
                             <StatCard label="Courses Created" value={teacher?.courses?.length || 0} color="blue" />
                             <StatCard label="Posts Made" value={teacher?.posts?.length || 0} color="green" />
-                            <StatCard label="Students Enrolled" value={teacher?.studentsEnrolled || 0} color="purple" />
+                             
                         </div>
 
                         {/* Quick Actions */}

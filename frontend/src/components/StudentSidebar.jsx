@@ -27,7 +27,7 @@ const StudentSidebar = () => {
                     <nav className="flex flex-col space-y-6 text-center w-full">
                         <div className="hover:bg-blue-500 p-4 rounded-lg cursor-pointer transition">
                             <span className="font-semibold">
-                                <Link to="/api/studentDashboard">
+                                <Link to="/studentDashboard">
                                     <button>Dashboard</button>
                                 </Link>
                             </span>

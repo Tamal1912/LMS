@@ -5,6 +5,8 @@ import HowItWorks from "../components/HowItWorks";
 import Footer from "../components/Footer";
 import { motion } from "framer-motion";
 import { TiThMenu } from "react-icons/ti";
+import TypewriterText from "../components/TypewriterText";
+import { AiOutlineClose } from "react-icons/ai";
 
 
 
@@ -60,10 +62,10 @@ const Navbar = () => {
     </li>
     
     <li className="cursor-pointer px-3 py-2 rounded-md hover:text-blue-900 hover:bg-blue-100 transition duration-300">
-      <a href="/features">Features</a>
+      <a href="#features">Features</a>
     </li>
     <li className="cursor-pointer px-3 py-2 rounded-md hover:text-blue-900 hover:bg-blue-100 transition duration-300">
-      <a href="/how-it-works">How It Works</a>
+      <a href="#how-it-works">How It Works</a>
     </li>
     <li className="cursor-pointer px-3 py-2 rounded-md hover:text-blue-900 hover:bg-blue-100 transition duration-300">
       <a href="/contact">Contact</a>
@@ -125,66 +127,75 @@ const Navbar = () => {
         </div>
       )}
 
-      <section className="w-full flex flex-col items-center justify-center h-screen bg-gradient-to-b from-blue-50 to-white px-8 relative overflow-hidden">
-        <div className="absolute inset-0 flex justify-center items-center overflow-hidden">
-          <motion.div
-            className="w-72 h-72 bg-blue-100 rounded-full absolute -top-16 -left-32"
-            animate={{ scale: [1, 1.2, 1] }}
-            transition={{ duration: 8, repeat: Infinity, repeatType: "mirror" }}
-          />
-          <motion.div
-            className="w-96 h-96 bg-blue-200 rounded-full absolute top-40 -right-32"
-            animate={{ scale: [1, 1.3, 1] }}
-            transition={{ duration: 10, repeat: Infinity, repeatType: "mirror" }}
-          />
-        </div>
+<section className="relative w-full h-screen overflow-hidden bg-black text-white flex items-center justify-center px-6">
+  {/* Background Layer - Stars / Gradient / Nebula Glow */}
+  <div className="absolute inset-0 bg-gray-200">
+    <div className="absolute w-full h-full bg-[url('/stars.svg')] bg-cover opacity-20 animate-pulse"></div>
+  </div>
 
-        <motion.h1
-          className="text-5xl font-bold text-gray-800 text-center leading-tight z-10"
-          initial={{ y: -50, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ duration: 1 }}
-        >
-          Empower Your Learning Journey <br />
-          with <motion.span
-            className="text-blue-600"
-            initial={{ scale: 0.8 }}
-            animate={{ scale: 1 }}
-            transition={{ duration: 0.6, repeat: Infinity, repeatType: "mirror" }}
-          >
-            EduPlatform
-          </motion.span>
-        </motion.h1>
+  {/* Floating Glow Orbs */}
+  <motion.div
+    className="absolute w-96 h-96 bg-pink-500/20 rounded-full blur-3xl top-[-80px] left-[-80px]"
+    animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.6, 0.3] }}
+    transition={{ duration: 10, repeat: Infinity }}
+  />
+  <motion.div
+    className="absolute w-72 h-72 bg-blue-500/20 rounded-full blur-2xl bottom-[-60px] right-[-60px]"
+    animate={{ scale: [1, 1.3, 1], opacity: [0.3, 0.6, 0.3] }}
+    transition={{ duration: 12, repeat: Infinity }}
+  />
 
-        <motion.p
-          className="mt-4 text-lg text-gray-600 text-center max-w-2xl z-10"
-          initial={{ y: 50, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ duration: 1, delay: 0.5 }}
-        >
-          The ultimate platform for modern education. Simplify learning, enhance collaboration, and unlock your true potential.
-        </motion.p>
+  {/* Center Card (Glass UI) */}
+  <motion.div
+    className="relative z-10 w-full max-w-4xl backdrop-blur-md bg-white/10 border border-white/20 rounded-3xl p-10 shadow-2xl text-center"
+    initial={{ opacity: 0, y: 40 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ duration: 1 }}
+  >
+    {/* Typewriter Heading */}
+    <motion.h1
+      className="text-4xl md:text-5xl font-bold text-white leading-snug mb-3"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ delay: 0.3, duration: 0.8 }}
+    >
+      <TypewriterText
+        texts={[
+          "Welcome to EduPlatform.",
+          "Reimagine Learning with Us.",
+          "Your Learning, Your Way.",
+          
+        ]}
+      />
+    </motion.h1>
 
-        <motion.div
-          className="mt-8 flex gap-4 z-10"
-          initial={{ scale: 0.9, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ duration: 1, delay: 1 }}
-        >
-          <motion.button
-            whileHover={{ scale: 1.1, boxShadow: "0px 8px 15px rgba(0, 0, 0, 0.2)" }}
-            className="bg-blue-600 text-white px-6 py-3 rounded-lg text-lg hover:bg-blue-700 transition"
-          >
-            Get Started
-          </motion.button>
-          <motion.button
-            whileHover={{ scale: 1.1, boxShadow: "0px 8px 15px rgba(0, 0, 0, 0.2)" }}
-            className="border border-gray-300 text-gray-600 px-6 py-3 rounded-lg text-lg hover:border-gray-500 transition"
-          >
-            Learn More
-          </motion.button>
-        </motion.div>
-      </section>
+    {/* Description */}
+    <motion.p
+      className="mt-4 text-lg  text-indigo-800 font-semibold leading-relaxed text-center max-w-2xl mx-auto"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.6, duration: 0.8 }}
+    >
+      Experience a new era of education with our  EduPlatform. Whether you're a student or a teacher, we provide the tools you need to succeed. Join us and transform your learning journey today!
+      <br />
+     </motion.p>
+
+    {/* Call-to-Actions */}
+    <motion.div
+      className="mt-8  flex justify-center gap-4 items-center flex-wrap "
+      initial={{ opacity: 0, scale: 0.95 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ delay: 1, duration: 0.8 }}
+    >
+      <button onClick={() => handleNavigation("Student")} className="bg-gradient-to-r from-indigo-500 to-purple-600 text-white px-6 py-3 rounded-lg font-medium hover:scale-105 hover:shadow-lg transition-all">
+        Get Started
+      </button>
+      
+    </motion.div>
+  </motion.div>
+</section>
+
+
 
       <Features />
       <HowItWorks />

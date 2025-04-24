@@ -30,11 +30,11 @@ export const getStudentProfile = asyncHandler(async (req, res) => {
 export const updateStudentProfile = async (req, res) => {
     try {
         const userId = req.params.id;
-        const { username, email, phone, yearJoined, program } = req.body;
+        const { username, email, phone, yearJoined, program,currentCGPA } = req.body;
         
         const updatedStudent = await Student.findByIdAndUpdate(
             userId,
-            { username, email, phone, yearJoined, program },
+            { username, email, phone, yearJoined, program, currentCGPA },
             { new: true, runValidators: true }
         ).select('-password'); 
 

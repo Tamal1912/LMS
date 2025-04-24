@@ -140,7 +140,7 @@ const usePostStore = create((set) => ({
 
     upvotePost: async (postId) => {
         try {
-            const response = await api.post(`/v1/post/vote/${postId}`, { voteType: 'upvote' });
+            const response = await api.post(`/v1/post/upvote/${postId}`, { voteType: 'upvote' });
             if (response.data?.statusCode === 200) {
                 const updatedPost = response.data.data;
                 set((state) => ({
@@ -159,7 +159,7 @@ const usePostStore = create((set) => ({
 
     downvotePost: async (postId) => {
         try {
-            const response = await api.post(`/v1/post/vote/${postId}`, { voteType: 'downvote' });
+            const response = await api.post(`/v1/post/downvote/${postId}`, { voteType: 'downvote' });
             if (response.data?.statusCode === 200) {
                 const updatedPost = response.data.data;
                 set((state) => ({

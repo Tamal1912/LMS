@@ -9,10 +9,8 @@ app.use(fileUpload());
 
 // Middleware setup
 app.use(cors({
-  origin: [
-     
-    "https://lms-frontend-io3l.onrender.com"
-  ],
+  origin: "http://localhost:5173",
+
   credentials: true,
 }));
 

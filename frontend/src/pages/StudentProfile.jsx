@@ -4,6 +4,7 @@ import { FiUser, FiMail, FiPhone, FiBook, FiCalendar,FiArrowLeft,FiThumbsUp } fr
 import useAuthStore from "../store/useAuthStore.js";
 import { toast } from "react-hot-toast";
 import Loader from "../components/Loader.jsx";
+import { RiNumbersFill } from "react-icons/ri";
 
 
 const Profile = () => {
@@ -32,6 +33,7 @@ const Profile = () => {
         phone: user.phone || "",
         yearJoined: user.yearJoined || "",
         program: user.program || "",
+        currentCGPA: user.currentCGPA || "",
       });
     }
   }, [user]);
@@ -238,6 +240,21 @@ const Profile = () => {
                     disabled={!isEditing}
                     className="w-full p-3 rounded-lg border-blue-500"
                     onChange={(e) => setProfileData({...profileData, program: e.target.value})}
+                  />
+                </div>
+
+                <div className="space-y-4">
+                  <label className="flex items-center gap-2 text-gray-700">
+                    <RiNumbersFill className="w-5 h-5 text-blue-500" />
+                    Current CGPA
+                  </label>
+                  <input
+                  placeholder="give in percentage"
+                    type="text"
+                    value={profileData.currentCGPA}
+                    disabled={!isEditing}
+                    className="w-full p-3 rounded-lg border-blue-500"
+                    onChange={(e) => setProfileData({...profileData, currentCGPA: e.target.value})}
                   />
                 </div>
 

@@ -177,7 +177,7 @@ const AdminAllCourses = () => {
                   <tr>
                     <th className="px-6 py-3 rounded-tl-lg">Course Name</th>
                     <th className="px-6 py-3">Category</th>
-                    <th className="px-6 py-3">Students</th>
+                    
                     <th className="px-6 py-3">Created</th>
                     <th className="px-6 py-3 rounded-tr-lg text-center">Actions</th>
                   </tr>

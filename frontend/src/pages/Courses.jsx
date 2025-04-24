@@ -46,7 +46,7 @@ const Courses = () => {
             
             {/* Header */}
             <div className="flex flex-col md:flex-row justify-between items-center mb-10">
-              <Link to="/api/studentDashboard" className="text-gray-700 hover:text-indigo-700 text-lg font-semibold transition-all duration-300">
+              <Link to="/studentDashboard" className="text-gray-700 hover:text-indigo-700 text-lg font-semibold transition-all duration-300">
                 ← Back to Dashboard
               </Link>
               <h1 className="text-4xl font-extrabold text-gray-900 text-center my-4 md:my-0">🎓 Discover Your Next Skill</h1>

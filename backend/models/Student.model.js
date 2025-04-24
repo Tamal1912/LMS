@@ -18,6 +18,7 @@ const studentSchema = new mongoose.Schema({
   program: { type: String,
     
    },
+   currentCGPA: { type: Number,default: 0 },  
   isVerified: { type: Boolean, default: false }, 
 }, { timestamps: true });
 

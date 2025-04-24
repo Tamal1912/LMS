@@ -53,7 +53,7 @@ const CourseDetails = () => {
           
             <div className=" items-center p-6 bg-[#0f172a]/70 backdrop-blur-md border border-[#ffffff22] rounded-3xl shadow-2xl mb-8">
               
-            <Link to="/api/studentDashboard" className="text-[#00fff0] pl-4 text-lg font-bold transition-all duration-300">
+            <Link to="/studentDashboard" className="text-[#00fff0] pl-4 text-lg font-bold transition-all duration-300">
                 ← Back to Dashboard
             </Link>
 

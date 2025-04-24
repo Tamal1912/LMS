@@ -10,6 +10,7 @@ const StudentDashboard = () => {
   const [firstLetter, setFirstLetter] = useState("");
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
+
   useEffect(() => {
     const fetchProfile = async () => {
       if (user?._id) {
@@ -110,28 +111,60 @@ const StudentDashboard = () => {
             </div>
           </div>
 
-          {/* Performance Card */}
-          <div className="relative group">
-            <div className="absolute -inset-0.5 bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 rounded-3xl blur opacity-30 group-hover:opacity-60 transition duration-1000"></div>
-            <div className="relative bg-white bg-opacity-80 rounded-3xl shadow-md p-6 md:p-8 border border-gray-200">
-              <h2 className="text-xl md:text-2xl font-bold text-gray-800 mb-6 flex items-center gap-3">
-                <span className="p-2 bg-purple-100 rounded-lg">🎯</span>
-                Performance
-              </h2>
-              <div className="flex flex-col items-center justify-center space-y-3 md:space-y-4">
-                <div className="text-5xl md:text-7xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500">
-                  8.85
-                </div>
-                <div className="text-lg md:text-xl text-gray-500">Current CGPA</div>
-                <div className="w-full h-2 md:h-3 bg-gray-200 rounded-full mt-3 overflow-hidden">
-                  <div 
-                    className="h-full bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 rounded-full"
-                    style={{ width: "88.5%" }}
-                  ></div>
-                </div>
-              </div>
-            </div>
-          </div>
+  {/* Performance Card */}
+{/* Performance Card */}
+<div className="relative group">
+  <div className="absolute -inset-0.5 bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 rounded-3xl blur opacity-30 group-hover:opacity-60 transition duration-1000"></div>
+  <div className="relative bg-white bg-opacity-80 rounded-3xl shadow-md p-6 md:p-8 border border-gray-200">
+    <h2 className="text-xl md:text-2xl font-bold text-gray-800 mb-6 flex items-center gap-3">
+      <span className="p-2 bg-purple-100 rounded-lg">🎯</span>
+      Performance
+    </h2>
+    <div className="flex flex-col items-center justify-center space-y-3 md:space-y-4 w-full">
+
+      {/* Show CGPA out of 10 */}
+      <div className="text-5xl md:text-7xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500">
+        {user && user.currentCGPA !== undefined && user.currentCGPA !== null 
+          ? ((user.currentCGPA / 100) * 10).toFixed(2) 
+          : "N/A"}
+      </div>
+      <div className="text-lg md:text-xl text-gray-500">CGPA out of 10</div>
+
+      {/* Progress Bar Container */}
+      <div className="relative w-full h-2 md:h-3 bg-gray-200 rounded-full mt-3 overflow-hidden">
+        {/* Floating Percentage Label */}
+        <div
+          className="absolute -top-6 transform -translate-x-1/2 px-2 py-1 bg-white border border-purple-300 rounded-md text-xs text-purple-700 font-medium shadow-md"
+          style={{ left: `${user?.currentCGPA || 0}%` }}
+        >
+          {user?.currentCGPA ? user.currentCGPA.toFixed(1) : '0'}%
+        </div>
+
+        {/* Progress Fill */}
+        <div
+          className="h-full bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 rounded-full"
+          style={{ width: `${user?.currentCGPA || 0}%` }}
+        ></div>
+      </div>
+
+      {/* Percentage Scale */}
+      <div className="flex justify-between w-full text-sm text-gray-600 mt-2">
+        <span>0%</span>
+        <span>25%</span>
+        <span>50%</span>
+        <span>75%</span>
+        <span>100%</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+          
 
           
 
@@ -153,4 +186,4 @@ const StudentDashboard = () => {
 };
 
 export default StudentDashboard;
- 
+

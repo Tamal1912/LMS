@@ -9,7 +9,7 @@ const FeaturesSection = () => {
           Unlock the Future of Learning
         </h2>
         <p className="text-center text-gray-600 text-lg mb-16 max-w-3xl mx-auto font-[Roboto]">
-          Explore cutting-edge tools designed for collaboration, time management, blockchain security, and personalized learning environments.
+          Learn From The Teachers You Trust, Get Verified By The Blockchain and Be ready for the Future.
         </p>
 
         {/* Feature Cards */}
@@ -22,7 +22,7 @@ const FeaturesSection = () => {
                 Blockchain-Based Verification
               </h3>
               <p className="text-gray-600 group-hover:text-gray-800 font-[Roboto]">
-                Ensure the authenticity of certifications and records with blockchain-powered security for trust and transparency.
+                Ensure the authenticity of your achievements with our secure blockchain verification system.
               </p>
             </div>
           </div>
@@ -32,10 +32,10 @@ const FeaturesSection = () => {
             <div className="absolute inset-x-0 -top-16 h-32 bg-gradient-to-r from-blue-500 to-blue-300 transform skew-y-6 shadow-lg group-hover:scale-110 transition-transform duration-300"></div>
             <div className="relative z-10 p-8">
               <h3 className="text-2xl font-bold text-blue-700 mb-4 group-hover:text-blue-900 font-[Merriweather]">
-                QR Code-Enabled Sharing
+              Teacher Tools for Course Management
               </h3>
               <p className="text-gray-600 group-hover:text-gray-800 font-[Roboto]">
-                Share assignments, resources, and status updates instantly with secure QR code integration.
+              Centralized access for admins to manage students, teachers, courses, and system-wide announcements—ensuring seamless governance and operational efficiency.
               </p>
             </div>
           </div>
@@ -45,10 +45,12 @@ const FeaturesSection = () => {
             <div className="absolute inset-x-0 -top-16 h-32 bg-gradient-to-r from-blue-500 to-blue-300 transform skew-y-6 shadow-lg group-hover:scale-110 transition-transform duration-300"></div>
             <div className="relative z-10 p-8">
               <h3 className="text-2xl font-bold text-blue-700 mb-4 group-hover:text-blue-900 font-[Merriweather]">
-                Live Video Mentorship
+              Personalized Student Dashboard
               </h3>
               <p className="text-gray-600 group-hover:text-gray-800 font-[Roboto]">
-                Connect with mentors in real-time through high-quality video sessions for personalized guidance.
+              Students can explore courses, read posts, vote on useful content, and access their personalized dashboard for a highly intuitive and engaging interface.
+
+
               </p>
             </div>
           </div>
@@ -58,10 +60,10 @@ const FeaturesSection = () => {
             <div className="absolute inset-x-0 -top-16 h-32 bg-gradient-to-r from-blue-500 to-blue-300 transform skew-y-6 shadow-lg group-hover:scale-110 transition-transform duration-300"></div>
             <div className="relative z-10 p-8">
               <h3 className="text-2xl font-bold text-blue-700 mb-4 group-hover:text-blue-900 font-[Merriweather]">
-                Smart Scheduling and Reminders
+              Role-Based Admin Panel
               </h3>
               <p className="text-gray-600 group-hover:text-gray-800 font-[Roboto]">
-                Stay on top of deadlines with AI-powered scheduling tools and customizable reminders tailored to your needs.
+              Centralized access for admins to manage students, teachers, courses, and system-wide announcements—ensuring seamless governance and operational efficiency.
               </p>
             </div>
           </div>
